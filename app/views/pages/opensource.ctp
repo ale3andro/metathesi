@@ -23,9 +23,9 @@
 						<a href="http://www.geany.org/">Geany<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>. Όλα τα παραπάνω είναι Ελεύθερα Λογισμικά / Λογισμικά
 						Ανοιχτού Κώδικα.
 						<br />
-						Ο πιο πρόσφατος κώδικας είναι διαθέσιμος μέσω του 
-						<a href="http://bazaar-vcs.org/BzrForCVSUsers">Bazaar CVS<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a> που φιλοξενείται στο
-						<a href="https://code.launchpad.net/~ale3andro">Launchpad<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>
+						Ο κώδικας διατηρείται σε <a href="http://en.wikipedia.org/wiki/Revision_control">Version Control<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a> μέσω του 
+							<a href="http://git-scm.com/">git<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>.
+						Ο πιο πρόσφατος κώδικας είναι διαθέσιμος στη <a href="http://github.com/ale3andro/metathesi">σελίδα του project<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a> στο github.
 					</p>
 				</div>
 			</div>			
