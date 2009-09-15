@@ -2,7 +2,7 @@
 	class BBasesController extends AppController
 	{
 		var $name = "BBases";
-		var $paginate = array('limit' => 25, 'order' => array('BBasis.id' => 'asc'));
+		var $paginate = array('limit' => 25, 'order' => array('BBasis.specialty_id' => 'asc'));
 		
 		function show($areaId, $year=-1)
 		{

@@ -77,11 +77,14 @@
 						for ($i=0; $i<count($years); $i++)
 							(($years[$i]['ABasis']['year']>$year)?($year=$years[$i]['ABasis']['year']):"");
 					}
-			
-					$bases = $this->ABasis->find('all', array( 
-										'conditions' => array('ABasis.year' => $year,
-											'ABasis.area_code' => $areaId
-											)));												
+					
+					$bases = $this->ABasis->find('all', 
+											array( 
+												'conditions' => 
+													array('ABasis.year' => $year,
+														'ABasis.area_code' => $areaId),
+												'order' => 
+													array('ABasis.specialty_id ASC')));												
 					$this->set('bases', $bases);
 					$this->set('years', $years);
 					$this->set('year', $year);

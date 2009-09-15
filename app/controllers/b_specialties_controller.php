@@ -2,7 +2,7 @@
 	class BSpecialtiesController extends AppController
 	{
 		var $name = "BSpecialties";
-		var $paginate = array('limit' => 25, 'order' => array('BSpecialty.code' => 'asc',));
+		var $paginate = array('limit' => 25, 'order' => array('BSpecialty.code' => 'asc'));
 		
 		function index()
 		{			
