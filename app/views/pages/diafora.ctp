@@ -19,6 +19,7 @@
 							<li><?php echo $html->link("Αναζήτηση Σχολείων Α/θμιας", "/a_schools/search"); ?></li>
 							<li><?php echo $html->link("Αναζήτηση Σχολείων Β/θμιας", "/b_schools/search"); ?></li>
 							<li><?php echo $html->link("Άδειες Template, Εικόνων", "license"); ?></li>
+							<li><?php echo $html->link("Disclaimer", "disclaimer"); ?></li>
 							<li><a href="http://github.com/ale3andro/metathesi">Η σελίδα του project<?php echo $html->image('external_link.gif', array('class'=>'external')); ?>
 								</a> στο github.</li>
 							<li><?php echo $html->link("Σχετικά με το metathesi.gr", "about"); ?></li>

@@ -15,6 +15,7 @@
 					<p>Καλώς ορίσατε στο <strong>metathesi.gr</strong>, ένα site αφιερωμένο στο μεγαλύτερο - μετά τον διορισμό - βάσανο των εκπαιδευτικών: τις 
 						<strong>μεταθέσεις</strong>... Για περισσότερες πληροφορίες σχετικά με το <a href="http://metathesi.gr">metathesi.gr</a> επισκεφθείτε 
 						<a href="pages/about">αυτή</a> τη σελίδα.
+						<br /><?php echo $html->link("Disclaimer", "disclaimer"); ?>
 					</p>
 				</div>
 				
