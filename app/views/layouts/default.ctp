@@ -32,9 +32,11 @@ Released   : 20081103
 	
 
 	<div id="footer">
-		<p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/gr/">
-		<img alt="Creative Commons License" style="border-width:0;" src="http://i.creativecommons.org/l/by-sa/3.0/gr/80x15.png" />
-		</a>  Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.		
+		<p>
+		<a href="http://cakephp.org">
+			<img alt="cakepower" src="<?php echo $this->webroot; ?>img/cake.power.gif" width="98px" height="13px" style="border:0"/>
+		</a>
+		Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.		
 		</p>
 	</div>
 	<!-- end #footer -->
