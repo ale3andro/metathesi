@@ -58,14 +58,24 @@
 									echo "<ul>";
 									echo "<li>" . $html->link("Νηπιαγωγεία", "/a_schools/getSchoolsOfTypeFromDipeId/" . $theProvince['Province']['id'] . "/2") . "</li>";
 									echo "<li>" . $html->link("Δημοτικά", "/a_schools/getSchoolsOfTypeFromDipeId/" . $theProvince['Province']['id'] . "/1") . "</li>";
-									echo "<li>Συνολικά: " . count($a_schools) . ((count($a_schools)==1)?" σχολείο ":" σχολεία ") . "</li>";
 									echo "</ul>";
+									echo "Συνολικά: " . count($a_schools) . ((count($a_schools)==1)?" σχολείο ":" σχολεία ");
 									
 									echo "<p><h3>Βάσεις Μετάθεσης</h3>";
 									echo "<ul>";
+									$i=0;
 									foreach ($a_areas as $a_area)
-											echo "<li>" . $html->link("Περιοχή " . $a_area['AArea']['description'], 
-													"/a_bases/show/" . $a_area['AArea']['id']) . "</li>";
+									{
+										echo "<li>";
+										echo $html->link("Περιοχή " . $a_area['AArea']['description'], 
+													"/a_bases/show/" . $a_area['AArea']['id']);
+										if ($a_points_range[$i][0] != $a_points_range[$i][1])
+											echo " (" . $a_points_range[$i][0] . " - " . $a_points_range[$i][1] . " μόρια)";
+										else
+											echo " (" . $a_points_range[$i][0] . " μόρια)";
+										echo "</li>";
+										$i++; 
+									}
 									echo "</ul>";
 									
 									echo "<br /><a href=\"" . $theProvince['Province']['A_url'] . "\">Ιστοσελίδα ΔΙΠΕ (εξωτερικός σύνδεσμος)" . 
@@ -79,14 +89,24 @@
 									echo "<li>" . $html->link("Λύκεια", "/b_schools/getSchoolsOfTypeFromDideId/" . $theProvince['Province']['id'] . "/2") . "</li>";
 									echo "<li>" . $html->link("ΕΠΑΛ", "/b_schools/getSchoolsOfTypeFromDideId/" . $theProvince['Province']['id'] . "/3") . "</li>";
 									echo "<li>" . $html->link("ΕΠΑΣ", "/b_schools/getSchoolsOfTypeFromDideId/" . $theProvince['Province']['id'] . "/4") . "</li>";
-									echo "<li>Συνολικά: " . count($b_schools) . ((count($b_schools)==1)?" σχολείο ":" σχολεία ") . "</li>";
 									echo "</ul>";
+									echo "Συνολικά: " . count($b_schools) . ((count($b_schools)==1)?" σχολείο ":" σχολεία ");
 									
 									echo "<p><h3>Βάσεις Μετάθεσης</h3>";
 									echo "<ul>";
+									$i=0;
 									foreach ($b_areas as $b_area)
-											echo "<li>" . $html->link("Περιοχή " . $b_area['BArea']['description'], 
-													"/b_bases/show/" . $b_area['BArea']['id']) . "</li>";
+									{
+										echo "<li>";
+										echo $html->link("Περιοχή " . $b_area['BArea']['description'], 
+														"/b_bases/show/" . $b_area['BArea']['id']);
+										if ($b_points_range[$i][0] != $b_points_range[$i][1])
+											echo " (" . $b_points_range[$i][0] . " - " . $b_points_range[$i][1] . " μόρια)";
+										else
+											echo " (" . $b_points_range[$i][0] . " μόρια)";
+										echo "</li>";
+										$i++;
+									}
 									echo "</ul>";
 									
 									echo "<br /><a href=\"" . $theProvince['Province']['B_url'] . "\">Ιστοσελίδα ΔΙΔΕ (εξωτερικός σύνδεσμος)" . 

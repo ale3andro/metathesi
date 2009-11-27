@@ -48,9 +48,19 @@
 				$this->set("ab", $ab);
 				$this->set("theProvince", $province);
 			
-				$this->set("a_areas",$this->requestAction("/a_areas/getFromDipeId/" . $province['Province']['id']));
+				$a_areas = $this->requestAction("/a_areas/getFromDipeId/" . $province['Province']['id']);
+				$this->set("a_areas", $a_areas);
+				$i=0;
+				foreach ($a_areas as $a_area)
+					$aPointsRange[$i++] = $this->requestAction("/a_schools/getPointRange/" . $a_area['AArea']['id']);
+				$this->set("a_points_range", $aPointsRange);
 				$this->set("a_schools", $this->requestAction("/a_schools/getFromDipeId/" . $province['Province']['id']));	
-				$this->set("b_areas",$this->requestAction("/b_areas/getFromDideId/" . $province['Province']['id']));
+				$b_areas = $this->requestAction("/b_areas/getFromDideId/" . $province['Province']['id']);
+				$this->set("b_areas", $b_areas);
+				$i=0;
+				foreach ($b_areas as $b_area)
+					$bPointsRange[$i++] = $this->requestAction("/b_schools/getPointRange/" . $b_area['BArea']['id']);
+				$this->set("b_points_range", $bPointsRange);
 				$this->set("b_schools", $this->requestAction("/b_schools/getFromDideId/" . $province['Province']['id']));
 				$this->set("region", $this->requestAction("/regions/getRegionFromId/" . $province['Province']['pde_id']));				
 				$this->set("mapLink", $province['Province']['map_link']);
