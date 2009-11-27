@@ -85,6 +85,7 @@
 														'ABasis.area_code' => $areaId),
 												'order' => 
 													array('ABasis.specialty_id ASC')));												
+					$this->set('pointsRange', $this->requestAction("/a_schools/getPointRange/" . $areaId));
 					$this->set('bases', $bases);
 					$this->set('years', $years);
 					$this->set('year', $year);

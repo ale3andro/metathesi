@@ -45,6 +45,7 @@
 			
 					$bases = $this->paginate('BBasis', array('BBasis.year' => $year, 'BBasis.area_code' => $areaId));
 			
+					$this->set('pointsRange', $this->requestAction("/b_schools/getPointRange/" . $areaId));
 					$this->set('bases', $bases);
 					$this->set('years', $years);
 					$this->set('year', $year);

@@ -100,5 +100,17 @@
 			$selectName = "data[ASchool][area_id]";
 			$this->set("a_areas_select", $this->requestAction("/a_areas/getSelectBox/" . $selectName));
 		}
+		
+		function getPointRange($areaId)
+		{
+			if (isset($this->params['requested']))				
+			{
+				$resultMax = $this->ASchool->query('SELECT MAX(points) as max FROM a_schools WHERE area_id=' . $areaId);
+				$ret[1] = $resultMax[0][0]['max'];
+				$resultMin = $this->ASchool->query('SELECT MIN(points) as min FROM a_schools WHERE area_id=' . $areaId);
+				$ret[0] = $resultMin[0][0]['min'];
+				return $ret;
+			}
+		}	
 	}
 ?>

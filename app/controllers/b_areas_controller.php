@@ -66,17 +66,5 @@
 				return $this->requestAction("/provinces/getDideAll/" . $dide['BArea']['dide_id']);
 			}
 		}
-		function getPointRange($id)
-		{
-			if (isset($this->params['requested']))				
-			{
-				//$result = $this->BArea->find(
-				
-				/*
-				$dide = $this->BArea->findById($id); 				
-				return $this->requestAction("/provinces/getDideAll/" . $dide['BArea']['dide_id']);
-				*/
-			}
-		}	
 	}
 ?>

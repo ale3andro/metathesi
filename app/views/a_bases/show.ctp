@@ -11,7 +11,15 @@
 	
 		<div id="content">
 			<div class="post">
-				<h1 class="title"><?php echo $title; ?></h1>
+				<h1 class="title">
+					<?php 
+						echo $title; 
+						if ($pointsRange[0]!=$pointsRange[1])
+							echo " (από " . $pointsRange[0] . " έως " . $pointsRange[1] . " μόρια)";
+						else
+							echo " (" . $pointsRange[0] . " μόρια)";
+					?>
+				</h1>
 				<div class="entry">
 					<p>
 						<?php
