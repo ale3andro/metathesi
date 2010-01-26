@@ -211,10 +211,10 @@ class String extends Object {
  * @static
  */
 	function insert($str, $data, $options = array()) {
-		$options = array_merge(
-			array('before' => ':', 'after' => null, 'escape' => '\\', 'format' => null, 'clean' => false),
-			$options
+		$defaults = array(
+			'before' => ':', 'after' => null, 'escape' => '\\', 'format' => null, 'clean' => false
 		);
+		$options += $defaults;
 		$format = $options['format'];
 
 		if (!isset($format)) {
@@ -231,12 +231,14 @@ class String extends Object {
 
 		if (array_keys($data) === array_keys(array_values($data))) {
 			$offset = 0;
-			while ($pos = strpos($str, '?', $offset)) {
+			while (($pos = strpos($str, '?', $offset)) !== false) {
 				$val = array_shift($data);
 				$offset = $pos + strlen($val);
 				$str = substr_replace($str, $val, $pos, 1);
 			}
 		} else {
+			asort($data);
+
 			$hashKeys = array_map('md5', array_keys($data));
 			$tempData = array_combine(array_keys($data), array_values($hashKeys));
 			foreach ($tempData as $key => $hashVal) {

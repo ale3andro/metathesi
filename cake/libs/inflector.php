@@ -167,7 +167,7 @@ class Inflector extends Object {
 			'/(alumn|bacill|cact|foc|fung|nucle|radi|stimul|syllab|termin|vir)us$/i' => '\1i',
 			'/us$/' => 'uses',
 			'/(alias)$/i' => '\1es',
-			'/(ax|cri|test)is$/i' => '\1es',
+			'/(ax|cris|test)is$/i' => '\1es',
 			'/s$/' => 's',
 			'/^$/' => '',
 			'/$/' => 's');
@@ -249,14 +249,14 @@ class Inflector extends Object {
 			$_this->pluralRules['regexIrregular'] = $regexIrregular;
 		}
 
-		if (preg_match('/(.*)\\b(' . $regexIrregular . ')$/i', $word, $regs)) {
-			$_this->pluralized[$word] = $regs[1] . substr($word, 0, 1) . substr($irregular[strtolower($regs[2])], 1);
-			return $_this->pluralized[$word];
-		}
-
 		if (preg_match('/^(' . $regexUninflected . ')$/i', $word, $regs)) {
 			$_this->pluralized[$word] = $word;
 			return $word;
+		}
+
+		if (preg_match('/(.*)\\b(' . $regexIrregular . ')$/i', $word, $regs)) {
+			$_this->pluralized[$word] = $regs[1] . substr($word, 0, 1) . substr($irregular[strtolower($regs[2])], 1);
+			return $_this->pluralized[$word];
 		}
 
 		foreach ($pluralRules as $rule => $replacement) {
@@ -282,6 +282,7 @@ class Inflector extends Object {
 			'/^(ox)en/i' => '\1',
 			'/(alias)(es)*$/i' => '\1',
 			'/(alumn|bacill|cact|foc|fung|nucle|radi|stimul|syllab|termin|viri?)i$/i' => '\1us',
+			'/([ftw]ax)es/' => '\1',
 			'/(cris|ax|test)es$/i' => '\1is',
 			'/(shoe)s$/i' => '\1',
 			'/(o)es$/i' => '\1',
@@ -317,7 +318,8 @@ class Inflector extends Object {
 			'nexus', 'Niasese', 'Pekingese', 'Piedmontese', 'pincers', 'Pistoiese', 'pliers', 'Portuguese', 'proceedings',
 			'rabies', 'rice', 'rhinoceros', 'salmon', 'Sarawakese', 'scissors', 'sea[- ]bass', 'series', 'Shavese', 'shears',
 			'siemens', 'species', 'swine', 'testes', 'trousers', 'trout', 'tuna', 'Vermontese', 'Wenchowese',
-			'whiting', 'wildebeest', 'Yengeese');
+			'whiting', 'wildebeest', 'Yengeese'
+		);
 
 		$coreIrregularSingular = array(
 			'atlases' => 'atlas',
@@ -348,7 +350,9 @@ class Inflector extends Object {
 			'soliloquies' => 'soliloquy',
 			'testes' => 'testis',
 			'trilbys' => 'trilby',
-			'turfs' => 'turf');
+			'turfs' => 'turf',
+			'waves' => 'wave'
+		);
 
 		$singularRules = Set::pushDiff($this->__singularRules, $coreSingularRules);
 		$uninflected = Set::pushDiff($this->__uninflectedSingular, $coreUninflectedSingular);
@@ -384,14 +388,14 @@ class Inflector extends Object {
 			$_this->singularRules['regexIrregular'] = $regexIrregular;
 		}
 
-		if (preg_match('/(.*)\\b(' . $regexIrregular . ')$/i', $word, $regs)) {
-			$_this->singularized[$word] = $regs[1] . substr($word, 0, 1) . substr($irregular[strtolower($regs[2])], 1);
-			return $_this->singularized[$word];
-		}
-
 		if (preg_match('/^(' . $regexUninflected . ')$/i', $word, $regs)) {
 			$_this->singularized[$word] = $word;
 			return $word;
+		}
+
+		if (preg_match('/(.*)\\b(' . $regexIrregular . ')$/i', $word, $regs)) {
+			$_this->singularized[$word] = $regs[1] . substr($word, 0, 1) . substr($irregular[strtolower($regs[2])], 1);
+			return $_this->singularized[$word];
 		}
 
 		foreach ($singularRules as $rule => $replacement) {

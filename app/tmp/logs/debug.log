@@ -230,3 +230,6 @@
 2009-08-21 12:01:33 Notice: Notice (8): Undefined variable: id in [APP/controllers/b_areas_controller.php, line 56]
 2009-08-21 12:01:33 Notice: Notice (8): Undefined variable: id in [APP/controllers/b_schools_controller.php, line 43]
 2009-08-21 12:01:33 Notice: Notice (8): Undefined variable: id in [APP/controllers/regions_controller.php, line 13]
+2010-01-26 10:42:57 Notice: Notice (8): Undefined variable: javascript in [APP/views/b_bases/from_specialty.ctp, line 12]
+2010-01-26 10:47:45 Notice: Notice (8): Undefined variable: javascript in [APP/views/b_bases/from_specialty.ctp, line 12]
+2010-01-26 10:47:45 Notice: Notice (8): Undefined variable: javascript in [APP/views/b_bases/from_specialty.ctp, line 12]

@@ -14,7 +14,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake.tests
+ * @package       cake
  * @subpackage    cake.tests.fixtures
  * @since         CakePHP(tm) v 1.2.0.7984
  * @version       $Revision$
@@ -46,7 +46,7 @@ class UuidTreeFixture extends CakeTestFixture {
 	var $fields = array(
 		'id'	=> array('type' => 'string', 'length' => 36, 'key' => 'primary'),
 		'name'	=> array('type' => 'string','null' => false),
-		'parent_id' => array('type' => 'string', 'length' => 36),
+		'parent_id' => array('type' => 'string', 'length' => 36, 'null' => true),
 		'lft'	=> array('type' => 'integer','null' => false),
 		'rght'	=> array('type' => 'integer','null' => false)
 	);

@@ -2,6 +2,7 @@
 	class ABasesController extends AppController
 	{
 		var $name = "ABases";
+		var $helpers = array('Html', 'Javascript');
 		
 		function fromSpecialty($specialtyId, $areaId)
 		{

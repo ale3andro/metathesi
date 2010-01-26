@@ -70,7 +70,7 @@ class ErrorHandler extends Object {
 /**
  * Controller instance.
  *
- * @var object
+ * @var Controller
  * @access public
  */
 	var $controller = null;
@@ -151,7 +151,7 @@ class ErrorHandler extends Object {
 		$this->controller->set(array(
 			'code' => '404',
 			'name' => __('Not Found', true),
-			'message' => $url,
+			'message' => h($url),
 			'base' => $this->controller->base
 		));
 		$this->_outputMessage('error404');

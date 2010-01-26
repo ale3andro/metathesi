@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * Short description for file.
+ * DatabaseGroupTest file
  *
  * Long description for file
  *
@@ -16,36 +16,41 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake.tests
+ * @package       cake
  * @subpackage    cake.tests.groups
- * @since         CakePHP(tm) v 1.2.0.4206
+ * @since         CakePHP(tm) v 1.2.0.5517
  * @version       $Revision$
  * @modifiedby    $LastChangedBy$
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 /**
- * Short description for class.
+ * DatabaseGroupTest class
  *
- * @package       cake.tests
+ * This test group will run all behavior, schema and datasource tests excluding database
+ * driver-specific tests
+ *
+ * @package       cake
  * @subpackage    cake.tests.groups
  */
-class LibControllerGroupTest extends GroupTest {
+class DatabaseGroupTest extends GroupTest {
 /**
  * label property
  *
- * @var string 'All cake/libs/controller/* (Not yet implemented)'
+ * @var string 'All model tests'
  * @access public
  */
-	var $label = 'All cake/libs/controller/* (Not yet implemented)';
+	var $label = 'Datasources, Schema and DbAcl tests';
 /**
- * LibControllerGroupTest method
+ * ModelGroupTest method
  *
  * @access public
  * @return void
  */
-	function LibControllerGroupTest() {
-		TestManager::addTestCasesFromDirectory($this, CORE_TEST_CASES . DS . 'libs' . DS . 'controller');
+	function DatabaseGroupTest() {
+		TestManager::addTestFile($this, CORE_TEST_CASES . DS . 'libs' . DS . 'model' . DS . 'db_acl');
+		TestManager::addTestFile($this, CORE_TEST_CASES . DS . 'libs' . DS . 'model' . DS . 'schema');
+		TestManager::addTestFile($this, CORE_TEST_CASES . DS . 'libs' . DS . 'model' . DS . 'datasources' . DS . 'dbo_source');
 	}
 }
 ?>

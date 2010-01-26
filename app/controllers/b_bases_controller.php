@@ -3,6 +3,7 @@
 	{
 		var $name = "BBases";
 		var $paginate = array('limit' => 25, 'order' => array('BBasis.specialty_id' => 'asc'));
+		var $helpers = array('Html', 'Javascript');
 		
 		function show($areaId, $year=-1)
 		{

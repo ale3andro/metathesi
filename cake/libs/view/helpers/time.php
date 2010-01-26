@@ -284,18 +284,19 @@ class TimeHelper extends AppHelper {
 /**
  * Returns either a relative date or a formatted date depending
  * on the difference between the current time and given datetime.
- * $datetime should be in a <i>strtotime</i>-parsable format, like MySQL's datetime datatype.
+ * $datetime should be in a <i>strtotime</i> - parsable format, like MySQL's datetime datatype.
  *
  * Options:
- *  'format' => a fall back format if the relative time is longer than the duration specified by end
- *  'end' =>  The end of relative time telling
- *  'userOffset' => Users offset from GMT (in hours)
+ *
+ * - 'format' => a fall back format if the relative time is longer than the duration specified by end
+ * - 'end' => The end of relative time telling
+ * - 'userOffset' => Users offset from GMT (in hours)
  *
  * Relative dates look something like this:
  *	3 weeks, 4 days ago
  *	15 seconds ago
- * Formatted dates look like this:
- *	on 02/18/2004
+ *
+ * Default date formatting is d/m/yy e.g: on 18/2/09
  *
  * The returned string includes 'ago' or 'on' and assumes you'll properly add a word
  * like 'Posted ' before the function output.
@@ -464,7 +465,7 @@ class TimeHelper extends AppHelper {
  *
  * @param mixed $dateTime Datetime string (strtotime-compatible) or Unix timestamp
  * @param mixed $options Default format string, if timestamp is used in $dateTime, or an array of options to be passed
- *						 on to timeAgoInWords().
+ *   on to timeAgoInWords().
  * @return string Relative time string.
  * @see		TimeHelper::timeAgoInWords
  */
@@ -480,7 +481,7 @@ class TimeHelper extends AppHelper {
  * @return bool
  */
 	function wasWithinLast($timeInterval, $dateString, $userOffset = null) {
-		$tmp = r(' ', '', $timeInterval);
+		$tmp = str_replace(' ', '', $timeInterval);
 		if (is_numeric($tmp)) {
 			$timeInterval = $tmp . ' ' . __('days', true);
 		}
