@@ -1,5 +1,5 @@
 <?php
-/* SVN FILE: $Id: auth.php 8004 2009-01-16 20:15:21Z gwoo $ */
+/* SVN FILE: $Id$ */
 
 /**
  * Authentication component
@@ -20,9 +20,9 @@
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
  * @since         CakePHP(tm) v 0.10.0.1076
- * @version       $Revision: 8004 $
- * @modifiedby    $LastChangedBy: gwoo $
- * @lastmodified  $Date: 2009-01-16 12:15:21 -0800 (Fri, 16 Jan 2009) $
+ * @version       $Revision$
+ * @modifiedby    $LastChangedBy$
+ * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
@@ -262,14 +262,27 @@ class AuthComponent extends Object {
  * @access public
  */
 	function startup(&$controller) {
+		$methods = array_flip($controller->methods);
+		$action = strtolower($controller->params['action']);
+		$allowedActions = array_map('strtolower', $this->allowedActions);
+
 		$isErrorOrTests = (
 			strtolower($controller->name) == 'cakeerror' ||
-			(strtolower($controller->name) == 'tests' && Configure::read() > 0) ||
-			!in_array($controller->params['action'], $controller->methods)
+			(strtolower($controller->name) == 'tests' && Configure::read() > 0)
 		);
 		if ($isErrorOrTests) {
 			return true;
 		}
+
+		$isMissingAction = (
+			$controller->scaffold === false &&
+			!isset($methods[$action])
+		);
+
+		if ($isMissingAction) {
+			return true;
+		}
+
 		if (!$this->__setDefaults()) {
 			return false;
 		}
@@ -282,9 +295,10 @@ class AuthComponent extends Object {
 		}
 		$url = Router::normalize($url);
 		$loginAction = Router::normalize($this->loginAction);
+
 		$isAllowed = (
 			$this->allowedActions == array('*') ||
-			in_array($controller->params['action'], $this->allowedActions)
+			in_array($action, $allowedActions)
 		);
 
 		if ($loginAction != $url && $isAllowed) {
@@ -326,6 +340,11 @@ class AuthComponent extends Object {
 			if (!$this->user()) {
 				if (!$this->RequestHandler->isAjax()) {
 					$this->Session->setFlash($this->authError, 'default', array(), 'auth');
+					if (!empty($controller->params['url']) && count($controller->params['url']) >= 2) {
+						$query = $controller->params['url'];
+						unset($query['url'], $query['ext']);
+						$url .= Router::queryString($query, array());
+					}
 					$this->Session->write('Auth.redirect', $url);
 					$controller->redirect($loginAction);
 					return false;
