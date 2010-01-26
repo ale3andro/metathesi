@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * TranslateBehaviorTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model.behaviors
  * @since         CakePHP(tm) v 1.2.0.5669
  * @version       $Revision$
@@ -30,13 +30,14 @@ if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 
 App::import('Core', array('AppModel', 'Model'));
 require_once(dirname(dirname(__FILE__)) . DS . 'models.php');
+
 /**
- * TranslateBehaviorTest class
+ * TranslateTest class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model.behaviors
  */
-class TranslateBehaviorTest extends CakeTestCase {
+class TranslateTest extends CakeTestCase {
 /**
  * autoFixtures property
  *
@@ -62,32 +63,6 @@ class TranslateBehaviorTest extends CakeTestCase {
  */
 	function endTest() {
 		ClassRegistry::flush();
-	}
-/**
- * testTranslateModel method
- *
- * @access public
- * @return void
- */
-	function testTranslateModel() {
-		$TestModel =& new Tag();
-		$TestModel->translateTable = 'another_i18n';
-		$TestModel->Behaviors->attach('Translate', array('title'));
-		$this->assertEqual($TestModel->translateModel()->name, 'I18nModel');
-		$this->assertEqual($TestModel->translateModel()->useTable, 'another_i18n');
-
-		$TestModel =& new User();
-		$TestModel->Behaviors->attach('Translate', array('title'));
-		$this->assertEqual($TestModel->translateModel()->name, 'I18nModel');
-		$this->assertEqual($TestModel->translateModel()->useTable, 'i18n');
-
-		$TestModel =& new TranslatedArticle();
-		$this->assertEqual($TestModel->translateModel()->name, 'TranslateArticleModel');
-		$this->assertEqual($TestModel->translateModel()->useTable, 'article_i18n');
-
-		$TestModel =& new TranslatedItem();
-		$this->assertEqual($TestModel->translateModel()->name, 'TranslateTestModel');
-		$this->assertEqual($TestModel->translateModel()->useTable, 'i18n');
 	}
 /**
  * testLocaleFalsePlain method
@@ -427,18 +402,15 @@ class TranslateBehaviorTest extends CakeTestCase {
 		$expected = array(1 => 'Titel #1', 2 => 'Titel #2', 3 => 'Titel #3');
 		$this->assertEqual($result, $expected);
 
-		// MSSQL trigger an error and stops the page even if the debug = 0
-		if ($this->db->config['driver'] != 'mssql') {
-			$debug = Configure::read('debug');
-			Configure::write('debug', 0);
+		$debug = Configure::read('debug');
+		Configure::write('debug', 0);
 
-			$result = $TestModel->find('list', array('recursive' => 1, 'callbacks' => false));
-			$this->assertEqual($result, array());
+		$result = $TestModel->find('list', array('recursive' => 1, 'callbacks' => false));
+		$this->assertEqual($result, array());
 
-			$result = $TestModel->find('list', array('recursive' => 1, 'callbacks' => 'after'));
-			$this->assertEqual($result, array());
-			Configure::write('debug', $debug);
-		}
+		$result = $TestModel->find('list', array('recursive' => 1, 'callbacks' => 'after'));
+		$this->assertEqual($result, array());
+		Configure::write('debug', $debug);
 
 		$result = $TestModel->find('list', array('recursive' => 1, 'callbacks' => 'before'));
 		$expected = array(1 => null, 2 => null, 3 => null);
@@ -679,7 +651,7 @@ class TranslateBehaviorTest extends CakeTestCase {
 		$this->loadFixtures('Translate', 'TranslatedItem');
 
 		$TestModel =& new TranslatedItem();
-		$Behavior =& $this->Model->Behaviors->Translate;
+		$Behavior = $TestModel->Behaviors->Translate;
 
 		$TestModel->unbindTranslation();
 		$translations = array('title' => 'Title', 'content' => 'Content');

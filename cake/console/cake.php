@@ -25,9 +25,6 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
-if (!defined('E_DEPRECATED')) {
-	define('E_DEPRECATED', 8192);
-}
 /**
  * Shell dispatcher
  *
@@ -141,7 +138,7 @@ class ShellDispatcher {
 	function __initConstants() {
 		if (function_exists('ini_set')) {
 			ini_set('display_errors', '1');
-			ini_set('error_reporting', E_ALL & ~E_DEPRECATED);
+			ini_set('error_reporting', E_ALL);
 			ini_set('html_errors', false);
 			ini_set('implicit_flush', true);
 			ini_set('max_execution_time', 0);
@@ -201,14 +198,10 @@ class ShellDispatcher {
  */
 	function __buildPaths() {
 		$paths = array();
-		$pluginPaths = Configure::read('pluginPaths');
-		if (!class_exists('Folder')) {
-			require LIBS . 'folder.php';
-		}
 
+		$pluginPaths = Configure::read('pluginPaths');
 		foreach ($pluginPaths as $pluginPath) {
-			$Folder = new Folder($pluginPath);
-			list($plugins,) = $Folder->read(false, true);
+			$plugins = Configure::listObjects('plugin', $pluginPath);
 			foreach ((array)$plugins as $plugin) {
 				$path = $pluginPath . Inflector::underscore($plugin) . DS . 'vendors' . DS . 'shells' . DS;
 				if (file_exists($path)) {
@@ -269,6 +262,7 @@ class ShellDispatcher {
 		Configure::write('debug', 1);
 		return true;
 	}
+
 /**
  * Dispatches a CLI request
  *
@@ -449,15 +443,13 @@ class ShellDispatcher {
  */
 	function parseParams($params) {
 		$this->__parseParams($params);
+
 		$defaults = array('app' => 'app', 'root' => dirname(dirname(dirname(__FILE__))), 'working' => null, 'webroot' => 'webroot');
+
 		$params = array_merge($defaults, array_intersect_key($this->params, $defaults));
-		$isWin = false;
-		foreach ($defaults as $default => $value) {
-			if (strpos($params[$default], '\\') !== false) {
-				$isWin = true;
-				break;
-			}
-		}
+
+		$isWin = array_filter(array_map('strpos', $params, array('\\')));
+
 		$params = str_replace('\\', '/', $params);
 
 		if (!empty($params['working']) && (!isset($this->args[0]) || isset($this->args[0]) && $this->args[0]{0} !== '.')) {
@@ -469,7 +461,7 @@ class ShellDispatcher {
 			}
 		}
 
-		if ($params['app'][0] == '/' || preg_match('/([a-z])(:)/i', $params['app'], $matches)) {
+		if ($params['app'][0] == '/' || preg_match('/([a-zA-Z])(:)/i', $params['app'], $matches)) {
 			$params['root'] = dirname($params['app']);
 		} elseif (strpos($params['app'], '/')) {
 			$params['root'] .= '/' . dirname($params['app']);
@@ -550,19 +542,16 @@ class ShellDispatcher {
 
 		$this->stdout("\nAvailable Shells:");
 		$_shells = array();
-
 		foreach ($this->shellPaths as $path) {
 			if (is_dir($path)) {
 				$shells = Configure::listObjects('file', $path);
-				$path = str_replace(CAKE_CORE_INCLUDE_PATH . DS . 'cake' . DS, 'CORE' . DS, $path);
-				$path = str_replace(APP, 'APP' . DS, $path);
+				$path = str_replace(CORE_PATH, 'CORE/', $path);
 				$path = str_replace(ROOT, 'ROOT', $path);
 				$path = rtrim($path, DS);
 				$this->stdout("\n " . $path . ":");
 				if (empty($shells)) {
 					$this->stdout("\t - none");
 				} else {
-					sort($shells);
 					foreach ($shells as $shell) {
 						if ($shell !== 'shell.php') {
 							$this->stdout("\t " . str_replace('.php', '', $shell));

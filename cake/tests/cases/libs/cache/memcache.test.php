@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * MemcacheEngineTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.cache
  * @since         CakePHP(tm) v 1.2.0.5434
  * @version       $Revision$
@@ -26,11 +26,10 @@
  */
 if (!class_exists('Cache')) {
 	require LIBS . 'cache.php';
-}
-/**
- * MemcacheEngineTest class
+}/**
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.cache
  */
 /**
@@ -51,7 +50,7 @@ class MemcacheEngineTest extends CakeTestCase {
 		if (Cache::engine('Memcache')) {
 			$skip = false;
 		}
-		$this->skipIf($skip, '%s Memcache is not installed or configured properly');
+		$this->skipIf($skip, 'Memcache is not installed or configured properly');
 	}
 /**
  * setUp method
@@ -60,9 +59,7 @@ class MemcacheEngineTest extends CakeTestCase {
  * @return void
  */
 	function setUp() {
-		$this->_cacheDisable = Configure::read('Cache.disable');
-		Configure::write('Cache.disable', false);
-		Cache::config('memcache', array('engine' => 'Memcache', 'prefix' => 'cake_'));
+		Cache::config('memcache', array('engine'=>'Memcache', 'prefix' => 'cake_'));
 	}
 /**
  * tearDown method
@@ -71,7 +68,6 @@ class MemcacheEngineTest extends CakeTestCase {
  * @return void
  */
 	function tearDown() {
-		Configure::write('Cache.disable', $this->_cacheDisable);
 		Cache::config('default');
 	}
 /**
@@ -111,7 +107,7 @@ class MemcacheEngineTest extends CakeTestCase {
 			}
 		}
 
-		if ($this->skipIf(!$available, '%s Need memcache servers at ' . implode(', ', $servers) . ' to run this test')) {
+		if ($this->skipIf(!$available, 'Need memcache servers at ' . implode(', ', $servers) . ' to run this test')) {
 			return;
 		}
 
@@ -133,6 +129,7 @@ class MemcacheEngineTest extends CakeTestCase {
 		$result = $Cache->_Engine['Memcache']->connect('127.0.0.1');
 		$this->assertTrue($result);
 	}
+
 /**
  * testReadAndWriteCache method
  *
@@ -140,21 +137,17 @@ class MemcacheEngineTest extends CakeTestCase {
  * @return void
  */
 	function testReadAndWriteCache() {
-		Cache::set(array('duration' => 1));
-
 		$result = Cache::read('test');
 		$expecting = '';
 		$this->assertEqual($result, $expecting);
 
 		$data = 'this is a test of the emergency broadcasting system';
-		$result = Cache::write('test', $data);
+		$result = Cache::write('test', $data, 1);
 		$this->assertTrue($result);
 
 		$result = Cache::read('test');
 		$expecting = $data;
 		$this->assertEqual($result, $expecting);
-
-		Cache::delete('test');
 	}
 /**
  * testExpiry method
@@ -163,47 +156,38 @@ class MemcacheEngineTest extends CakeTestCase {
  * @return void
  */
 	function testExpiry() {
-		Cache::set(array('duration' => 1));
-
+		sleep(2);
 		$result = Cache::read('test');
 		$this->assertFalse($result);
 
 		$data = 'this is a test of the emergency broadcasting system';
-		$result = Cache::write('other_test', $data);
+		$result = Cache::write('other_test', $data, 1);
 		$this->assertTrue($result);
 
 		sleep(2);
 		$result = Cache::read('other_test');
 		$this->assertFalse($result);
 
-		Cache::set(array('duration' =>  "+1 second"));
+		$data = 'this is a test of the emergency broadcasting system';
+		$result = Cache::write('other_test', $data, "+1 second");
+		$this->assertTrue($result);
+
+		sleep(2);
+		$result = Cache::read('other_test');
+		$this->assertFalse($result);
 
 		$data = 'this is a test of the emergency broadcasting system';
 		$result = Cache::write('other_test', $data);
 		$this->assertTrue($result);
 
-		sleep(2);
 		$result = Cache::read('other_test');
-		$this->assertFalse($result);
+		$this->assertEqual($result, $data);
 
 		Cache::engine('Memcache', array('duration' => '+1 second'));
 		sleep(2);
 
 		$result = Cache::read('other_test');
 		$this->assertFalse($result);
-
-		Cache::engine('Memcache', array('duration' => '+31 day'));
-		$data = 'this is a test of the emergency broadcasting system';
-		$result = Cache::write('long_expiry_test', $data);
-		$this->assertTrue($result);
-
-		sleep(2);
-		$result = Cache::read('long_expiry_test');
-		$expecting = $data;
-		$this->assertEqual($result, $expecting);
-
-		$result = Cache::read('long_expiry_test');
-		$this->assertTrue($result);
 
 		Cache::engine('Memcache', array('duration' => 3600));
 	}

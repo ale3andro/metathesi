@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * NumberHelperTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.view.helpers
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -26,12 +26,12 @@
  */
 App::import('Helper', 'Number');
 /**
- * NumberHelperTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.view.helpers
  */
-class NumberHelperTest extends CakeTestCase {
+class NumberTest extends CakeTestCase {
 /**
  * helper property
  *
@@ -39,6 +39,7 @@ class NumberHelperTest extends CakeTestCase {
  * @access public
  */
 	var $helper = null;
+
 /**
  * setUp method
  *
@@ -47,15 +48,6 @@ class NumberHelperTest extends CakeTestCase {
  */
 	function setUp() {
 		$this->Number =& new NumberHelper();
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		unset($this->Number);
 	}
 /**
  * testFormatAndCurrency method
@@ -105,11 +97,6 @@ class NumberHelperTest extends CakeTestCase {
 		$result = $this->Number->currency($value, 'GBP');
 		$expected = '&#163;100,100,100.00';
 		$this->assertEqual($expected, $result);
-
-		$result = $this->Number->currency($value, '', array('thousands' =>' ', 'after' => '€', 'decimals' => ',', 'zero' => 'Gratuit'));
-		$expected = '100 100 100,00€';
-		$this->assertEqual($expected, $result);
-
 	}
 /**
  * testCurrencyPositive method
@@ -144,6 +131,7 @@ class NumberHelperTest extends CakeTestCase {
 		$expected = '&#163;100,100,100.00';
 		$this->assertEqual($expected, $result);
 	}
+
 /**
  * testCurrencyNegative method
  *
@@ -371,5 +359,15 @@ class NumberHelperTest extends CakeTestCase {
 
 
 	}
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Number);
+	}
 }
+
 ?>

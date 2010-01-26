@@ -454,7 +454,6 @@ class DboOracle extends DboSource {
 		while($r = $this->fetchRow()) {
 			$sources[] = strtolower($r[0]['name']);
 		}
-		parent::listSources($sources);
 		return $sources;
 	}
 /**
@@ -465,12 +464,11 @@ class DboOracle extends DboSource {
  * @access public
  */
 	function describe(&$model) {
-		$table = $this->fullTableName($model, false);
 
 		if (!empty($model->sequence)) {
-			$this->_sequenceMap[$table] = $model->sequence;
+			$this->_sequenceMap[$model->table] = $model->sequence;
 		} elseif (!empty($model->table)) {
-			$this->_sequenceMap[$table] = $model->table . '_seq';
+			$this->_sequenceMap[$model->table] = $model->table . '_seq';
 		}
 
 		$cache = parent::describe($model);
@@ -478,14 +476,12 @@ class DboOracle extends DboSource {
 		if ($cache != null) {
 			return $cache;
 		}
-
 		$sql = 'SELECT COLUMN_NAME, DATA_TYPE, DATA_LENGTH FROM all_tab_columns WHERE table_name = \'';
 		$sql .= strtoupper($this->fullTableName($model)) . '\'';
 
 		if (!$this->execute($sql)) {
 			return false;
 		}
-
 		$fields = array();
 
 		for ($i = 0; $row = $this->fetchRow(); $i++) {
@@ -838,7 +834,8 @@ class DboOracle extends DboSource {
 
 		switch($column) {
 			case 'date':
-				$data = date('Y-m-d H:i:s', strtotime($data));
+				$date = new DateTime($data);
+				$data = $date->format('Y-m-d H:i:s');
 				$data = "TO_DATE('$data', 'YYYY-MM-DD HH24:MI:SS')";
 			break;
 			case 'integer' :
@@ -955,11 +952,11 @@ class DboOracle extends DboSource {
 		if ($query = $this->generateAssociationQuery($model, $linkModel, $type, $association, $assocData, $queryData, $external, $resultSet)) {
 			if (!isset($resultSet) || !is_array($resultSet)) {
 				if (Configure::read() > 0) {
-					echo '<div style = "font: Verdana bold 12px; color: #FF0000">' . sprintf(__('SQL Error in model %s:', true), $model->alias) . ' ';
+					e('<div style = "font: Verdana bold 12px; color: #FF0000">' . sprintf(__('SQL Error in model %s:', true), $model->alias) . ' ');
 					if (isset($this->error) && $this->error != null) {
-						echo $this->error;
+						e($this->error);
 					}
-					echo '</div>';
+					e('</div>');
 				}
 				return null;
 			}

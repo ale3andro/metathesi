@@ -177,11 +177,7 @@ class DboMysqlBase extends DboSource {
 		$table = $this->fullTableName($model);
 		if ($table) {
 			$indexes = $this->query('SHOW INDEX FROM ' . $table);
-			if (isset($indexes[0]['STATISTICS'])) {
-				$keys = Set::extract($indexes, '{n}.STATISTICS');
-			} else {
-				$keys = Set::extract($indexes, '{n}.0');
-			}
+			$keys = Set::extract($indexes, '{n}.STATISTICS');
 			foreach ($keys as $i => $key) {
 				if (!isset($index[$key['Key_name']])) {
 					$col = array();
@@ -481,11 +477,9 @@ class DboMysql extends DboMysqlBase {
 
 		if ($parent != null) {
 			return $parent;
-		}
-		if ($data === null || (is_array($data) && empty($data))) {
+		} elseif ($data === null || (is_array($data) && empty($data))) {
 			return 'NULL';
-		}
-		if ($data === '' && $column !== 'integer' && $column !== 'float' && $column !== 'boolean') {
+		} elseif ($data === '' && $column !== 'integer' && $column !== 'float' && $column !== 'boolean') {
 			return  "''";
 		}
 		if (empty($column)) {

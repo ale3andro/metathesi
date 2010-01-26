@@ -91,6 +91,7 @@ class CakeHtmlReporter extends SimpleReporter {
 		echo "<strong>" . $this->getFailCount() . "</strong> fails and ";
 		echo "<strong>" . $this->getExceptionCount() . "</strong> exceptions.";
 		echo "</div>\n";
+		echo "</body>\n</html>\n";
 	}
 /**
  * Paints the test failure with a breadcrumbs

@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * SecurityComponentTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.controller.components
  * @since         CakePHP(tm) v 1.2.0.5435
  * @version       $Revision$
@@ -25,27 +25,22 @@
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 App::import('Component', 'Security');
+
 /**
-* TestSecurityComponent
+* Short description for class.
 *
-* @package       cake
+* @package       cake.tests
 * @subpackage    cake.tests.cases.libs.controller.components
 */
 class TestSecurityComponent extends SecurityComponent {
-/**
- * validatePost method
- *
- * @param Controller $controller
- * @return unknown
- */
 	function validatePost(&$controller) {
 		return $this->_validatePost($controller);
 	}
 }
 /**
-* SecurityTestController
+* Short description for class.
 *
-* @package       cake
+* @package       cake.tests
 * @subpackage    cake.tests.cases.libs.controller.components
 */
 class SecurityTestController extends Controller {
@@ -109,27 +104,14 @@ class SecurityTestController extends Controller {
 		$this->testHeaders[] = $status;
 	}
 }
+
 /**
- * SecurityComponentTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.controller.components
  */
 class SecurityComponentTest extends CakeTestCase {
-/**
- * Controller property
- *
- * @var SecurityTestController
- * @access public
- */
-	var $Controller;
-/**
- * oldSalt property
- *
- * @var string
- * @access public
- */
-	var $oldSalt;
 /**
  * setUp method
  *
@@ -141,22 +123,23 @@ class SecurityComponentTest extends CakeTestCase {
 		$this->Controller->Component->init($this->Controller);
 		$this->Controller->Security =& $this->Controller->TestSecurity;
 		$this->Controller->Security->blackHoleCallback = 'fail';
+
 		$this->oldSalt = Configure::read('Security.salt');
 		Configure::write('Security.salt', 'foo!');
 	}
 /**
- * Tear-down method. Resets environment state.
+ * Tear-down method.  Resets environment state.
  *
  * @access public
  * @return void
  */
 	function tearDown() {
-		Configure::write('Security.salt', $this->oldSalt);
-		$this->Controller->Session->del('_Token');
 		unset($this->Controller->Security);
 		unset($this->Controller->Component);
 		unset($this->Controller);
+		Configure::write('Security.salt', $this->oldSalt);
 	}
+
 /**
  * testStartup method
  *
@@ -363,14 +346,6 @@ class SecurityComponentTest extends CakeTestCase {
  * @return void
  */
 	function testDigestAuth() {
-		$skip = $this->skipIf((version_compare(PHP_VERSION, '5.1') == -1) XOR (!function_exists('apache_request_headers')),
-			"%s Cannot run Digest Auth test for PHP versions < 5.1"
-		);
-
-		if ($skip) {
-			return;
-		}
-
 		$this->Controller->action = 'posted';
 		$_SERVER['PHP_AUTH_DIGEST'] = $digest = <<<DIGEST
 		Digest username="Mufasa",
@@ -609,6 +584,7 @@ DIGEST;
 		$result = $this->Controller->Security->validatePost($this->Controller);
 		$this->assertTrue($result);
 	}
+
 /**
  * test ValidatePost with multiple select elements.
  *
@@ -800,6 +776,7 @@ DIGEST;
 		$result = $this->Controller->Security->validatePost($this->Controller);
 		$this->assertTrue($result);
 	}
+
 /**
  * testValidateHasManyRecordsPass method
  *
@@ -1102,4 +1079,5 @@ DIGEST;
 		$this->assertEqual(current($this->Controller->testHeaders), $expected);
 	}
 }
+
 ?>

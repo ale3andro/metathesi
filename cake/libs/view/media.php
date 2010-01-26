@@ -80,13 +80,6 @@ class MediaView extends View {
 								'silo' => 'model/mesh', 'vrml' => 'model/vrml', 'wrl' => 'model/vrml',
 								'mime' => 'www/mime', 'pdb' => 'chemical/x-pdb', 'xyz' => 'chemical/x-pdb');
 /**
- * Holds headers sent to browser before rendering media
- *
- * @var array
- * @access protected
- */
-	var $_headers = array();
-/**
  * Constructor
  *
  * @param object $controller
@@ -113,11 +106,6 @@ class MediaView extends View {
 			$path = APP . $path . $id;
 		}
 
-		if (!file_exists($path)) {
-			header('Content-Type: text/html');
-			$this->cakeError('error404');
-		}
-
 		if (is_null($name)) {
 			$name = $id;
 		}
@@ -126,7 +114,7 @@ class MediaView extends View {
 			$this->mimeType = array_merge($this->mimeType, $mimeType);
 		}
 
-		if (isset($extension) && isset($this->mimeType[$extension]) && connection_status() == 0) {
+		if (file_exists($path) && isset($extension) && isset($this->mimeType[$extension]) && connection_status() == 0) {
 			$chunkSize = 8192;
 			$buffer = '';
 			$fileSize = @filesize($path);
@@ -142,27 +130,18 @@ class MediaView extends View {
 			}
 
 			if ($download) {
-				$contentTypes = array('application/octet-stream');
+				$contentType = 'application/octet-stream';
 				$agent = env('HTTP_USER_AGENT');
 
-				if (preg_match('%Opera(/| )([0-9].[0-9]{1,2})%', $agent)) {
-					$contentTypes[0] = 'application/octetstream';
-				} else if (preg_match('/MSIE ([0-9].[0-9]{1,2})/', $agent)) {
-					$contentTypes[0] = 'application/force-download';
-					array_push($contentTypes, array(
-						'application/octet-stream',
-						'application/download'
-					));
+				if (preg_match('%Opera(/| )([0-9].[0-9]{1,2})%', $agent) || preg_match('/MSIE ([0-9].[0-9]{1,2})/', $agent)) {
+					$contentType = 'application/octetstream';
 				}
-				foreach($contentTypes as $contentType) {
-					$this->_header('Content-Type: ' . $contentType);
-				}
-				$this->_header(array(
-					'Content-Disposition: attachment; filename="' . $name . '.' . $extension . '";',
-					'Expires: 0',
-					'Accept-Ranges: bytes',
-					'Cache-Control: private' => false,
-					'Pragma: private'));
+				header('Content-Type: ' . $contentType);
+				header('Content-Disposition: attachment; filename="' . $name . '.' . $extension . '";');
+				header('Expires: 0');
+				header('Accept-Ranges: bytes');
+				header('Cache-Control: private', false);
+				header('Pragma: private');
 
 				$httpRange = env('HTTP_RANGE');
 				if (isset($httpRange)) {
@@ -171,36 +150,30 @@ class MediaView extends View {
 					$size = $fileSize - 1;
 					$length = $fileSize - $range;
 
-					$this->_header(array(
-						'HTTP/1.1 206 Partial Content',
-						'Content-Length: ' . $length,
-						'Content-Range: bytes ' . $range . $size . '/' . $fileSize));
-
+					header('HTTP/1.1 206 Partial Content');
+					header('Content-Length: ' . $length);
+					header('Content-Range: bytes ' . $range . $size . '/' . $fileSize);
 					fseek($handle, $range);
 				} else {
-					$this->_header('Content-Length: ' . $fileSize);
+					header('Content-Length: ' . $fileSize);
 				}
 			} else {
-				$this->_header('Date: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+				header('Date: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
 				if ($cache) {
 					if (!is_numeric($cache)) {
 						$cache = strtotime($cache) - time();
 					}
-					$this->_header(array(
-						'Cache-Control: max-age=' . $cache,
-						'Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache) . ' GMT',
-						'Pragma: cache'));
+					header('Cache-Control: max-age=' . $cache);
+					header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $cache) . ' GMT');
+					header('Pragma: cache');
 				} else {
-					$this->_header(array(
-						'Cache-Control: must-revalidate, post-check=0, pre-check=0',
-						'Pragma: no-cache'));
+					header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+					header('Pragma: no-cache');
 				}
-				$this->_header(array(
-					'Last-Modified: ' . $modified,
-					'Content-Type: ' . $this->mimeType[$extension],
-					'Content-Length: ' . $fileSize));
+				header('Last-Modified: ' . $modified);
+				header('Content-Type: ' . $this->mimeType[$extension]);
+				header('Content-Length: ' . $fileSize);
 			}
-			$this->_output();
 			@ob_end_clean();
 
 			while (!feof($handle) && connection_status() == 0 && !connection_aborted()) {
@@ -214,36 +187,6 @@ class MediaView extends View {
 			exit(0);
 		}
 		return false;
-	}
-/**
- * Method to set headers
- * @param mixed $header
- * @param boolean $boolean
- * @access protected
- */
-	function _header($header, $boolean = true) {
-		if (is_array($header)) {
-			foreach ($header as $string => $boolean) {
-				if (is_numeric($string)) {
-					$this->_headers[] = array($boolean => true);
-				} else {
-					$this->_headers[] = array($string => $boolean);
-				}
-			}
-			return;
-		}
-		$this->_headers[] = array($header => $boolean);
-		return;
-	}
-/**
- * Method to output headers
- * @access protected
- */
-	function _output() {
-		foreach ($this->_headers as $key => $value) {
-			$header = key($value);
-			header($header, $value[$header]);
-		}
 	}
 }
 ?>

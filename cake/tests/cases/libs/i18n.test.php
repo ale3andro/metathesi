@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * I18nTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.5432
  * @version       $Revision$
@@ -26,9 +26,9 @@
  */
 App::import('Core', 'i18n');
 /**
- * I18nTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class I18nTest extends CakeTestCase {
@@ -39,27 +39,7 @@ class I18nTest extends CakeTestCase {
  * @return void
  */
 	function setUp() {
-		$this->_objects = Configure::read('__objects');
-		Configure::write('__objects', array());
-
-		$this->_localePaths = Configure::read('localePaths');
 		Configure::write('localePaths', array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'locale'));
-
-		$this->_pluginPaths = Configure::read('pluginPaths');
-		Configure::write('pluginPaths', array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins'));
-
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		Configure::write('localePaths', $this->_localePaths);
-		Configure::write('pluginPaths', $this->_pluginPaths);
-		Configure::write('__objects', $this->_objects);
-
 	}
 /**
  * testDefaultStrings method
@@ -2356,13 +2336,11 @@ class I18nTest extends CakeTestCase {
 		$this->assertFalse(in_array('24 everything else (from core translated)', $corePlurals));
 		$this->assertFalse(in_array('25 everything else (from core translated)', $corePlurals));
 	}
-/**
- * testPluginTranslation method
- *
- * @access public
- * @return void
- */
+
 	function testPluginTranslation() {
+		$pluginPaths = Configure::read('pluginPaths');
+		Configure::write('pluginPaths', array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins'));
+
 		Configure::write('Config.language', 'po');
 		$singular = $this->__domainSingular();
 		$this->assertEqual('Plural Rule 1 (from plugin)', $singular);
@@ -2394,6 +2372,8 @@ class I18nTest extends CakeTestCase {
 		$this->assertTrue(in_array('23 = 0 or > 1 (from plugin)', $plurals));
 		$this->assertTrue(in_array('24 = 0 or > 1 (from plugin)', $plurals));
 		$this->assertTrue(in_array('25 = 0 or > 1 (from plugin)', $plurals));
+
+		Configure::write('pluginPaths', $pluginPaths);
 	}
 /**
  * testPoMultipleLineTranslation method
@@ -2490,91 +2470,6 @@ class I18nTest extends CakeTestCase {
 		$this->assertEqual(__('this is a "quoted string"', true), $expected);
 	}
 /**
- * testFloatValue method
- *
- * @access public
- * @return void
- */
-	function testFloatValue() {
-		Configure::write('Config.language', 'rule_9_po');
-
-		$result = __n('%d = 1', '%d = 0 or > 1', (float)1, true);
-		$expected = '%d is 1 (translated)';
-		$this->assertEqual($result, $expected);
-
-		$result = __n('%d = 1', '%d = 0 or > 1', (float)2, true);
-		$expected = "%d ends in 2-4, not 12-14 (translated)";
-		$this->assertEqual($result, $expected);
-
-		$result = __n('%d = 1', '%d = 0 or > 1', (float)5, true);
-		$expected = "%d everything else (translated)";
-		$this->assertEqual($result, $expected);
-	}
-/**
- * testCategory method
- *
- * @access public
- * @return void
- */
-	function testCategory() {
-		Configure::write('Config.language', 'po');
-		$category = $this->__category();
-		$this->assertEqual('Monetary Po (translated)', $category);
-	}
-/**
- * testPluginCategory method
- *
- * @access public
- * @return void
- */
-	function testPluginCategory() {
-		Configure::write('Config.language', 'po');
-
-		$singular = $this->__domainCategorySingular();
-		$this->assertEqual('Monetary Plural Rule 1 (from plugin)', $singular);
-
-		$plurals = $this->__domainCategoryPlural();
-		$this->assertTrue(in_array('Monetary 0 = 0 or > 1 (from plugin)', $plurals));
-		$this->assertTrue(in_array('Monetary 1 = 1 (from plugin)', $plurals));
-	}
-/**
- * testCategoryThenSingular method
- *
- * @access public
- * @return void
- */
-	function testCategoryThenSingular() {
-		Configure::write('Config.language', 'po');
-		$category = $this->__category();
-		$this->assertEqual('Monetary Po (translated)', $category);
-
-		$singular = $this->__singular();
-		$this->assertEqual('Po (translated)', $singular);
-	}
-/**
- * Singular method
- *
- * @access private
- * @return void
- */
-	function __domainCategorySingular($domain = 'test_plugin', $category = LC_MONETARY) {
-		$singular = __dc($domain, 'Plural Rule 1', $category, true);
-		return $singular;
-	}
-/**
- * Plural method
- *
- * @access private
- * @return void
- */
-	function __domainCategoryPlural($domain = 'test_plugin', $category = LC_MONETARY) {
-		$plurals = array();
-		for ($number = 0; $number <= 25; $number++) {
-			$plurals[] =  sprintf(__dcn($domain, '%d = 1', '%d = 0 or > 1', (float)$number, $category, true), (float)$number);
-		}
-		return $plurals;
-	}
-/**
  * Singular method
  *
  * @access private
@@ -2593,19 +2488,9 @@ class I18nTest extends CakeTestCase {
 	function __domainPlural($domain = 'test_plugin') {
 		$plurals = array();
 		for ($number = 0; $number <= 25; $number++) {
-			$plurals[] =  sprintf(__dn($domain, '%d = 1', '%d = 0 or > 1', (float)$number, true), (float)$number );
+			$plurals[] =  sprintf(__dn($domain, '%d = 1', '%d = 0 or > 1', $number, true), $number );
 		}
 		return $plurals;
-	}
-/**
- * category method
- *
- * @access private
- * @return void
- */
-	function __category($category = LC_MONETARY) {
-		$singular = __c('Plural Rule 1', $category, true);
-		return $singular;
 	}
 /**
  * Singular method
@@ -2626,7 +2511,7 @@ class I18nTest extends CakeTestCase {
 	function __plural() {
 		$plurals = array();
 		for ($number = 0; $number <= 25; $number++) {
-			$plurals[] =  sprintf(__n('%d = 1', '%d = 0 or > 1', (float)$number, true), (float)$number );
+			$plurals[] =  sprintf(__n('%d = 1', '%d = 0 or > 1', $number, true), $number );
 		}
 		return $plurals;
 	}
@@ -2649,7 +2534,7 @@ class I18nTest extends CakeTestCase {
 	function __pluralFromCore() {
 		$plurals = array();
 		for ($number = 0; $number <= 25; $number++) {
-			$plurals[] =  sprintf(__n('%d = 1 (from core)', '%d = 0 or > 1 (from core)', (float)$number, true), (float)$number );
+			$plurals[] =  sprintf(__n('%d = 1 (from core)', '%d = 0 or > 1 (from core)', $number, true), $number );
 		}
 		return $plurals;
 	}

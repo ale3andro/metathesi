@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * FolderTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -26,9 +26,9 @@
  */
 App::import('Core', 'File');
 /**
- * FolderTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class FolderTest extends CakeTestCase {
@@ -161,7 +161,7 @@ class FolderTest extends CakeTestCase {
  * @access public
  */
 	function testChmod() {
-		$this->skipIf(DIRECTORY_SEPARATOR === '\\', '%s Folder permissions tests not supported on Windows');
+		$this->skipIf(DIRECTORY_SEPARATOR === '\\', 'Folder permissions tests not supported on Windows');
 
 		$path = TEST_CAKE_CORE_INCLUDE_PATH . 'console' . DS . 'libs' . DS . 'templates' . DS . 'skel';
 		$Folder =& new Folder($path);
@@ -271,16 +271,13 @@ class FolderTest extends CakeTestCase {
 		);
 
 		$result = $Folder->tree(TEST_CAKE_CORE_INCLUDE_PATH . 'config', false);
-		$this->assertIdentical(array_diff($expected[0], $result[0]), array());
-		$this->assertIdentical(array_diff($result[0], $expected[0]), array());
+		$this->assertEqual($result, $expected);
 
 		$result = $Folder->tree(TEST_CAKE_CORE_INCLUDE_PATH . 'config', false, 'dir');
-		$this->assertIdentical(array_diff($expected[0], $result), array());
-		$this->assertIdentical(array_diff($result, $expected[0]), array());
+		$this->assertEqual($result, $expected[0]);
 
 		$result = $Folder->tree(TEST_CAKE_CORE_INCLUDE_PATH . 'config', false, 'files');
-		$this->assertIdentical(array_diff($expected[1], $result), array());
-		$this->assertIdentical(array_diff($result, $expected[1]), array());
+		$this->assertEqual($result, $expected[1]);
 	}
 /**
  * testWindowsPath method
@@ -408,19 +405,9 @@ class FolderTest extends CakeTestCase {
 		$Folder->cd(TEST_CAKE_CORE_INCLUDE_PATH . 'config');
 		$result = $Folder->find();
 		$expected = array('config.php', 'paths.php');
-		$this->assertIdentical(array_diff($expected, $result), array());
-		$this->assertIdentical(array_diff($result, $expected), array());
-
-		$result = $Folder->find('.*', true);
-		$expected = array('config.php', 'paths.php');
 		$this->assertIdentical($result, $expected);
 
 		$result = $Folder->find('.*\.php');
-		$expected = array('config.php', 'paths.php');
-		$this->assertIdentical(array_diff($expected, $result), array());
-		$this->assertIdentical(array_diff($result, $expected), array());
-
-		$result = $Folder->find('.*\.php', true);
 		$expected = array('config.php', 'paths.php');
 		$this->assertIdentical($result, $expected);
 
@@ -463,14 +450,6 @@ class FolderTest extends CakeTestCase {
 			TEST_CAKE_CORE_INCLUDE_PATH . 'config' . DS . 'config.php',
 			TEST_CAKE_CORE_INCLUDE_PATH . 'config' . DS . 'paths.php'
 		);
-		$this->assertIdentical(array_diff($expected, $result), array());
-		$this->assertIdentical(array_diff($result, $expected), array());
-
-		$result = $Folder->findRecursive('(config|paths)\.php', true);
-		$expected = array(
-			TEST_CAKE_CORE_INCLUDE_PATH . 'config' . DS . 'config.php',
-			TEST_CAKE_CORE_INCLUDE_PATH . 'config' . DS . 'paths.php'
-		);
 		$this->assertIdentical($result, $expected);
 
 		$Folder->cd(TMP);
@@ -489,14 +468,6 @@ class FolderTest extends CakeTestCase {
 		$Folder->cd($Folder->pwd() . '/../..');
 
 		$result = $Folder->findRecursive('(paths|my)\.php');
-		$expected = array(
-			TMP . 'testme' . DS . 'my.php',
-			TMP . 'testme' . DS . 'paths.php'
-		);
-		$this->assertIdentical(array_diff($expected, $result), array());
-		$this->assertIdentical(array_diff($result, $expected), array());
-
-		$result = $Folder->findRecursive('(paths|my)\.php', true);
 		$expected = array(
 			TMP . 'testme' . DS . 'my.php',
 			TMP . 'testme' . DS . 'paths.php'
@@ -565,142 +536,6 @@ class FolderTest extends CakeTestCase {
 			$path . ' removed'
 		);
 		$this->assertEqual($expected, $messages);
-	}
-/**
- * testCopy method
- *
- * Verify that directories and files are copied recursively
- * even if the destination directory already exists.
- * Subdirectories existing in both destination and source directory
- * are skipped and not merged or overwritten.
- *
- * @return void
- * @access public
- * @link   https://trac.cakephp.org/ticket/6259
- */
-	function testCopy() {
-		$path = TMP . 'folder_test';
-		$folder1 = $path . DS . 'folder1';
-		$folder2 = $folder1 . DS . 'folder2';
-		$folder3 = $path . DS . 'folder3';
-		$file1 = $folder1 . DS . 'file1.php';
-		$file2 = $folder2 . DS . 'file2.php';
-
-		new Folder($path, true);
-		new Folder($folder1, true);
-		new Folder($folder2, true);
-		new Folder($folder3, true);
-		touch($file1);
-		touch($file2);
-
-		$Folder =& new Folder($folder1);
-		$result = $Folder->copy($folder3);
-		$this->assertTrue($result);
-		$this->assertTrue(file_exists($folder3 . DS . 'file1.php'));
-		$this->assertTrue(file_exists($folder3 . DS . 'folder2' . DS . 'file2.php'));
-
-		$Folder =& new Folder($folder3);
-		$Folder->delete();
-
-		$Folder =& new Folder($folder1);
-		$result = $Folder->copy($folder3);
-		$this->assertTrue($result);
-		$this->assertTrue(file_exists($folder3 . DS . 'file1.php'));
-		$this->assertTrue(file_exists($folder3 . DS . 'folder2' . DS . 'file2.php'));
-
-		$Folder =& new Folder($folder3);
-		$Folder->delete();
-
-		new Folder($folder3, true);
-		new Folder($folder3 . DS . 'folder2', true);
-		file_put_contents($folder3 . DS . 'folder2' . DS . 'file2.php', 'untouched');
-
-		$Folder =& new Folder($folder1);
-		$result = $Folder->copy($folder3);
-		$this->assertTrue($result);
-		$this->assertTrue(file_exists($folder3 . DS . 'file1.php'));
-		$this->assertEqual(file_get_contents($folder3 . DS . 'folder2' . DS . 'file2.php'), 'untouched');
-
-		$Folder =& new Folder($path);
-		$Folder->delete();
-	}
-/**
- * testMove method
- *
- * Verify that directories and files are moved recursively
- * even if the destination directory already exists.
- * Subdirectories existing in both destination and source directory
- * are skipped and not merged or overwritten.
- *
- * @return void
- * @access public
- * @link   https://trac.cakephp.org/ticket/6259
- */
-	function testMove() {
-		$path = TMP . 'folder_test';
-		$folder1 = $path . DS . 'folder1';
-		$folder2 = $folder1 . DS . 'folder2';
-		$folder3 = $path . DS . 'folder3';
-		$file1 = $folder1 . DS . 'file1.php';
-		$file2 = $folder2 . DS . 'file2.php';
-
-		new Folder($path, true);
-		new Folder($folder1, true);
-		new Folder($folder2, true);
-		new Folder($folder3, true);
-		touch($file1);
-		touch($file2);
-
-		$Folder =& new Folder($folder1);
-		$result = $Folder->move($folder3);
-		$this->assertTrue($result);
-		$this->assertTrue(file_exists($folder3 . DS . 'file1.php'));
-		$this->assertTrue(is_dir($folder3 . DS . 'folder2'));
-		$this->assertTrue(file_exists($folder3 . DS . 'folder2' . DS . 'file2.php'));
-		$this->assertFalse(file_exists($file1));
-		$this->assertFalse(file_exists($folder2));
-		$this->assertFalse(file_exists($file2));
-
-		$Folder =& new Folder($folder3);
-		$Folder->delete();
-
-		new Folder($folder1, true);
-		new Folder($folder2, true);
-		touch($file1);
-		touch($file2);
-
-		$Folder =& new Folder($folder1);
-		$result = $Folder->move($folder3);
-		$this->assertTrue($result);
-		$this->assertTrue(file_exists($folder3 . DS . 'file1.php'));
-		$this->assertTrue(is_dir($folder3 . DS . 'folder2'));
-		$this->assertTrue(file_exists($folder3 . DS . 'folder2' . DS . 'file2.php'));
-		$this->assertFalse(file_exists($file1));
-		$this->assertFalse(file_exists($folder2));
-		$this->assertFalse(file_exists($file2));
-
-		$Folder =& new Folder($folder3);
-		$Folder->delete();
-
-		new Folder($folder1, true);
-		new Folder($folder2, true);
-		new Folder($folder3, true);
-		new Folder($folder3 . DS . 'folder2', true);
-		touch($file1);
-		touch($file2);
-		file_put_contents($folder3 . DS . 'folder2' . DS . 'file2.php', 'untouched');
-
-		$Folder =& new Folder($folder1);
-		$result = $Folder->move($folder3);
-		$this->assertTrue($result);
-		$this->assertTrue(file_exists($folder3 . DS . 'file1.php'));
-		$this->assertEqual(file_get_contents($folder3 . DS . 'folder2' . DS . 'file2.php'), 'untouched');
-		$this->assertFalse(file_exists($file1));
-		$this->assertFalse(file_exists($folder2));
-		$this->assertFalse(file_exists($file2));
-
-		$Folder =& new Folder($path);
-		$Folder->delete();
 	}
 }
 ?>

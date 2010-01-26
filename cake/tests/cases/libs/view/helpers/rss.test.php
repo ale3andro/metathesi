@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * RssHelperTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.view.helpers
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -26,12 +26,12 @@
  */
 App::import('Helper', array('Rss', 'Time'));
 /**
- * RssHelperTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.view.helpers
  */
-class RssHelperTest extends CakeTestCase {
+class RssTest extends CakeTestCase {
 /**
  * setUp method
  *
@@ -301,6 +301,7 @@ class RssHelperTest extends CakeTestCase {
 		$expected = '';
 		$this->assertEqual($result, $expected);
 	}
+
 /**
  * testItem method
  *

@@ -47,18 +47,18 @@ class ContainableBehavior extends ModelBehavior {
  */
 	var $runtime = array();
 /**
- * Initiate behavior for the model using specified settings.
- *
- * Available settings:
+ * Initiate behavior for the model using specified settings. Available settings:
  *
  * - recursive: (boolean, optional) set to true to allow containable to automatically
- *   determine the recursiveness level needed to fetch specified models,
- *   and set the model recursiveness to this level. setting it to false
- *   disables this feature. DEFAULTS TO: true
- * - notices: (boolean, optional) issues E_NOTICES for bindings referenced in a
- *   containable call that are not valid. DEFAULTS TO: true
+ * 				determine the recursiveness level needed to fetch specified models,
+ * 				and set the model recursiveness to this level. setting it to false
+ * 				disables this feature. DEFAULTS TO: true
+ *
+ * - notices:	(boolean, optional) issues E_NOTICES for bindings referenced in a
+ * 				containable call that are not valid. DEFAULTS TO: true
+ *
  * - autoFields: (boolean, optional) auto-add needed fields to fetch requested
- *   bindings. DEFAULTS TO: true
+ * 				bindings. DEFAULTS TO: true
  *
  * @param object $Model Model using the behavior
  * @param array $settings Settings to override for model.
@@ -313,7 +313,7 @@ class ContainableBehavior extends ModelBehavior {
 						$option = 'conditions';
 						$val = $Model->{$name}->alias.'.'.$key;
 					}
-					$children[$option] = is_array($val) ? $val : array($val);
+					$children[$option] = isset($children[$option]) ? array_merge((array) $children[$option], (array) $val) : $val;
 					$newChildren = null;
 					if (!empty($name) && !empty($children[$key])) {
 						$newChildren = $children[$key];

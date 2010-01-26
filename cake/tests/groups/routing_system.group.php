@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * RoutingSystemGroupTest
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.groups
  * @since         CakePHP(tm) v 1.2.0.5517
  * @version       $Revision$
@@ -24,10 +24,15 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
-/**
- * RoutingSystemGroupTest class
+/** RoutingSystemGroupTest
  *
  * This test group will run all the Router/Dispatcher (and related) tests
+ *
+ * @package       cake.tests
+ * @subpackage    cake.tests.groups
+ */
+/**
+ * RoutingSystemGroupTest class
  *
  * @package       cake
  * @subpackage    cake.tests.groups
@@ -39,7 +44,7 @@ class RoutingSystemGroupTest extends GroupTest {
  * @var string 'Routing system'
  * @access public
  */
-	var $label = 'Router and Dispatcher';
+	var $label = 'Routing system';
 /**
  * RoutingSystemGroupTest method
  *

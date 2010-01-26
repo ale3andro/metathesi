@@ -1,9 +1,9 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * Datasource connection manager
+ * Short description for file.
  *
- * Provides an interface for loading and enumerating connections defined in app/config/database.php
+ * Long description for file
  *
  * PHP versions 4 and 5
  *
@@ -39,7 +39,7 @@ class ConnectionManager extends Object {
 /**
  * Holds a loaded instance of the Connections object
  *
- * @var DATABASE_CONFIG
+ * @var object
  * @access public
  */
 	var $config = null;
@@ -85,7 +85,7 @@ class ConnectionManager extends Object {
 /**
  * Gets a reference to a DataSource object
  *
- * @param string $name The name of the DataSource, as defined in app/config/database.php
+ * @param string $name The name of the DataSource, as defined in app/config/connections
  * @return object Instance
  * @access public
  * @static
@@ -145,9 +145,8 @@ class ConnectionManager extends Object {
 /**
  * Loads the DataSource class for the given connection name
  *
- * @param mixed $connName A string name of the connection, as defined in app/config/database.php,
- *                        or an array containing the filename (without extension) and class name of the object,
- *                        to be found in app/models/datasources/ or cake/libs/model/datasources/.
+ * @param mixed $connName A string name of the connection, as defined in Connections config,
+ *                        or an array containing the file and class name of the object.
  * @return boolean True on success, null on failure or false if the class is already loaded
  * @access public
  * @static

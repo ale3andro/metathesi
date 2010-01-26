@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * DboSqliteTest file
+ * DboSqlite test
  *
  * PHP versions 4 and 5
  *
@@ -23,10 +23,11 @@
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 App::import('Core', array('Model', 'DataSource', 'DboSource', 'DboSqlite'));
+
 /**
- * DboSqliteTestDb class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model.datasources
  */
 class DboSqliteTestDb extends DboSqlite {
@@ -59,9 +60,9 @@ class DboSqliteTestDb extends DboSqlite {
 	}
 }
 /**
- * DboSqliteTest class
+ * The test class for the DboPostgres
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model.datasources.dbo
  */
 class DboSqliteTest extends CakeTestCase {
@@ -82,14 +83,14 @@ class DboSqliteTest extends CakeTestCase {
 /**
  * Actual DB connection used in testing
  *
- * @var DboSource
+ * @var object
  * @access public
  */
 	var $db = null;
 /**
  * Simulated DB connection used in testing
  *
- * @var DboSource
+ * @var object
  * @access public
  */
 	var $db2 = null;
@@ -100,7 +101,7 @@ class DboSqliteTest extends CakeTestCase {
  */
 	function skip() {
 		$this->_initDb();
-		$this->skipUnless($this->db->config['driver'] == 'sqlite', '%s SQLite connection not available');
+		$this->skipif($this->db->config['driver'] != 'sqlite', 'SQLite connection not available');
 	}
 /**
  * Set up test suite database connection
@@ -149,7 +150,7 @@ class DboSqliteTest extends CakeTestCase {
  *
  * @access public
  * @return void
- */
+ */	
 	function testIndex() {
 		$name = $this->db->fullTableName('with_a_key');
 		$this->db->query('CREATE TABLE ' . $name . ' ("id" int(11) PRIMARY KEY, "bool" int(1), "small_char" varchar(50), "description" varchar(40) );');
@@ -159,12 +160,12 @@ class DboSqliteTest extends CakeTestCase {
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'pointless_bool' => array('column' => 'bool', 'unique' => 0),
 			'char_index' => array('column' => 'small_char', 'unique' => 1),
-
+			
 		);
 		$result = $this->db->index($name);
 		$this->assertEqual($expected, $result);
 		$this->db->query('DROP TABLE ' . $name);
-
+		
 		$this->db->query('CREATE TABLE ' . $name . ' ("id" int(11) PRIMARY KEY, "bool" int(1), "small_char" varchar(50), "description" varchar(40) );');
 		$this->db->query('CREATE UNIQUE INDEX multi_col ON ' . $name . '("small_char", "bool")');
 		$expected = array(
@@ -175,6 +176,7 @@ class DboSqliteTest extends CakeTestCase {
 		$this->assertEqual($expected, $result);
 		$this->db->query('DROP TABLE ' . $name);
 	}
+
 /**
  * Tests that cached table descriptions are saved under the sanitized key name
  *
@@ -197,76 +199,13 @@ class DboSqliteTest extends CakeTestCase {
 		$db->cacheSources = false;
 
 		$fileName = '_' . preg_replace('/[^A-Za-z0-9_\-+]/', '_', TMP . $dbName) . '_list';
-
+		
 		$result = Cache::read($fileName, '_cake_model_');
 		$this->assertEqual($result, array('test_list'));
 
 		Cache::delete($fileName, '_cake_model_');
 		Configure::write('Cache.disable', true);
 	}
-/**
- * test describe() and normal results.
- *
- * @return void
- **/
-	function testDescribe() {
-		$Model =& new Model(array('name' => 'User', 'ds' => 'test_suite', 'table' => 'users'));
-		$result = $this->db->describe($Model);
-		$expected = array(
-			'id' => array(
-				'type' => 'integer',
-				'key' => 'primary',
-				'null' => false,
-				'default' => null,
-				'length' => 11
-			),
-			'user' => array(
-				'type' => 'string',
-				'length' => 255,
-				'null' => false,
-				'default' => null
-			),
-			'password' => array(
-				'type' => 'string',
-				'length' => 255,
-				'null' => false,
-				'default' => null
-			),
-			'created' => array(
-				'type' => 'datetime',
-				'null' => true,
-				'default' => null,
-				'length' => null,
-			),
-			'updated' => array(
-				'type' => 'datetime',
-				'null' => true,
-				'default' => null,
-				'length' => null,
-			)
-		);
-		$this->assertEqual($result, $expected);
-	}
-
-/**
- * test that describe does not corrupt UUID primary keys
- *
- * @return void
- **/
-	function testDescribeWithUuidPrimaryKey() {
-		$tableName = 'uuid_tests';
-		$this->db->query("CREATE TABLE {$tableName} (id VARCHAR(36) PRIMARY KEY, name VARCHAR, created DATETIME, modified DATETIME)");
-		$Model =& new Model(array('name' => 'UuidTest', 'ds' => 'test_suite', 'table' => 'uuid_tests'));
-		$result = $this->db->describe($Model);
-		$expected = array(
-			'type' => 'string',
-			'length' => 36,
-			'null' => false,
-			'default' => null,
-			'key' => 'primary',
-		);
-		$this->assertEqual($result['id'], $expected);
-		$this->db->query('DROP TABLE ' . $tableName);
-	}
 }
+
 ?>

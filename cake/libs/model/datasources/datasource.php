@@ -91,28 +91,28 @@ class DataSource extends Object {
  * Enter description here...
  *
  * @var array
- * @access protected
+ * @access private
  */
 	var $_result = null;
 /**
  * Queries count.
  *
  * @var int
- * @access protected
+ * @access private
  */
 	var $_queriesCnt = 0;
 /**
  * Total duration of all queries.
  *
  * @var unknown_type
- * @access protected
+ * @access private
  */
 	var $_queriesTime = null;
 /**
  * Log of queries executed by this DataSource
  *
  * @var unknown_type
- * @access protected
+ * @access private
  */
 	var $_queriesLog = array();
 /**
@@ -121,21 +121,21 @@ class DataSource extends Object {
  * >6000 queries on one system.
  *
  * @var int Maximum number of queries in the queries log.
- * @access protected
+ * @access private
  */
 	var $_queriesLogMax = 200;
 /**
  * Caches serialzed results of executed queries
  *
  * @var array Maximum number of queries in the queries log.
- * @access protected
+ * @access private
  */
 	var $_queryCache = array();
 /**
  * The default configuration of a specific DataSource
  *
  * @var array
- * @access protected
+ * @access public
  */
 	var $_baseConfig = array();
 /**
@@ -241,14 +241,13 @@ class DataSource extends Object {
 		if ($this->cacheSources === false) {
 			return null;
 		}
-		$table = $this->fullTableName($model, false);
-		if (isset($this->__descriptions[$table])) {
-			return $this->__descriptions[$table];
+		if (isset($this->__descriptions[$model->tablePrefix . $model->table])) {
+			return $this->__descriptions[$model->tablePrefix . $model->table];
 		}
-		$cache = $this->__cacheDescription($table);
+		$cache = $this->__cacheDescription($model->tablePrefix . $model->table);
 
 		if ($cache !== null) {
-			$this->__descriptions[$table] =& $cache;
+			$this->__descriptions[$model->tablePrefix . $model->table] =& $cache;
 			return $cache;
 		}
 		return null;

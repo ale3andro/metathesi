@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * AjaxHelperTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.view.helpers
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -27,16 +27,8 @@
 if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 	define('CAKEPHP_UNIT_TEST_EXECUTION', 1);
 }
-uses(
-	'view' . DS . 'helpers' . DS . 'app_helper',
-	'controller' . DS . 'controller',
-	'model' . DS . 'model',
-	'view' . DS . 'helper',
-	'view' . DS . 'helpers'.DS.'ajax',
-	'view' . DS . 'helpers' . DS . 'html',
-	'view' . DS . 'helpers' . DS . 'form',
-	'view' . DS . 'helpers' . DS . 'javascript'
-	);
+uses('view'.DS.'helpers'.DS.'app_helper', 'controller'.DS.'controller', 'model'.DS.'model', 'view'.DS.'helper', 'view'.DS.'helpers'.DS.'ajax',
+	'view'.DS.'helpers'.DS.'html', 'view'.DS.'helpers'.DS.'form', 'view'.DS.'helpers'.DS.'javascript');
 /**
  * AjaxTestController class
  *
@@ -139,13 +131,14 @@ class TestJavascriptHelper extends JavascriptHelper {
 		$this->codeBlocks[] = $parameter;
 	}
 }
+
 /**
- * AjaxTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.view.helpers
  */
-class AjaxHelperTest extends CakeTestCase {
+class AjaxTest extends CakeTestCase {
 /**
  * Regexp for CDATA start block
  *
@@ -174,16 +167,6 @@ class AjaxHelperTest extends CakeTestCase {
 		$view =& new View(new AjaxTestController());
 		ClassRegistry::addObject('view', $view);
 		ClassRegistry::addObject('PostAjaxTest', new PostAjaxTest());
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		unset($this->Ajax);
-		ClassRegistry::flush();
 	}
 /**
  * testEvalScripts method
@@ -300,10 +283,6 @@ class AjaxHelperTest extends CakeTestCase {
 			'/script'
 		);
 		$this->assertTags($result, $expected);
-
-		$result = $this->Ajax->drag('id', array('onDrag' => 'doDrag', 'onEnd' => 'doEnd'));
-		$this->assertPattern('/onDrag:doDrag/', $result);
-		$this->assertPattern('/onEnd:doEnd/', $result);
 	}
 /**
  * testDroppable method
@@ -645,6 +624,7 @@ class AjaxHelperTest extends CakeTestCase {
 		$this->assertPattern('/^<script[^<>]+>\s*' . str_replace('/', '\\/', preg_quote('//<![CDATA[')) . '\s*new Form.Element.EventObserver\(\'field\', function\(element, value\) {.+}\)\s*' . str_replace('/', '\\/', preg_quote('//]]>')) . '\s*<\/script>$/', $result);
 		$this->assertPattern('/' . str_replace('/', '\\/', preg_quote('new Ajax.Updater(\'divId\',\'http://www.cakephp.org\', {asynchronous:true, evalScripts:true, parameters:Form.Element.serialize(\'otherField\'), requestHeaders:[\'X-Update\', \'divId\']})')) . '/', $result);
 	}
+
 /**
  * testObserveForm method
  *
@@ -799,7 +779,6 @@ class AjaxHelperTest extends CakeTestCase {
  * @return void
  */
 	function testDiv() {
-		ob_flush();
 		$oldXUpdate = env('HTTP_X_UPDATE');
 
 		$result = $this->Ajax->div('myDiv');
@@ -907,6 +886,16 @@ class AjaxHelperTest extends CakeTestCase {
 			'/script'
 		);
 		$this->assertTags($result, $expected);
+	}
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Ajax);
+		ClassRegistry::flush();
 	}
 }
 ?>

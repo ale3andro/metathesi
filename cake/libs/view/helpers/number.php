@@ -52,17 +52,21 @@ class NumberHelper extends AppHelper {
  * @static
  */
 	function toReadableSize($size) {
-		switch (true) {
+		switch ($size) {
+			case 0:
+				return '0 Bytes';
+			case 1:
+				return '1 Byte';
 			case $size < 1024:
-				return sprintf(__n('%d Byte', '%d Bytes', $size, true), $size);
+				return $size . ' Bytes';
 			case round($size / 1024) < 1024:
-				return sprintf(__('%d KB', true), $this->precision($size / 1024, 0));
+				return $this->precision($size / 1024, 0) . ' KB';
 			case round($size / 1024 / 1024, 2) < 1024:
-				return sprintf(__('%.2f MB', true), $this->precision($size / 1024 / 1024, 2));
+				return $this->precision($size / 1024 / 1024, 2) . ' MB';
 			case round($size / 1024 / 1024 / 1024, 2) < 1024:
-				return sprintf(__('%.2f GB', true), $this->precision($size / 1024 / 1024 / 1024, 2));
+				return $this->precision($size / 1024 / 1024 / 1024, 2) . ' GB';
 			default:
-				return sprintf(__('%.2f TB', true), $this->precision($size / 1024 / 1024 / 1024 / 1024, 2));
+				return $this->precision($size / 1024 / 1024 / 1024 / 1024, 2) . ' TB';
 		}
 	}
 /**
@@ -81,7 +85,7 @@ class NumberHelper extends AppHelper {
  *
  * @param float $number A floating point number
  * @param integer $options if int then places, if string then before, if (,.-) then use it
- *   or array with places and before keys
+ * 							or array with places and before keys
  * @return string formatted number
  * @static
  */
@@ -124,7 +128,7 @@ class NumberHelper extends AppHelper {
  *
  * @param float $number
  * @param string $currency Shortcut to default options. Valid values are 'USD', 'EUR', 'GBP', otherwise
- *   set at least 'before' and 'after' options.
+ *               set at least 'before' and 'after' options.
  * @param array $options
  * @return string Number formatted as a currency.
  */
@@ -168,8 +172,6 @@ class NumberHelper extends AppHelper {
 			$number = $number * $multiply;
 			$options['before'] = null;
 			$options['places'] = null;
-		} elseif (empty($options['before'])) {
-			$options['before'] = null;
 		} else {
 			$options['after'] = null;
 		}

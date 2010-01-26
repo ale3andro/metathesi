@@ -76,18 +76,18 @@ class I18nShell extends Shell {
 		$this->out(__('[H]elp', true));
 		$this->out(__('[Q]uit', true));
 
-		$choice = strtolower($this->in(__('What would you like to do?', true), array('E', 'I', 'H', 'Q')));
+		$choice = strtoupper($this->in(__('What would you like to do?', true), array('E', 'I', 'H', 'Q')));
 		switch ($choice) {
-			case 'e':
+			case 'E':
 				$this->Extract->execute();
 			break;
-			case 'i':
+			case 'I':
 				$this->initdb();
 			break;
-			case 'h':
+			case 'H':
 				$this->help();
 			break;
-			case 'q':
+			case 'Q':
 				exit(0);
 			break;
 			default:

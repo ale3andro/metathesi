@@ -74,6 +74,9 @@ class Component extends Object {
 			'base' => $controller->base
 		);
 
+		if (!in_array('Session', $controller->components)) {
+			array_unshift($controller->components, 'Session');
+		}
 		$this->_loadComponents($controller);
 	}
 /**
@@ -176,28 +179,40 @@ class Component extends Object {
  * @access protected
  */
 	function _loadComponents(&$object, $parent = null) {
+		$components = $object->components;
 		$base = $this->__controllerVars['base'];
-		$normal = Set::normalize($object->components);
-		if ($parent == null) {
-			$normal = Set::merge(array('Session' => null), $normal);
-		}
-		foreach ((array)$normal as $component => $config) {
-			$plugin = null;
 
-			if (isset($this->__controllerVars['plugin'])) {
-				$plugin = $this->__controllerVars['plugin'] . '.';
-			}
+		if (is_array($object->components)) {
+			$normal = Set::normalize($object->components);
+			foreach ($normal as $component => $config) {
+				$plugin = null;
 
-			if (strpos($component, '.') !== false) {
-				list($plugin, $component) = explode('.', $component);
-				$plugin = $plugin . '.';
-			}
-			$componentCn = $component . 'Component';
+				if (isset($this->__controllerVars['plugin'])) {
+					$plugin = $this->__controllerVars['plugin'] . '.';
+				}
 
-			if (!class_exists($componentCn)) {
-				if (is_null($plugin) || !App::import('Component', $plugin . $component)) {
-					if (!App::import('Component', $component)) {
-						$this->cakeError('missingComponentFile', array(array(
+				if (strpos($component, '.') !== false) {
+					list($plugin, $component) = explode('.', $component);
+					$plugin = $plugin . '.';
+				}
+				$componentCn = $component . 'Component';
+
+				if (!class_exists($componentCn)) {
+					if (is_null($plugin) || !App::import('Component', $plugin . $component)) {
+						if (!App::import('Component', $component)) {
+							$this->cakeError('missingComponentFile', array(array(
+								'className' => $this->__controllerVars['name'],
+								'component' => $component,
+								'file' => Inflector::underscore($component) . '.php',
+								'base' => $base,
+								'code' => 500
+							)));
+							return false;
+						}
+					}
+
+					if (!class_exists($componentCn)) {
+						$this->cakeError('missingComponentClass', array(array(
 							'className' => $this->__controllerVars['name'],
 							'component' => $component,
 							'file' => Inflector::underscore($component) . '.php',
@@ -208,45 +223,34 @@ class Component extends Object {
 					}
 				}
 
-				if (!class_exists($componentCn)) {
-					$this->cakeError('missingComponentClass', array(array(
-						'className' => $this->__controllerVars['name'],
-						'component' => $component,
-						'file' => Inflector::underscore($component) . '.php',
-						'base' => $base,
-						'code' => 500
-					)));
-					return false;
+				if ($parent === null) {
+					$this->_primary[] = $component;
 				}
-			}
 
-			if ($parent === null) {
-				$this->_primary[] = $component;
-			}
+				if (isset($this->_loaded[$component])) {
+					$object->{$component} =& $this->_loaded[$component];
 
-			if (isset($this->_loaded[$component])) {
-				$object->{$component} =& $this->_loaded[$component];
-
-				if (!empty($config) && isset($this->__settings[$component])) {
-					$this->__settings[$component] = array_merge($this->__settings[$component], $config);
-				} elseif (!empty($config)) {
-					$this->__settings[$component] = $config;
-				}
-			} else {
-				if ($componentCn === 'SessionComponent') {
-					$object->{$component} =& new $componentCn($base);
+					if (!empty($config) && isset($this->__settings[$component])) {
+						$this->__settings[$component] = array_merge($this->__settings[$component], $config);
+					} elseif (!empty($config)) {
+						$this->__settings[$component] = $config;
+					}
 				} else {
-					$object->{$component} =& new $componentCn();
+					if ($componentCn === 'SessionComponent') {
+						$object->{$component} =& new $componentCn($base);
+					} else {
+						$object->{$component} =& new $componentCn();
+					}
+					$object->{$component}->enabled = true;
+					$this->_loaded[$component] =& $object->{$component};
+					if (!empty($config)) {
+						$this->__settings[$component] = $config;
+					}
 				}
-				$object->{$component}->enabled = true;
-				$this->_loaded[$component] =& $object->{$component};
-				if (!empty($config)) {
-					$this->__settings[$component] = $config;
-				}
-			}
 
-			if (isset($object->{$component}->components) && is_array($object->{$component}->components) && (!isset($object->{$component}->{$parent}))) {
-				$this->_loadComponents($object->{$component}, $component);
+				if (isset($object->{$component}->components) && is_array($object->{$component}->components) && (!isset($object->{$component}->{$parent}))) {
+					$this->_loadComponents($object->{$component}, $component);
+				}
 			}
 		}
 	}

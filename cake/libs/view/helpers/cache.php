@@ -52,7 +52,7 @@ class CacheHelper extends AppHelper {
 /**
  * holds the View object passed in final call to CacheHelper::cache()
  *
- * @var View
+ * @var object
  * @access public
  */
 	var $view;
@@ -264,8 +264,7 @@ class CacheHelper extends AppHelper {
 				$controller->params = $this->params = unserialize(stripslashes(\'' . addslashes(serialize($this->params)) . '\'));
 				$controller->action = $this->action = unserialize(\'' . serialize($this->action) . '\');
 				$controller->data = $this->data = unserialize(stripslashes(\'' . addslashes(serialize($this->data)) . '\'));
-				$controller->themeWeb = $this->themeWeb = \'' . $this->themeWeb . '\';
-				Router::setRequestInfo(array($this->params, array(\'base\' => $this->base, \'webroot\' => $this->webroot)));';
+				$controller->themeWeb = $this->themeWeb = \'' . $this->themeWeb . '\';';
 
 		if ($useCallbacks == true) {
 			$file .= '
@@ -276,6 +275,7 @@ class CacheHelper extends AppHelper {
 		}
 
 		$file .= '
+				Router::setRequestInfo(array($this->params, array(\'base\' => $this->base, \'webroot\' => $this->webroot)));
 				$loadedHelpers = array();
 				$loadedHelpers = $this->_loadHelpers($loadedHelpers, $this->helpers);
 				foreach (array_keys($loadedHelpers) as $helper) {

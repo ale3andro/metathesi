@@ -73,17 +73,15 @@ class FormHelper extends AppHelper {
 /**
  * Returns an HTML FORM element.
  *
- * Options:
- *
- * - 'type' Form method defaults to POST
- * - 'action'  The Action the form submits to. Can be a string or array,
- * - 'url'  The url the form submits to. Can be a string or a url array,
- * - 'default'  Allows for the creation of Ajax forms.
- * - 'onsubmit' Used in conjunction with 'default' to create ajax forms.
- *
  * @access public
  * @param string $model The model object which the form is being defined for
- * @param array $options An array of html attributes and options.
+ * @param array	 $options
+ *			'type' Form method defaults to POST
+ * 			'action'  The Action the form submits to. Can be a string or array,
+ *			'url'  The url the form submits to. Can be a string or a url array,
+ *			'default'  Allows for the creation of Ajax forms.
+ *			'onsubmit' Used in conjunction with 'default' to create ajax forms.
+ *
  * @return string An formatted opening FORM tag.
  */
 	function create($model = null, $options = array()) {
@@ -377,16 +375,13 @@ class FormHelper extends AppHelper {
 /**
  * Returns a formatted error message for given FORM field, NULL if no errors.
  *
- * Options:
- *
- * - 'escape'  bool  Whether or not to html escape the contents of the error.
- * - 'wrap'  mixed  Whether or not the error message should be wrapped in a div. If a
- *   string, will be used as the HTML tag to use.
- * - 'class'  string  The classname for the error message
- *
- * @param string $field  A field name, like "Modelname.fieldname"
- * @param mixed $text  Error message or array of $options
- * @param array $options  Rendering options for <div /> wrapper tag
+ * @param string $field A field name, like "Modelname.fieldname"
+ * @param mixed $text		Error message or array of $options
+ * @param array $options	Rendering options for <div /> wrapper tag
+ *			'escape'  bool  Whether or not to html escape the contents of the error.
+ *			'wrap'  mixed  Whether or not the error message should be wrapped in a div. If a
+ * 					string, will be used as the HTML tag to use.
+ *			'class'  string  The classname for the error message
  * @return string If there are errors this method returns an error message, otherwise null.
  * @access public
  */
@@ -559,18 +554,16 @@ class FormHelper extends AppHelper {
 /**
  * Generates a form input element complete with label and wrapper div
  *
- * Options - See each field type method for more information. Any options that are part of 
- * $attributes or $options for the different type methods can be included in $options for input().
- *
- * - 'type' - Force the type of widget you want. e.g. ```type => 'select'```
- * - 'label' - control the label
- * - 'div' - control the wrapping div element
- * - 'options' - for widgets that take options e.g. radio, select
- * - 'error' - control the error message that is produced
- *
  * @param string $fieldName This should be "Modelname.fieldname"
- * @param array $options Each type of input takes different options.
- * @return string Completed form widget
+ * @param array $options - Each type of input takes different options.
+ * 		See each field type method for more information.
+ *		'type' - Force the type of widget you want. e.g. type => 'select'
+ *		'label' - control the label
+ *		'div' - control the wrapping div element
+ *		'options' - for widgets that take options e.g. radio, select
+ * 		'error' - control the error message that is produced
+ *
+ * @return string
  */
 	function input($fieldName, $options = array()) {
 		$view =& ClassRegistry::getObject('view');
@@ -829,15 +822,12 @@ class FormHelper extends AppHelper {
 /**
  * Creates a checkbox input widget.
  *
- * Options:
- *
- * - 'value' - the value of the checkbox
- * - checked' - boolean indicate that this checkbox is checked.
- *
  * @param string $fieldName Name of a field, like this "Modelname.fieldname"
  * @param array $options Array of HTML attributes.
+ *		'value' - the value of the checkbox
+ *		'checked' - boolean indicate that this checkbox is checked.
  * @todo Right now, automatically setting the 'checked' value is dependent on whether or not the
- *    checkbox is bound to a model.  This should probably be re-evaluated in future versions.
+ * 		 checkbox is bound to a model.  This should probably be re-evaluated in future versions.
  * @return string An HTML text input element
  */
 	function checkbox($fieldName, $options = array()) {
@@ -849,14 +839,11 @@ class FormHelper extends AppHelper {
 		} elseif (!empty($value) && $value === $options['value']) {
 			$options['checked'] = 'checked';
 		}
-		$hiddenOptions = array(
+
+		$output = $this->hidden($fieldName, array(
 			'id' => $options['id'] . '_', 'name' => $options['name'],
 			'value' => '0', 'secure' => false
-		);
-		if (isset($options['disabled']) && $options['disabled'] == true) {
-			$hiddenOptions['disabled'] = 'disabled';
-		}
-		$output = $this->hidden($fieldName, $hiddenOptions);
+		));
 
 		return $this->output($output . sprintf(
 			$this->Html->tags['checkbox'],
@@ -867,16 +854,14 @@ class FormHelper extends AppHelper {
 /**
  * Creates a set of radio widgets.
  *
- * Attributes:
+ * @param  string  	$fieldName 		Name of a field, like this "Modelname.fieldname"
+ * @param  array	$options		Radio button options array.
+ * @param  array	$attributes		Array of HTML attributes.
+ *		'separator' - define the string in between the radio buttons
+ *		'legend' - control whether or not the widget set has a fieldset & legend
+ *		'value' - indicate a value that is should be checked
+ * 		'label' - boolean to indicate whether or not labels for widgets show be displayed
  *
- * - 'separator' - define the string in between the radio buttons
- * - 'legend' - control whether or not the widget set has a fieldset & legend
- * - 'value' - indicate a value that is should be checked
- * - 'label' - boolean to indicate whether or not labels for widgets show be displayed
- *
- * @param string $fieldName Name of a field, like this "Modelname.fieldname"
- * @param array $options Radio button options array.
- * @param array $attributes Array of HTML attributes.
  * @return string
  */
 	function radio($fieldName, $options = array(), $attributes = array()) {
@@ -935,7 +920,7 @@ class FormHelper extends AppHelper {
 
 		if (!isset($value) || $value === '') {
 			$hidden = $this->hidden($fieldName, array(
-				'id' => $attributes['id'] . '_', 'value' => '', 'name' => $attributes['name']
+				'id' => $attributes['id'] . '_', 'value' => ''
 			));
 		}
 		$out = $hidden . join($inbetween, $out);
@@ -951,7 +936,7 @@ class FormHelper extends AppHelper {
 /**
  * Creates a text input widget.
  *
- * @param string $fieldName Name of a field, in the form "Modelname.fieldname"
+ * @param string $fieldNamem Name of a field, in the form "Modelname.fieldname"
  * @param array  $options Array of HTML attributes.
  * @return string An HTML text input element
  */
@@ -983,7 +968,7 @@ class FormHelper extends AppHelper {
 /**
  * Creates a textarea widget.
  *
- * @param string $fieldName Name of a field, in the form "Modelname.fieldname"
+ * @param string $fieldNamem Name of a field, in the form "Modelname.fieldname"
  * @param array $options Array of HTML attributes.
  * @return string An HTML text input element
  */
@@ -1008,8 +993,8 @@ class FormHelper extends AppHelper {
 /**
  * Creates a hidden input field.
  *
- * @param string $fieldName Name of a field, in the form"Modelname.fieldname"
- * @param array $options Array of HTML attributes.
+ * @param  string  $fieldName Name of a field, in the form"Modelname.fieldname"
+ * @param  array	$options Array of HTML attributes.
  * @return string
  * @access public
  */
@@ -1059,8 +1044,8 @@ class FormHelper extends AppHelper {
 /**
  * Creates a button tag.
  *
- * @param string $title  The button's caption
- * @param array $options Array of options.
+ * @param  string  $title  The button's caption
+ * @param  array  $options Array of options.
  * @return string A HTML button tag.
  * @access public
  */
@@ -1084,11 +1069,11 @@ class FormHelper extends AppHelper {
 /**
  * Creates a submit button element.
  *
- * @param string $caption The label appearing on the button OR if string contains :// or the
- *  extension .jpg, .jpe, .jpeg, .gif, .png use an image if the extension
- *  exists, AND the first character is /, image is relative to webroot,
- *  OR if the first character is not /, image is relative to webroot/img.
- * @param array $options 
+ * @param  string  $caption	 The label appearing on the button OR if string contains :// or the
+ * 						extension .jpg, .jpe, .jpeg, .gif, .png use an image if the extension
+ * 						exists, AND the first character is /, image is relative to webroot,
+ *						OR if the first character is not /, image is relative to webroot/img.
+ * @param  array   $options
  * @return string A HTML submit button
  */
 	function submit($caption = null, $options = array()) {
@@ -1150,21 +1135,18 @@ class FormHelper extends AppHelper {
 /**
  * Returns a formatted SELECT element.
  *
- * Attributes:
- *
- * - 'showParents' - If included in the array and set to true, an additional option element
- *   will be added for the parent of each option group.
- * - 'multiple' - show a multiple select box.  If set to 'checkbox' multiple checkboxes will be
- *   created instead.
- *
  * @param string $fieldName Name attribute of the SELECT
  * @param array $options Array of the OPTION elements (as 'value'=>'Text' pairs) to be used in the
- *    SELECT element
+ * 						 SELECT element
  * @param mixed $selected The option selected by default.  If null, the default value
- *   from POST data will be used when available.
- * @param array $attributes The HTML attributes of the select element.
+ *						  from POST data will be used when available.
+ * @param array $attributes	 The HTML attributes of the select element.
+ *		'showParents' - If included in the array and set to true, an additional option element
+ *						will be added for the parent of each option group.
+ *		'multiple' - show a multiple select box.  If set to 'checkbox' multiple checkboxes will be
+ * 					 created instead.
  * @param mixed $showEmpty If true, the empty select option is shown.  If a string,
- *   that string is displayed as the empty element.
+ *						   that string is displayed as the empty element.
  * @return string Formatted SELECT element
  */
 	function select($fieldName, $options = array(), $selected = null, $attributes = array(), $showEmpty = '') {
@@ -1318,13 +1300,11 @@ class FormHelper extends AppHelper {
 /**
  * Returns a SELECT element for months.
  *
- * Attributes:
- *
- * - 'monthNames' is set and false 2 digit numbers will be used instead of text.
- *
  * @param string $fieldName Prefix name for the SELECT element
  * @param string $selected Option which is selected.
  * @param array $attributes Attributes for the select element
+ *		'monthNames' is set and false 2 digit numbers will be used instead of text.
+ *
  * @param boolean $showEmpty Show/hide the empty select option
  * @return string
  */
@@ -1480,19 +1460,16 @@ class FormHelper extends AppHelper {
 /**
  * Returns a set of SELECT elements for a full datetime setup: day, month and year, and then time.
  *
- * Attributes:
- *
- * - 'monthNames' If set and false numbers will be used for month select instead of text.
- * - 'minYear' The lowest year to use in the year select
- * - 'maxYear' The maximum year to use in the year select
- * - 'interval' The interval for the minutes select. Defaults to 1
- * - 'separator' The contents of the string between select elements. Defaults to '-'
- *
  * @param string $fieldName Prefix name for the SELECT element
  * @param string $dateFormat DMY, MDY, YMD or NONE.
  * @param string $timeFormat 12, 24, NONE
  * @param string $selected Option which is selected.
  * @param string $attributes array of Attributes
+ *		'monthNames' If set and false numbers will be used for month select instead of text.
+ *		'minYear' The lowest year to use in the year select
+ *		'maxYear' The maximum year to use in the year select
+ *		'interval' The interval for the minutes select. Defaults to 1
+ *		'separator' The contents of the string between select elements. Defaults to '-'
  * @param bool $showEmpty Whether or not to show an empty default value.
  * @return string The HTML formatted OPTION element
  */
@@ -1610,16 +1587,15 @@ class FormHelper extends AppHelper {
 			}
 			$opt = implode($separator, $selects);
 		}
-		if (!empty($interval) && $interval > 1 && !empty($min)) {
-			$min = round($min * (1 / $interval)) * $interval;
-		}
-		$selectMinuteAttr['interval'] = $interval;
+
 		switch ($timeFormat) {
 			case '24':
+				$selectMinuteAttr['interval'] = $interval;
 				$opt .= $this->hour($fieldName, true, $hour, $selectHourAttr, $showEmpty) . ':' .
 				$this->minute($fieldName, $min, $selectMinuteAttr, $showEmpty);
 			break;
 			case '12':
+				$selectMinuteAttr['interval'] = $interval;
 				$opt .= $this->hour($fieldName, false, $hour, $selectHourAttr, $showEmpty) . ':' .
 				$this->minute($fieldName, $min, $selectMinuteAttr, $showEmpty) . ' ' .
 				$this->meridian($fieldName, $meridian, $selectMeridianAttr, $showEmpty);
@@ -1853,10 +1829,7 @@ class FormHelper extends AppHelper {
 	}
 /**
  * Sets field defaults and adds field to form security input hash
- * 
- * Options
- *  - secure - boolean whether or not the the field should be added to the security fields.
- * 
+ *
  * @param string $field
  * @param array $options
  * @return array

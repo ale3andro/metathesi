@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * DboOracleTest file
+ * DboOracle test
  *
  * PHP versions 4 and 5
  *
@@ -22,11 +22,13 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
+
 if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 	define('CAKEPHP_UNIT_TEST_EXECUTION', 1);
 }
 require_once LIBS . 'model' . DS . 'datasources' . DS . 'dbo_source.php';
 require_once LIBS . 'model' . DS . 'datasources' . DS . 'dbo' . DS . 'dbo_oracle.php';
+
 /**
  * DboOracleTest class
  *
@@ -37,7 +39,7 @@ class DboOracleTest extends CakeTestCase {
 /**
  * fixtures property
  */
-	var $fixtures = array('core.oracle_user');
+	var $fixtures = array('core.oracle_user');	
 /**
  * setup method
  *
@@ -55,7 +57,9 @@ class DboOracleTest extends CakeTestCase {
  */
     function skip() {
     	$this->_initDb();
-    	$this->skipUnless($this->db->config['driver'] == 'oracle', '%s Oracle connection not available');
+    	$this->skipif(
+    	    $this->db->config['driver'] != 'oracle', 'Oracle connection not available'
+    	);
     }
 /**
  * testLastErrorStatement method
@@ -95,6 +99,7 @@ class DboOracleTest extends CakeTestCase {
 		$this->db->config['password'] = $old_pw;
 		$this->db->connect();
 	}
+
 /**
  * testName method
  *
@@ -126,5 +131,10 @@ class DboOracleTest extends CakeTestCase {
 		$this->assertEqual($e, $r);
 
 	}
+	
+	
+	
+	
 }
+
 ?>

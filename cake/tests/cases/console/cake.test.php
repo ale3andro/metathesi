@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * ShellDispatcherTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2007, Cake Software Foundation, Inc.
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.console
  * @since         CakePHP(tm) v 1.2.0.5432
  * @version       $Revision$
@@ -76,6 +76,7 @@ class TestShellDispatcher extends ShellDispatcher {
  * @return void
  */
 	function _initEnvironment() {
+		//
 	}
 /**
  * stderr method
@@ -110,9 +111,9 @@ class TestShellDispatcher extends ShellDispatcher {
 	}
 }
 /**
- * ShellDispatcherTest
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class ShellDispatcherTest extends UnitTestCase {
@@ -123,14 +124,14 @@ class ShellDispatcherTest extends UnitTestCase {
  * @return void
  */
 	function setUp() {
-		$this->_pluginPaths = Configure::read('pluginPaths');
-		$this->_shellPaths = Configure::read('shellPaths');
+		if (!isset($this->pluginPaths)) {
+			$this->pluginPaths = Configure::read('pluginPaths');
+			$this->shellPaths = Configure::read('shellPaths');
+		}
 
-		Configure::write('pluginPaths', array(
-			TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS
-		));
+		Configure::write('pluginPaths', array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS));
 		Configure::write('shellPaths', array(
-			CORE_PATH ? CONSOLE_LIBS : ROOT . DS . CONSOLE_LIBS,
+			ROOT . DS . CONSOLE_LIBS,
 			TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'vendors' . DS . 'shells' . DS
 		));
 	}
@@ -141,8 +142,8 @@ class ShellDispatcherTest extends UnitTestCase {
  * @return void
  */
 	function tearDown() {
-		Configure::write('pluginPaths', $this->_pluginPaths);
-		Configure::write('shellPaths', $this->_shellPaths);
+		Configure::write('pluginPaths', $this->pluginPaths);
+		Configure::write('shellPaths', $this->shellPaths);
 	}
 /**
  * testParseParams method
@@ -396,25 +397,6 @@ class ShellDispatcherTest extends UnitTestCase {
 		$Dispatcher->params = $Dispatcher->args = array();
 		$Dispatcher->parseParams($params);
 		$this->assertEqual($expected, $Dispatcher->params);
-
-
-		$params = array(
-			'cake.php',
-			'-working',
-			'D:\www',
-			'bake',
-			'my_app',
-		);
-		$expected = array(
-			'working' => 'D:\www',
-			'app' => 'www',
-			'root' => 'D:',
-			'webroot' => 'webroot'
-		);
-
-		$Dispatcher->params = $Dispatcher->args = array();
-		$Dispatcher->parseParams($params);
-		$this->assertEqual($expected, $Dispatcher->params);
 	}
 /**
  * testBuildPaths method
@@ -424,18 +406,14 @@ class ShellDispatcherTest extends UnitTestCase {
  */
 	function testBuildPaths() {
 		$Dispatcher =& new TestShellDispatcher();
-
-		$result = $Dispatcher->shellPaths;
-		$expected = array(
+		$this->assertEqual($Dispatcher->shellPaths, array(
 			TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS . 'test_plugin' . DS . 'vendors' . DS . 'shells' . DS,
 			TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS . 'test_plugin_two' . DS . 'vendors' . DS . 'shells' . DS,
 			APP . 'vendors' . DS . 'shells' . DS,
 			VENDORS . 'shells' . DS,
-			CORE_PATH ? CONSOLE_LIBS : ROOT . DS . CONSOLE_LIBS,
+			ROOT . DS . CONSOLE_LIBS,
 			TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'vendors' . DS . 'shells' . DS,
-		);
-		$this->assertIdentical(array_diff($result, $expected), array());
-		$this->assertIdentical(array_diff($expected, $result), array());
+		));
 	}
 /**
  * testDispatch method
@@ -462,26 +440,28 @@ class ShellDispatcherTest extends UnitTestCase {
 	function testHelpCommand() {
 		$Dispatcher =& new TestShellDispatcher();
 
-		$expected = "/ CORE(\\\|\/)tests(\\\|\/)test_app(\\\|\/)plugins(\\\|\/)test_plugin(\\\|\/)vendors(\\\|\/)shells:";
+		$expected = "/ ROOT(\\\|\/)cake(\\\|\/)tests(\\\|\/)test_app(\\\|\/)plugins(\\\|\/)test_plugin(\\\|\/)vendors(\\\|\/)shells:";
 	 	$expected .= "\n\t example";
 	 	$expected .= "\n/";
 	 	$this->assertPattern($expected, $Dispatcher->stdout);
 
-	 	$expected = "/ CORE(\\\|\/)tests(\\\|\/)test_app(\\\|\/)plugins(\\\|\/)test_plugin_two(\\\|\/)vendors(\\\|\/)shells:";
+	 	$expected = "/ ROOT(\\\|\/)cake(\\\|\/)tests(\\\|\/)test_app(\\\|\/)plugins(\\\|\/)test_plugin_two(\\\|\/)vendors(\\\|\/)shells:";
 	 	$expected .= "\n\t example";
 	 	$expected .= "\n\t welcome";
 	 	$expected .= "\n/";
 	 	$this->assertPattern($expected, $Dispatcher->stdout);
 
-	 	$expected = "/ APP(\\\|\/)vendors(\\\|\/)shells:";
+	 	$expected = "/ ROOT(\\\|\/)app(\\\|\/)vendors(\\\|\/)shells:";
+	 	$expected .= "\n\t - none";
 	 	$expected .= "\n/";
 	 	$this->assertPattern($expected, $Dispatcher->stdout);
 
 	 	$expected = "/ ROOT(\\\|\/)vendors(\\\|\/)shells:";
+	 	$expected .= "\n\t - none";
 	 	$expected .= "\n/";
 	 	$this->assertPattern($expected, $Dispatcher->stdout);
 
-	 	$expected = "/ CORE(\\\|\/)console(\\\|\/)libs:";
+	 	$expected = "/ ROOT(\\\|\/)cake(\\\|\/)console(\\\|\/)libs:";
 	 	$expected .= "\n\t acl";
 	 	$expected .= "\n\t api";
 	 	$expected .= "\n\t bake";
@@ -492,7 +472,7 @@ class ShellDispatcherTest extends UnitTestCase {
 	 	$expected .= "\n/";
 	 	$this->assertPattern($expected, $Dispatcher->stdout);
 
-	 	$expected = "/ CORE(\\\|\/)tests(\\\|\/)test_app(\\\|\/)vendors(\\\|\/)shells:";
+	 	$expected = "/ ROOT(\\\|\/)cake(\\\|\/)tests(\\\|\/)test_app(\\\|\/)vendors(\\\|\/)shells:";
 	 	$expected .= "\n\t sample";
 	 	$expected .= "\n/";
 	 	$this->assertPattern($expected, $Dispatcher->stdout);

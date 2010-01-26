@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * TestSuiteGroupTest file
+ * Test Suite Test Group
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2007, Cake Software Foundation, Inc.
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.groups
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -24,10 +24,15 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
-/**
- * TestSuiteGroupTest class
+/** Test Suite Test Group
  *
  * This test group will run the test cases for the test suite classes.
+ *
+ * @package       cake.tests
+ * @subpackage    cake.tests.groups
+ */
+/**
+ * TestSuiteGroupTest class
  *
  * @package       cake
  * @subpackage    cake.tests.groups
@@ -39,7 +44,7 @@ class TestSuiteGroupTest extends GroupTest {
  * @var string 'Socket and HttpSocket tests'
  * @access public
  */
-	var $label = 'TestSuite';
+	var $label = 'Test Suite Tests';
 /**
  * TestSuiteGroupTest method
  *

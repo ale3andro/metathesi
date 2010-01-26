@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * DebuggerTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.5432
  * @version       $Revision$
@@ -26,24 +26,23 @@
  */
 App::import('Core', 'Debugger');
 /**
- * DebugggerTestCaseDebuggger class
+ * DebugggerTestCaseDebuggger
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
-class DebuggerTestCaseDebugger extends Debugger {
+class DebuggerTestCaseDebugger extends Debugger { 
+
 }
 /**
- * DebuggerTest class
+ * Debugger Test Case.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class DebuggerTest extends CakeTestCase {
-// !!!
-// !!! Be careful with changing code below as it may
-// !!! change line numbers which are used in the tests
-// !!!
+
+//do not move code below or it change line numbers which are used in the tests
 /**
  * setUp method
  *
@@ -61,15 +60,6 @@ class DebuggerTest extends CakeTestCase {
 		}
 	}
 /**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		Configure::write('log', true);
-	}
-/**
  * testDocRef method
  *
  * @access public
@@ -81,18 +71,18 @@ class DebuggerTest extends CakeTestCase {
 		$debugger = new Debugger();
 		$this->assertEqual(ini_get('docref_root'), 'http://php.net/');
 	}
+	
 /**
  * test Excerpt writing
  *
- * @access public
  * @return void
- */
+ **/
 	function testExcerpt() {
 		$return = Debugger::excerpt(__FILE__, 2, 2);
 		$this->assertTrue(is_array($return));
 		$this->assertEqual(count($return), 4);
-		$this->assertPattern('#/*&nbsp;SVN&nbsp;FILE:&nbsp;\$Id\$#', $return[1]);
-
+		$this->assertPattern('#/*&nbsp;SVN&nbsp;FILE:&nbsp;\$Id:&nbsp;debugger.test.php#', $return[1]);
+		
 		$return = Debugger::excerpt('[internal]', 2, 2);
 		$this->assertTrue(empty($return));
 	}
@@ -218,14 +208,15 @@ class DebuggerTest extends CakeTestCase {
 
 		Debugger::log('cool');
 		$result = file_get_contents(LOGS . 'debug.log');
-		$this->assertPattern('/DebuggerTest\:\:testLog/', $result);
+		$this->assertPattern('/DebuggerTest::testLog/', $result);
 		$this->assertPattern('/"cool"/', $result);
 
 		unlink(TMP . 'logs' . DS . 'debug.log');
 
 		Debugger::log(array('whatever', 'here'));
 		$result = file_get_contents(TMP . 'logs' . DS . 'debug.log');
-		$this->assertPattern('/DebuggerTest\:\:testLog/', $result);
+
+		$this->assertPattern('/DebuggerTest::testLog/', $result);
 		$this->assertPattern('/array/', $result);
 		$this->assertPattern('/"whatever",/', $result);
 		$this->assertPattern('/"here"/', $result);
@@ -256,24 +247,34 @@ class DebuggerTest extends CakeTestCase {
 		$expected = "<pre>array(\n\t\"People\" => array()\n)</pre>";
 		$this->assertEqual($expected, $result);
 	}
+	
 /**
  * test getInstance.
+ *
+ * @return void
+ **/
+	function testGetInstance() {
+		$result = Debugger::getInstance();
+		$this->assertIsA($result, 'Debugger');
+		
+		$result = Debugger::getInstance('DebuggerTestCaseDebugger');
+		$this->assertIsA($result, 'DebuggerTestCaseDebugger');
+		
+		$result = Debugger::getInstance();
+		$this->assertIsA($result, 'DebuggerTestCaseDebugger');
+		
+		$result = Debugger::getInstance('Debugger');
+		$this->assertIsA($result, 'Debugger');
+	}
+/**
+ * tearDown method
  *
  * @access public
  * @return void
  */
-	function testGetInstance() {
-		$result = Debugger::getInstance();
-		$this->assertIsA($result, 'Debugger');
-
-		$result = Debugger::getInstance('DebuggerTestCaseDebugger');
-		$this->assertIsA($result, 'DebuggerTestCaseDebugger');
-
-		$result = Debugger::getInstance();
-		$this->assertIsA($result, 'DebuggerTestCaseDebugger');
-
-		$result = Debugger::getInstance('Debugger');
-		$this->assertIsA($result, 'Debugger');
+	function tearDown() {
+		Configure::write('log', true);
 	}
+
 }
 ?>

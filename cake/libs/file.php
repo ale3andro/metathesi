@@ -42,7 +42,7 @@ class File extends Object {
 /**
  * Folder object of the File
  *
- * @var Folder
+ * @var object
  * @access public
  */
 	var $Folder = null;
@@ -366,21 +366,20 @@ class File extends Object {
 	function md5($maxsize = 5) {
 		if ($maxsize === true) {
 			return md5_file($this->path);
+		} else {
+			$size = $this->size();
+			if ($size && $size < ($maxsize * 1024) * 1024) {
+				return md5_file($this->path);
+			}
 		}
-
-		$size = $this->size();
-		if ($size && $size < ($maxsize * 1024) * 1024) {
-			return md5_file($this->path);
-		}
-
 		return false;
 	}
 /**
- * Returns the full path of the File.
- *
- * @return string Full path to file
- * @access public
- */
+* Returns the full path of the File.
+*
+* @return string Full path to file
+* @access public
+*/
 	function pwd() {
 		if (is_null($this->path)) {
 			$this->path = $this->Folder->slashTerm($this->Folder->pwd()) . $this->name;

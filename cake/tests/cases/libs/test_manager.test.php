@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * TestManagerTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,26 +16,20 @@
  *  Redistributions of files must retain the above copyright notice.
  *
  * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
- * @subpackage    cake.tests.cases.libs
- * @since         CakePHP(tm) v 1.2.0.4206
- * @version       $Revision$
- * @modifiedby    $LastChangedBy$
- * @lastmodified  $Date$
- * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
+ * @copyright		Copyright 2005-2008, Cake Software Foundation, Inc.
+ * @link				https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
+ * @package			cake.tests
+ * @subpackage		cake.tests.cases.libs
+ * @since			CakePHP(tm) v 1.2.0.4206
+ * @version			$Revision$
+ * @modifiedby		$LastChangedBy$
+ * @lastmodified	$Date$
+ * @license			http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 App::import('Core', 'TestManager');
-/**
- * TestManagerTest class
- *
- * @package       cake
- * @subpackage    cake.tests.cases.libs
- */
 class TestManagerTest extends CakeTestCase {
 /**
- * setUp method
+ * undocumented function
  *
  * @return void
  * @access public
@@ -45,7 +39,7 @@ class TestManagerTest extends CakeTestCase {
 		$this->Reporter =& new CakeHtmlReporter();
 	}
 /**
- * testRunAllTests method
+ * undocumented function
  *
  * @return void
  * @access public
@@ -61,7 +55,7 @@ class TestManagerTest extends CakeTestCase {
 		$this->assertEqual(count($out), count($list));
 	}
 /**
- * testRunTestCase method
+ * undocumented function
  *
  * @return void
  * @access public
@@ -77,44 +71,49 @@ class TestManagerTest extends CakeTestCase {
 		$this->assertTrue($result);
 	}
 /**
- * testRunGroupTest method
+ * undocumented function
  *
  * @return void
  * @access public
  */
 	function testRunGroupTest() {
+
 	}
 /**
- * testAddTestCasesFromDirectory method
+ * undocumented function
  *
  * @return void
  * @access public
  */
 	function testAddTestCasesFromDirectory() {
+
 	}
 /**
- * testAddTestFile method
+ * undocumented function
  *
  * @return void
  * @access public
  */
 	function testAddTestFile() {
+
 	}
 /**
- * testGetTestCaseList method
+ * undocumented function
  *
  * @return void
  * @access public
  */
 	function testGetTestCaseList() {
+
 	}
 /**
- * testGetGroupTestList method
+ * undocumented function
  *
  * @return void
  * @access public
  */
 	function testGetGroupTestList() {
+
 	}
 }
 ?>

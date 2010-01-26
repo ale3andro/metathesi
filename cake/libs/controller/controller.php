@@ -292,32 +292,6 @@ class Controller extends Object {
  */
 	var $methods = array();
 /**
- * This controller's primary model class name, the Inflector::classify()'ed version of 
- * the controller's $name property.
- *
- * Example: For a controller named 'Comments', the modelClass would be 'Comment'
- *
- * @var string
- * @access public
- */
-	var $modelClass = null;
-/**
- * This controller's model key name, an underscored version of the controller's $modelClass property.
- *
- * Example: For a controller named 'ArticleComments', the modelKey would be 'article_comment'
- *
- * @var string
- * @access public
- */
-	var $modelKey = null;
-/**
- * Holds any validation errors produced by the last call of the validateErrors() method/
- *
- * @var array Validation errors, or false if none
- * @access public
- */
-	var $validationErrors = null;
-/**
  * Constructor.
  *
  */
@@ -347,6 +321,7 @@ class Controller extends Object {
 		foreach ($parentMethods as $key => $value) {
 			$parentMethods[$key] = strtolower($value);
 		}
+
 		$this->methods = array_diff($childMethods, $parentMethods);
 		parent::__construct();
 	}
@@ -389,13 +364,11 @@ class Controller extends Object {
 			}
 
 			foreach ($merge as $var) {
-				if (!empty($appVars[$var]) && is_array($this->{$var})) {
+				if (isset($appVars[$var]) && !empty($appVars[$var]) && is_array($this->{$var})) {
 					if ($var === 'components') {
 						$normal = Set::normalize($this->{$var});
 						$app = Set::normalize($appVars[$var]);
-						if ($app !== $normal) {
-							$this->{$var} = Set::merge($app, $normal);
-						}
+						$this->{$var} = Set::merge($normal, $app);
 					} else {
 						$this->{$var} = Set::merge($this->{$var}, array_diff($appVars[$var], $this->{$var}));
 					}
@@ -403,7 +376,7 @@ class Controller extends Object {
 			}
 		}
 
-		if ($pluginController && $pluginName != null) {
+		if ($pluginController) {
 			$appVars = get_class_vars($pluginController);
 			$uses = $appVars['uses'];
 			$merge = array('components', 'helpers');
@@ -417,9 +390,7 @@ class Controller extends Object {
 					if ($var === 'components') {
 						$normal = Set::normalize($this->{$var});
 						$app = Set::normalize($appVars[$var]);
-						if ($app !== $normal) {
-							$this->{$var} = Set::merge($app, $normal);
-						}
+						$this->{$var} = Set::merge($normal, array_diff_assoc($app, $normal));
 					} else {
 						$this->{$var} = Set::merge($this->{$var}, array_diff($appVars[$var], $this->{$var}));
 					}
@@ -648,7 +619,7 @@ class Controller extends Object {
  *
  * @param mixed $one A string or an array of data.
  * @param mixed $two Value in case $one is a string (which then works as the key).
- *   Unused if $one is an associative array, otherwise serves as the values to $one's keys.
+ * 				Unused if $one is an associative array, otherwise serves as the values to $one's keys.
  * @return void
  * @access public
  * @link http://book.cakephp.org/view/427/set
@@ -853,7 +824,7 @@ class Controller extends Object {
  * Does not work if the current debug level is higher than 0.
  *
  * @param string $message Message to display to the user
- * @param mixed $url Relative string or array-based URL to redirect to after the time expires
+ * @param string $url Relative URL to redirect to after the time expires
  * @param integer $pause Time to show the message
  * @return void Renders flash layout
  * @access public
@@ -947,17 +918,17 @@ class Controller extends Object {
 			}
 
 			if ($assoc && isset($this->{$object}->{$assoc})) {
-				$object =& $this->{$object}->{$assoc};
+				$object = $this->{$object}->{$assoc};
 			} elseif ($assoc && isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$assoc})) {
-				$object =& $this->{$this->modelClass}->{$assoc};
+				$object = $this->{$this->modelClass}->{$assoc};
 			} elseif (isset($this->{$object})) {
-				$object =& $this->{$object};
+				$object = $this->{$object};
 			} elseif (isset($this->{$this->modelClass}) && isset($this->{$this->modelClass}->{$object})) {
-				$object =& $this->{$this->modelClass}->{$object};
+				$object = $this->{$this->modelClass}->{$object};
 			}
 		} elseif (empty($object) || $object === null) {
 			if (isset($this->{$this->modelClass})) {
-				$object =& $this->{$this->modelClass};
+				$object = $this->{$this->modelClass};
 			} else {
 				$className = null;
 				$name = $this->uses[0];
@@ -965,9 +936,9 @@ class Controller extends Object {
 					list($name, $className) = explode('.', $this->uses[0]);
 				}
 				if ($className) {
-					$object =& $this->{$className};
+					$object = $this->{$className};
 				} else {
-					$object =& $this->{$name};
+					$object = $this->{$name};
 				}
 			}
 		}
@@ -1034,14 +1005,6 @@ class Controller extends Object {
 		if (!isset($defaults['conditions'])) {
 			$defaults['conditions'] = array();
 		}
-
-		$type = 'all';
-
-		if (isset($defaults[0])) {
-			$type = $defaults[0];
-			unset($defaults[0]);
-		}
-
 		extract($options = array_merge(array('page' => 1, 'limit' => 20), $defaults, $options));
 
 		if (is_array($scope) && !empty($scope)) {
@@ -1052,7 +1015,11 @@ class Controller extends Object {
 		if ($recursive === null) {
 			$recursive = $object->recursive;
 		}
+		$type = 'all';
 
+		if (isset($defaults[0])) {
+			$type = array_shift($defaults);
+		}
 		$extra = array_diff_key($defaults, compact(
 			'conditions', 'fields', 'order', 'limit', 'page', 'recursive'
 		));
@@ -1076,7 +1043,6 @@ class Controller extends Object {
 		} elseif (intval($page) < 1) {
 			$options['page'] = $page = 1;
 		}
-		$page = $options['page'] = (integer)$page;
 
 		if (method_exists($object, 'paginate')) {
 			$results = $object->paginate($conditions, $fields, $order, $limit, $page, $recursive, $extra);

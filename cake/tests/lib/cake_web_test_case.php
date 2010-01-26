@@ -1,7 +1,9 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * CakeWebTestCase a simple wrapper around WebTestCase
+ * Short description for file.
+ *
+ * Long description for file
  *
  * PHP versions 4 and 5
  *
@@ -23,11 +25,11 @@
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 /**
- * Ignore base class.
+ * Short description
  */
-	SimpleTest::ignore('CakeWebTestCase');
+	SimpleTestOptions::ignore('CakeWebTestCase');
 /**
- * Simple wrapper for the WebTestCase provided by SimpleTest
+ * Short description for class.
  *
  * @package       cake
  * @subpackage    cake.cake.tests.lib

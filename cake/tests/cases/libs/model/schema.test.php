@@ -15,7 +15,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.5550
  * @version       $Revision$
@@ -24,10 +24,11 @@
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
 App::import('Core', 'Schema');
+
 /**
  * Test for Schema database management
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class MyAppSchema extends CakeSchema {
@@ -101,7 +102,7 @@ class MyAppSchema extends CakeSchema {
 /**
  * TestAppSchema class
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model
  */
 class TestAppSchema extends CakeSchema {
@@ -199,9 +200,9 @@ class TestAppSchema extends CakeSchema {
 	}
 }
 /**
- * SchmeaPost class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model
  */
 class SchemaPost extends CakeTestModel {
@@ -233,11 +234,12 @@ class SchemaPost extends CakeTestModel {
  * @access public
  */
 	var $hasAndBelongsToMany = array('SchemaTag');
+
 }
 /**
- * SchemaComment class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model
  */
 class SchemaComment extends CakeTestModel {
@@ -264,9 +266,9 @@ class SchemaComment extends CakeTestModel {
 	var $belongsTo = array('SchemaPost');
 }
 /**
- * SchemaTag class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model
  */
 class SchemaTag extends CakeTestModel {
@@ -293,9 +295,9 @@ class SchemaTag extends CakeTestModel {
 	var $hasAndBelongsToMany = array('SchemaPost');
 }
 /**
- * SchemaDatatype class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model
  */
 class SchemaDatatype extends CakeTestModel {
@@ -317,9 +319,8 @@ class SchemaDatatype extends CakeTestModel {
 /**
  * Testdescribe class
  *
- * This class is defined purely to inherit the cacheSources variable otherwise
- * testSchemaCreatTable will fail if listSources has already been called and
- * its source cache populated - I.e. if the test is run within a group
+ * This class is defined purely to inherit the cacheSources variable otherwise testSchemaCreatTable will fail if
+ * listSources has already been called and its source cache populated - I.e. if the test is run within a group
  *
  * @uses          CakeTestModel
  * @package
@@ -335,9 +336,9 @@ class Testdescribe extends CakeTestModel {
 	var $name = 'Testdescribe';
 }
 /**
- * CakeSchemaTest
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class CakeSchemaTest extends CakeTestCase {
@@ -356,15 +357,6 @@ class CakeSchemaTest extends CakeTestCase {
  */
 	function startTest() {
 		$this->Schema = new TestAppSchema();
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		unset($this->Schema);
 	}
 /**
  * testSchemaName method
@@ -479,7 +471,7 @@ class CakeSchemaTest extends CakeTestCase {
 	function testSchemaCreateTable() {
 		$db =& ConnectionManager::getDataSource('test_suite');
 		$db->cacheSources = false;
-
+		
 		$Schema =& new CakeSchema(array(
 			'connection' => 'test_suite',
 			'testdescribes' => array(
@@ -489,16 +481,25 @@ class CakeSchemaTest extends CakeTestCase {
 			),
 		));
 		$sql = $db->createSchema($Schema);
-
+		
 		$col = $Schema->tables['testdescribes']['int_null'];
 		$col['name'] = 'int_null';
 		$column = $this->db->buildColumn($col);
 		$this->assertPattern('/' . preg_quote($column, '/') . '/', $sql);
-
+		
 		$col = $Schema->tables['testdescribes']['int_not_null'];
 		$col['name'] = 'int_not_null';
 		$column = $this->db->buildColumn($col);
 		$this->assertPattern('/' . preg_quote($column, '/') . '/', $sql);
+	}
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Schema);
 	}
 }
 ?>

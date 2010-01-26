@@ -120,11 +120,7 @@ class CakeSocket extends Object {
 			$this->setLastError($errStr, $errNum);
 		}
 
-		$this->connected = is_resource($this->connection);
-		if ($this->connected) {
-			stream_set_timeout($this->connection, $this->config['timeout']);
-		}
-		return $this->connected;
+		return $this->connected = is_resource($this->connection);
 	}
 
 /**
@@ -222,13 +218,7 @@ class CakeSocket extends Object {
 		}
 
 		if (!feof($this->connection)) {
-			$buffer = fread($this->connection, $length);
-			$info = stream_get_meta_data($this->connection);
-			if ($info['timed_out']) {
-				$this->setLastError(E_WARNING, __('Connection timed out', true));
-				return false;
-			}
-			return $buffer;
+			return fread($this->connection, $length);
 		} else {
 			return false;
 		}

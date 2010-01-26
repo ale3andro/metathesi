@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * ComponentsGroupTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.groups
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -24,29 +24,34 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
-/**
- * ComponentsGroupTest class
+/** AllCoreHelpersGroupTest
  *
  * This test group will run all tests in the cases/libs/controller/components directory.
+ *
+ * @package       cake.tests
+ * @subpackage    cake.tests.groups
+ */
+/**
+ * AllCoreComponentsGroupTest class
  *
  * @package       cake
  * @subpackage    cake.tests.groups
  */
-class ComponentsGroupTest extends GroupTest {
+class AllCoreComponentsGroupTest extends GroupTest {
 /**
  * label property
  *
  * @var string 'All core components'
  * @access public
  */
-	var $label = 'All Components';
+	var $label = 'All core components';
 /**
- * CoreComponentsGroupTest method
+ * AllCoreComponentsGroupTest method
  *
  * @access public
  * @return void
  */
-	function ComponentsGroupTest() {
+	function AllCoreComponentsGroupTest() {
 		TestManager::addTestCasesFromDirectory($this, CORE_TEST_CASES . DS . 'libs' . DS . 'controller' . DS . 'components');
 	}
 }

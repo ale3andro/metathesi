@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * ConfigureGroupTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.groups
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -24,10 +24,15 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
-/**
- * ConfigureGroupTest class
+/** ConfigureGroupTest
  *
  * This test group will run all test for the configure and loader.
+ *
+ * @package       cake.tests
+ * @subpackage    cake.tests.groups
+ */
+/**
+ * ConfigureGroupTest class
  *
  * @package       cake
  * @subpackage    cake.tests.groups
@@ -39,7 +44,7 @@ class ConfigureGroupTest extends GroupTest {
  * @var string 'Configure, Loader, ClassRegistry Tests'
  * @access public
  */
-	var $label = 'Configure, App and ClassRegistry';
+	var $label = 'Configure, Loader, ClassRegistry Tests';
 /**
  * ConfigureGroupTest method
  *

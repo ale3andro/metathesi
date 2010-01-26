@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * SecurityTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.5432
  * @version       $Revision$
@@ -26,9 +26,9 @@
  */
 App::import('Core', 'Security');
 /**
- * SecurityTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class SecurityTest extends CakeTestCase {
@@ -90,9 +90,6 @@ class SecurityTest extends CakeTestCase {
  * @return void
  */
 	function testHash() {
-		$Security = Security::getInstance();
-		$_hashType =  $Security->hashType;
-
 		$key = 'someKey';
 		$hash = 'someHash';
 
@@ -129,8 +126,6 @@ class SecurityTest extends CakeTestCase {
 			$this->assertIdentical(strlen(Security::hash($key, 'sha256', false)), 64);
 			$this->assertIdentical(strlen(Security::hash($key, 'sha256', true)), 64);
 		}
-
-		Security::setHash($_hashType);
 	}
 /**
  * testCipher method

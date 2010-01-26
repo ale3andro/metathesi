@@ -137,23 +137,22 @@ class CakeSession extends Object {
 		$this->time = time();
 
 		if ($start === true) {
-			if (!empty($base)) {
-				$this->path = $base;
-				if (strpos($base, 'index.php') !== false) {
-				   $this->path = str_replace('index.php', '', $base);
-				}
-				if (strpos($base, '?') !== false) {
-				   $this->path = str_replace('?', '', $base);
-				}
-			}
 			$this->host = env('HTTP_HOST');
+
+			if (empty($base) || strpos($base, '?') === 0 || strpos($base, 'index.php') === 0) {
+				$this->path = '/';
+			} else {
+				$this->path = $base;
+			}
 
 			if (strpos($this->host, ':') !== false) {
 				$this->host = substr($this->host, 0, strpos($this->host, ':'));
 			}
+
 			if (!class_exists('Security')) {
 				App::import('Core', 'Security');
 			}
+
 			$this->sessionTime = $this->time + (Security::inactiveMins() * Configure::read('Session.timeout'));
 			$this->security = Configure::read('Security.level');
 		}
@@ -350,9 +349,7 @@ class CakeSession extends Object {
 		if (empty($var)) {
 			return false;
 		}
-		if (!in_array($var, $this->watchKeys, true)) {
-			$this->watchKeys[] = $var;
-		}
+		$this->watchKeys[] = $var;
 	}
 /**
  * Tells Session to stop watching a given key path
@@ -511,7 +508,7 @@ class CakeSession extends Object {
 													array('Cache', 'read'),
 													array('Cache', 'write'),
 													array('Cache', 'delete'),
-													array('Cache', 'gc'));
+													array('CakeSession', '__gc'));
 			break;
 			default:
 				if (empty($_SESSION)) {
@@ -574,8 +571,10 @@ class CakeSession extends Object {
 				$this->__setError(1, 'Session Highjacking Attempted !!!');
 			}
 		} else {
+			srand ((double)microtime() * 1000000);
 			$this->write('Config.userAgent', $this->_userAgent);
 			$this->write('Config.time', $this->sessionTime);
+			$this->write('Config.rand', mt_rand());
 			$this->write('Config.timeout', 10);
 			$this->valid = true;
 			$this->__setError(1, 'Session is valid');

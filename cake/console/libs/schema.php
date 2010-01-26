@@ -1,4 +1,5 @@
 <?php
+/* SVN FILE: $Id$ */
 /**
  * Command-line database management utility to automate programmer chores.
  *
@@ -8,17 +9,20 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
  * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs
  * @since         CakePHP(tm) v 1.2.0.5550
+ * @version       $Revision$
+ * @modifiedby    $LastChangedBy$
+ * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 App::import('File');
@@ -112,7 +116,7 @@ class SchemaShell extends Shell {
  * @access public
  */
 	function generate() {
-		$this->out(__('Generating Schema...', true));
+		$this->out('Generating Schema...');
 		$options = array();
 		if (isset($this->params['f'])) {
 			$options = array('models' => false);
@@ -125,9 +129,9 @@ class SchemaShell extends Shell {
 
 		if (!$snapshot && file_exists($this->Schema->path . DS . $this->params['file'])) {
 			$snapshot = true;
-			$result = strtolower($this->in("Schema file exists.\n [O]verwrite\n [S]napshot\n [Q]uit\nWould you like to do?", array('o', 's', 'q'), 's'));
+			$result = $this->in("Schema file exists.\n [O]verwrite\n [S]napshot\n [Q]uit\nWould you like to do?", array('o', 's', 'q'), 's');
 			if ($result === 'q') {
-				return $this->_stop();
+				$this->_stop();
 			}
 			if ($result === 'o') {
 				$snapshot = false;
@@ -195,7 +199,7 @@ class SchemaShell extends Shell {
 			}
 		}
 		$db =& ConnectionManager::getDataSource($this->Schema->connection);
-		$contents = "#" . $Schema->name . " sql generated on: " . date('Y-m-d H:i:s') . " : " . time() . "\n\n";
+		$contents = "#". $Schema->name ." sql generated on: " . date('Y-m-d H:m:s') . " : ". time()."\n\n";
 		$contents .= $db->dropSchema($Schema) . "\n\n". $db->createSchema($Schema);
 		if ($write) {
 			if (strpos($write, '.sql') === false) {
@@ -220,7 +224,7 @@ class SchemaShell extends Shell {
  */
 	function run() {
 		if (!isset($this->args[0])) {
-			$this->err(__('Command not found', true));
+			$this->err('command not found');
 			$this->_stop();
 		}
 
@@ -267,8 +271,8 @@ class SchemaShell extends Shell {
 				$this->__update($Schema, $table);
 			break;
 			default:
-				$this->err(__('Command not found', true));
-				$this->_stop();
+				$this->err(__('command not found', true));
+			$this->_stop();
 		}
 	}
 /**
@@ -277,7 +281,7 @@ class SchemaShell extends Shell {
  *
  * @access private
  */
-	function __create(&$Schema, $table = null) {
+	function __create($Schema, $table = null) {
 		$db =& ConnectionManager::getDataSource($this->Schema->connection);
 
 		$drop = $create = array();
@@ -300,7 +304,7 @@ class SchemaShell extends Shell {
 		$this->out(array_keys($drop));
 
 		if ('y' == $this->in(__('Are you sure you want to drop the table(s)?', true), array('y', 'n'), 'n')) {
-			$this->out(__('Dropping table(s).', true));
+			$this->out('Dropping table(s).');
 			$this->__run($drop, 'drop', $Schema);
 		}
 
@@ -308,7 +312,7 @@ class SchemaShell extends Shell {
 		$this->out(array_keys($create));
 
 		if ('y' == $this->in(__('Are you sure you want to create the table(s)?', true), array('y', 'n'), 'y')) {
-			$this->out(__('Creating table(s).', true));
+			$this->out('Creating table(s).');
 			$this->__run($create, 'create', $Schema);
 		}
 
@@ -320,15 +324,11 @@ class SchemaShell extends Shell {
  *
  * @access private
  */
-	function __update(&$Schema, $table = null) {
+	function __update($Schema, $table = null) {
 		$db =& ConnectionManager::getDataSource($this->Schema->connection);
 
-		$this->out(__('Comparing Database to Schema...', true));
-		$options = array();
-		if (isset($this->params['f'])) {
-			$options['models'] = false;
-		}
-		$Old = $this->Schema->read($options);
+		$this->out('Comparing Database to Schema...');
+		$Old = $this->Schema->read();
 		$compare = $this->Schema->compare($Old, $Schema);
 
 		$contents = array();
@@ -361,7 +361,7 @@ class SchemaShell extends Shell {
  *
  * @access private
  */
-	function __run($contents, $event, &$Schema) {
+	function __run($contents, $event, $Schema) {
 		if (empty($contents)) {
 			$this->err(__('Sql could not be run', true));
 			return;
@@ -370,6 +370,7 @@ class SchemaShell extends Shell {
 		$db =& ConnectionManager::getDataSource($this->Schema->connection);
 		$db->fullDebug = true;
 
+		$errors = array();
 		foreach ($contents as $table => $sql) {
 			if (empty($sql)) {
 				$this->out(sprintf(__('%s is up to date.', true), $table));
@@ -381,16 +382,15 @@ class SchemaShell extends Shell {
 					if (!$Schema->before(array($event => $table))) {
 						return false;
 					}
-					$error = null;
-					if (!$db->execute($sql)) {
+					if (!$db->_execute($sql)) {
 						$error = $table . ': '  . $db->lastError();
 					}
 
-					$Schema->after(array($event => $table, 'errors' => $error));
+					$Schema->after(array($event => $table, 'errors'=> $errors));
 
-					if (!empty($error)) {
+					if (isset($error)) {
 						$this->out($error);
-					} else {
+					} elseif ($this->__dry !== true) {
 						$this->out(sprintf(__('%s updated.', true), $table));
 					}
 				}
@@ -403,8 +403,7 @@ class SchemaShell extends Shell {
  * @access public
  */
 	function help() {
-		$this->out("The Schema Shell generates a schema object from");
-		$this->out("the database and updates the database from the schema.");
+		$this->out("The Schema Shell generates a schema object from \n\t\tthe database and updates the database from the schema.");
 		$this->hr();
 		$this->out("Usage: cake schema <command> <arg1> <arg2>...");
 		$this->hr();

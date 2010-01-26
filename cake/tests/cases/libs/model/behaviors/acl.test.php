@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * AclBehaviorTest file
+ * Acl behavior test
  *
  * Test the Acl Behavior
  *
@@ -26,10 +26,11 @@
  */
 App::import('Behavior', 'Acl');
 App::import('Core', 'db_acl');
+
 /**
-* Test Person class - self joined model
+* Test Person Class - self joined model
 *
-* @package       cake
+* @package       cake.tests
 * @subpackage    cake.tests.cases.libs.model.behaviors
 */
 class AclPerson extends CakeTestModel {
@@ -78,12 +79,12 @@ class AclPerson extends CakeTestModel {
 			'foreignKey' => 'mother_id'
 		)
 	);
+
 /**
- * parentNode method
+ * ParentNode
  *
  * @return void
- * @access public
- */
+ **/
 	function parentNode() {
 		if (!$this->id && empty($this->data)) {
 			return null;
@@ -98,11 +99,13 @@ class AclPerson extends CakeTestModel {
 			return array('AclPerson' => array('id' => $data['AclPerson']['mother_id']));
 		}
 	}
+
 }
+
 /**
-* AclUser class
+* Acl Test User
 *
-* @package       cake
+* @package       cake.tests
 * @subpackage    cake.tests.cases.libs.model.behaviors
 */
 class AclUser extends CakeTestModel {
@@ -136,10 +139,11 @@ class AclUser extends CakeTestModel {
 		return null;
 	}
 }
+
 /**
-* AclPost class
+* Acl Test User
 *
-* @package       cake
+* @package       cake.tests
 * @subpackage    cake.tests.cases.libs.model.behaviors
 */
 class AclPost extends CakeTestModel {
@@ -173,62 +177,33 @@ class AclPost extends CakeTestModel {
 		return null;
 	}
 }
+
 /**
-* AclBehaviorTest class
+* ACL behavior test class
 *
-* @package       cake
+* @package       cake.tests
 * @subpackage    cake.tests.cases.libs.controller.components
 */
 class AclBehaviorTestCase extends CakeTestCase {
-/**
- * Aco property
- *
- * @var Aco
- * @access public
- */
-	var $Aco;
-/**
- * Aro property
- *
- * @var Aro
- * @access public
- */
-	var $Aro;
-/**
- * fixtures property
- *
- * @var array
- * @access public
- */
 	var $fixtures = array('core.person', 'core.user', 'core.post', 'core.aco', 'core.aro', 'core.aros_aco');
+
 /**
  * Set up the test
  *
  * @return void
- * @access public
- */
+ **/
 	function startTest() {
 		Configure::write('Acl.database', 'test_suite');
 
 		$this->Aco =& new Aco();
 		$this->Aro =& new Aro();
 	}
-/**
- * tearDown method
- *
- * @return void
- * @access public
- */
-	function tearDown() {
-		ClassRegistry::flush();
-		unset($this->Aro, $this->Aco);
-	}
+
 /**
  * Test Setup of AclBehavior
  *
  * @return void
- * @access public
- */
+ **/
 	function testSetup() {
 		$User =& new AclUser();
 		$this->assertTrue(isset($User->Behaviors->Acl->settings['User']));
@@ -240,12 +215,12 @@ class AclBehaviorTestCase extends CakeTestCase {
 		$this->assertEqual($Post->Behaviors->Acl->settings['Post']['type'], 'controlled');
 		$this->assertTrue(is_object($Post->Aco));
 	}
+
 /**
  * test After Save
  *
  * @return void
- * @access public
- */
+ **/
 	function testAfterSave() {
 		$Post =& new AclPost();
 		$data = array(
@@ -289,12 +264,12 @@ class AclBehaviorTestCase extends CakeTestCase {
 		$this->assertEqual($node[0]['Aro']['parent_id'], 5);
 		$this->assertEqual($node[1]['Aro']['parent_id'], null);
 	}
+
 /**
  * Test After Delete
  *
  * @return void
- * @access public
- */
+ **/
 	function testAfterDelete() {
 		$aroData = array(
 			'Aro' => array(
@@ -342,12 +317,12 @@ class AclBehaviorTestCase extends CakeTestCase {
 		$this->assertTrue(empty($result));
 
 	}
+
 /**
  * Test Node()
  *
  * @return void
- * @access public
- */
+ **/
 	function testNode() {
 		$Person =& new AclPerson();
 		$aroData = array(
@@ -364,5 +339,16 @@ class AclBehaviorTestCase extends CakeTestCase {
 		$this->assertTrue(is_array($result));
 		$this->assertEqual(sizeof($result), 1);
 	}
+
+/**
+ * tear down test
+ *
+ * @return void
+ **/
+	function tearDown() {
+		ClassRegistry::flush();
+		unset($this->Aro, $this->Aco);
+	}
+
 }
 ?>

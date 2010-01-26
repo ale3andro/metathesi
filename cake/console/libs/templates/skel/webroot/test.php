@@ -24,6 +24,7 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/opengroup.php The Open Group Test Suite License
  */
+error_reporting(E_ALL);
 set_time_limit(0);
 ini_set('memory_limit','128M');
 ini_set('display_errors', 1);

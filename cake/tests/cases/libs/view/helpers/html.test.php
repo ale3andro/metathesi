@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * HtmlHelperTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2006-2008, Cake Software Foundation, Inc.
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.view.helpers
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -56,33 +56,12 @@ class TheHtmlTestController extends Controller {
  */
 class HtmlHelperTest extends CakeTestCase {
 /**
- * Html property
+ * html property
  *
- * @var object
+ * @var mixed null
  * @access public
  */
-	var $Html = null;
-/**
- * Backup of app encoding configuration setting
- *
- * @var string
- * @access protected
- */
-	var $_appEncoding;
-/**
- * Backup of asset configuration settings
- *
- * @var string
- * @access protected
- */
-	var $_asset;
-/**
- * Backup of debug configuration setting
- *
- * @var integer
- * @access protected
- */
-	var $_debug;
+	var $html = null;
 /**
  * setUp method
  *
@@ -93,21 +72,6 @@ class HtmlHelperTest extends CakeTestCase {
 		$this->Html =& new HtmlHelper();
 		$view =& new View(new TheHtmlTestController());
 		ClassRegistry::addObject('view', $view);
-		$this->_appEncoding = Configure::read('App.encoding');
-		$this->_asset = Configure::read('Asset');
-		$this->_debug = Configure::read('debug');
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		Configure::write('App.encoding', $this->_appEncoding);
-		Configure::write('Asset', $this->_asset);
-		Configure::write('debug', $this->_debug);
-		ClassRegistry::flush();
 	}
 /**
  * testDocType method
@@ -184,29 +148,7 @@ class HtmlHelperTest extends CakeTestCase {
 			'/a'
 		);
 		$this->assertTags($result, $expected);
-
-		$result = $this->Html->link('Next >', '#', array(
-			'title' => 'to escape &#8230; or not escape?',
-			'escape' => false
-		));
-		$expected = array(
-			'a' => array('href' => '#', 'title' => 'to escape &#8230; or not escape?'),
-			'Next >',
-			'/a'
-		);
-		$this->assertTags($result, $expected);
-
-		$result = $this->Html->link('Next >', '#', array(
-			'title' => 'to escape &#8230; or not escape?',
-			'escape' => true
-		), false, false);
-		$expected = array(
-			'a' => array('href' => '#', 'title' => 'to escape &amp;#8230; or not escape?'),
-			'Next >',
-			'/a'
-		);
-		$this->assertTags($result, $expected);
-
+		
 		$result = $this->Html->link('Original size', array(
 			'controller' => 'images', 'action' => 'view', 3, '?' => array('height' => 100, 'width' => 200)
 		));
@@ -276,37 +218,8 @@ class HtmlHelperTest extends CakeTestCase {
 
 		Configure::write('Asset.timestamp', true);
 
-		$result = $this->Html->image('cake.icon.gif');
-		$this->assertTags($result, array('img' => array('src' => 'preg:/img\/cake\.icon\.gif\?\d+/', 'alt' => '')));
-
-		Configure::write('debug', 0);
-		Configure::write('Asset.timestamp', 'force');
-
-		$result = $this->Html->image('cake.icon.gif');
-		$this->assertTags($result, array('img' => array('src' => 'preg:/img\/cake\.icon\.gif\?\d+/', 'alt' => '')));
-	}
-/**
- * Tests creation of an image tag using a theme and asset timestamping
- *
- * @access public
- * @return void
- * @link https://trac.cakephp.org/ticket/6490
- */
-	function testImageTagWithTheme() {
-		$file = WWW_ROOT . 'themed' . DS . 'default' . DS . 'img' . DS . 'cake.power.gif';
-		$message = "File '{$file}' not present. %s";
-		$this->skipUnless(file_exists($file), $message);
-
-		Configure::write('Asset.timestamp', true);
-		Configure::write('debug', 1);
-		$this->Html->themeWeb = 'themed/default/';
-
-		$result = $this->Html->image('cake.power.gif');
-		$this->assertTags($result, array(
-			'img' => array(
-				'src' => 'preg:/themed\/default\/img\/cake\.power\.gif\?\d+/',
-				'alt' => ''
-		)));
+		$result = $this->Html->image('logo.gif');
+		$this->assertTags($result, array('img' => array('src' => 'preg:/img\/logo\.gif\?\d*/', 'alt' => '')));
 	}
 /**
  * testStyle method
@@ -376,6 +289,7 @@ class HtmlHelperTest extends CakeTestCase {
 		$expected['link']['href'] = 'preg:/.*css\/cake\.generic\.css\?[0-9]+/';
 		$this->assertTags($result, $expected);
 
+		$debug = Configure::read('debug');
 		Configure::write('debug', 0);
 
 		$result = $this->Html->css('cake.generic');
@@ -401,6 +315,8 @@ class HtmlHelperTest extends CakeTestCase {
 		$expected['link']['href'] = 'preg:/\/testing\/longer\/css\/cake\.generic\.css\?/';
 		$this->assertTags($result, $expected);
 		$this->Html->webroot = $webroot;
+
+		Configure::write('debug', $debug);
 	}
 /**
  * testCharsetTag method
@@ -931,6 +847,7 @@ class HtmlHelperTest extends CakeTestCase {
 		$result = $this->Html->div('class-name', '<text>', array(), true);
 		$this->assertTags($result, array('div' => array('class' => 'class-name'), '&lt;text&gt;', '/div'));
 	}
+
 /**
  * testPara method
  *
@@ -946,6 +863,15 @@ class HtmlHelperTest extends CakeTestCase {
 
 		$result = $this->Html->para('class-name', '<text>', array(), true);
 		$this->assertTags($result, array('p' => array('class' => 'class-name'), '&lt;text&gt;', '/p'));
+	}
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Html);
 	}
 }
 ?>

@@ -38,7 +38,7 @@ class Object {
 /**
  * Log object
  *
- * @var CakeLog
+ * @var object
  * @access protected
  */
 	var $_log = null;
@@ -77,10 +77,9 @@ class Object {
 /**
  * Calls a controller's method from any location.
  *
- * @param mixed $url String or array-based url.
+ * @param string $url URL in the form of Cake URL ("/controller/method/parameter")
  * @param array $extra if array includes the key "return" it sets the AutoRender to true.
- * @return mixed Boolean true or false on success/failure, or contents
- *               of rendered action if 'return' is set in $extra.
+ * @return mixed Success (true/false) or contents if 'return' is set in $extra
  * @access public
  */
 	function requestAction($url, $extra = array()) {
@@ -249,11 +248,7 @@ class Object {
 		$objectArray = array(&$object);
 		$data = str_replace('\\', '\\\\', serialize($objectArray));
 		$data = '<?php $' . $name . ' = \'' . str_replace('\'', '\\\'', $data) . '\' ?>';
-		$duration = '+999 days';
-		if (Configure::read() >= 1) {
-			$duration = '+10 seconds';
-		}
-		cache($file, $data, $duration);
+		cache($file, $data, '+1 day');
 	}
 /**
  * Open the persistent class file for reading
@@ -272,16 +267,14 @@ class Object {
 			case 'registry':
 				$vars = unserialize(${$name});
 				foreach ($vars['0'] as $key => $value) {
-					if (strpos($key, '_behavior') !== false) {
-						App::import('Behavior', Inflector::classify(substr($key, 0, -9)));
-					} else {
-						App::import('Model', Inflector::classify($key));
-					}
-					unset ($value);
+					App::import('Model', Inflector::classify($key));
 				}
 				unset($vars);
 				$vars = unserialize(${$name});
 				foreach ($vars['0'] as $key => $value) {
+					foreach ($vars['0'][$key]->Behaviors->_attached as $behavior) {
+						App::import('Behavior', $behavior);
+					}
 					ClassRegistry::addObject($key, $value);
 					unset ($value);
 				}

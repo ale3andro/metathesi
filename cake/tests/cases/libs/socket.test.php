@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * SocketTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -26,9 +26,9 @@
  */
 App::import('Core', 'Socket');
 /**
- * SocketTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class SocketTest extends CakeTestCase {
@@ -40,15 +40,6 @@ class SocketTest extends CakeTestCase {
  */
 	function setUp() {
 		$this->Socket = new CakeSocket();
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		unset($this->Socket);
 	}
 /**
  * testConstruct method
@@ -144,18 +135,6 @@ class SocketTest extends CakeTestCase {
 		$this->Socket = new CakeSocket(array('timeout' => 5));
 		$this->Socket->connect();
 		$this->assertEqual($this->Socket->read(26), null);
-
-		$config = array('host' => 'www.cakephp.org', 'timeout' => 1);
-		$this->Socket = new CakeSocket($config);
-		$this->assertTrue($this->Socket->connect());
-		$this->assertFalse($this->Socket->read(1024 * 1024));
-		$this->assertEqual($this->Socket->lastError(), '2: ' . __('Connection timed out', true));
-
-		$config = array('host' => 'www.cakephp.org', 'timeout' => 30);
-		$this->Socket = new CakeSocket($config);
-		$this->assertTrue($this->Socket->connect());
-		$this->assertEqual($this->Socket->read(26), null);
-		$this->assertEqual($this->Socket->lastError(), null);
 	}
 /**
  * testLastError method
@@ -185,6 +164,15 @@ class SocketTest extends CakeTestCase {
 		$anotherSocket = new CakeSocket($config);
 		$anotherSocket->reset();
 		$this->assertEqual(array(), $anotherSocket->config);
+	}
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		unset($this->Socket);
 	}
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * ApcEngineTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.cache
  * @since         CakePHP(tm) v 1.2.0.5434
  * @version       $Revision$
@@ -28,9 +28,9 @@ if (!class_exists('Cache')) {
 	require LIBS . 'cache.php';
 }
 /**
- * ApcEngineTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.cache
  */
 class ApcEngineTest extends UnitTestCase {
@@ -45,7 +45,7 @@ class ApcEngineTest extends UnitTestCase {
 		if (Cache::engine('Apc')) {
 			$skip = false;
 		}
-		$this->skipIf($skip, '%s Apc is not installed or configured properly');
+		$this->skipif($skip, 'Apc is not installed or configured properly');
 	}
 /**
  * setUp method
@@ -54,19 +54,7 @@ class ApcEngineTest extends UnitTestCase {
  * @return void
  */
 	function setUp() {
-		$this->_cacheDisable = Configure::read('Cache.disable');
-		Configure::write('Cache.disable', false);
-		Cache::config('apc', array('engine' => 'Apc', 'prefix' => 'cake_'));
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		Configure::write('Cache.disable', $this->_cacheDisable);
-		Cache::config('default');
+		Cache::config('apc', array('engine'=>'Apc', 'prefix' => 'cake_'));
 	}
 /**
  * testReadAndWriteCache method
@@ -75,21 +63,17 @@ class ApcEngineTest extends UnitTestCase {
  * @return void
  */
 	function testReadAndWriteCache() {
-		Cache::set(array('duration' => 1));
-
 		$result = Cache::read('test');
 		$expecting = '';
 		$this->assertEqual($result, $expecting);
 
 		$data = 'this is a test of the emergency broadcasting system';
-		$result = Cache::write('test', $data);
+		$result = Cache::write('test', $data, 1);
 		$this->assertTrue($result);
 
 		$result = Cache::read('test');
 		$expecting = $data;
 		$this->assertEqual($result, $expecting);
-
-		Cache::delete('test');
 	}
 /**
  * testExpiry method
@@ -98,28 +82,21 @@ class ApcEngineTest extends UnitTestCase {
  * @return void
  */
 	function testExpiry() {
-		Cache::set(array('duration' => 1));
-
+		sleep(2);
 		$result = Cache::read('test');
 		$this->assertFalse($result);
 
 		$data = 'this is a test of the emergency broadcasting system';
-		$result = Cache::write('other_test', $data);
+		$result = Cache::write('other_test', $data, 1);
 		$this->assertTrue($result);
 
 		sleep(2);
 		$result = Cache::read('other_test');
 		$this->assertFalse($result);
-
-		Cache::set(array('duration' =>  "+1 second"));
 
 		$data = 'this is a test of the emergency broadcasting system';
-		$result = Cache::write('other_test', $data);
+		$result = Cache::write('other_test', $data, "+1 second");
 		$this->assertTrue($result);
-
-		sleep(2);
-		$result = Cache::read('other_test');
-		$this->assertFalse($result);
 
 		sleep(2);
 		$result = Cache::read('other_test');
@@ -138,6 +115,15 @@ class ApcEngineTest extends UnitTestCase {
 
 		$result = Cache::delete('delete_test');
 		$this->assertTrue($result);
+	}
+/**
+ * tearDown method
+ *
+ * @access public
+ * @return void
+ */
+	function tearDown() {
+		Cache::config('default');
 	}
 }
 ?>

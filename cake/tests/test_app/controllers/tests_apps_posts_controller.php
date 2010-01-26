@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.test_app.plugins.test_plugin.views.helpers
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -33,8 +33,7 @@ class TestsAppsPostsController extends AppController {
 		$data = array(
 			'Post' => array(
 				'title' => 'Test article',
-				'body' => 'Body of article.',
-				'author_id' => 1
+				'body' => 'Body of article.'
 			)
 		);
 		$this->Post->save($data);

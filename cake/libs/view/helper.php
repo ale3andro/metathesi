@@ -175,7 +175,7 @@ class Helper extends Overloadable {
  * @return string  Full translated URL with base path.
  */
 	function url($url = null, $full = false) {
-		return h(Router::url($url, $full));
+		return Router::url($url, array('full' => $full, 'escape' => true));
 	}
 /**
  * Checks if a file exists when theme is used, if no file is found default location is returned
@@ -567,31 +567,20 @@ class Helper extends Overloadable {
 
 		$result = null;
 
-		$modelName = $this->model();
-		$fieldName = $this->field();
-		$modelID = $this->modelID();
-
-		if (is_null($fieldName)) {
-			$fieldName = $modelName;
-			$modelName = null;
-		}
-
-		if (isset($this->data[$fieldName]) && $modelName === null) {
-			$result = $this->data[$fieldName];
-		} elseif (isset($this->data[$modelName][$fieldName])) {
-			$result = $this->data[$modelName][$fieldName];
-		} elseif (isset($this->data[$fieldName]) && is_array($this->data[$fieldName])) {
-			if (ClassRegistry::isKeySet($fieldName)) {
-				$model =& ClassRegistry::getObject($fieldName);
-				$result = $this->__selectedArray($this->data[$fieldName], $model->primaryKey);
+		if (isset($this->data[$this->model()][$this->field()])) {
+			$result = $this->data[$this->model()][$this->field()];
+		} elseif (isset($this->data[$this->field()]) && is_array($this->data[$this->field()])) {
+			if (ClassRegistry::isKeySet($this->field())) {
+				$model =& ClassRegistry::getObject($this->field());
+				$result = $this->__selectedArray($this->data[$this->field()], $model->primaryKey);
 			}
-		} elseif (isset($this->data[$modelName][$modelID][$fieldName])) {
-			$result = $this->data[$modelName][$modelID][$fieldName];
+		} elseif (isset($this->data[$this->model()][$this->modelID()][$this->field()])) {
+			$result = $this->data[$this->model()][$this->modelID()][$this->field()];
 		}
 
 		if (is_array($result)) {
 			$view =& ClassRegistry::getObject('view');
-			if (array_key_exists($view->fieldSuffix, $result)) {
+			if (isset($result[$view->fieldSuffix])) {
 				$result = $result[$view->fieldSuffix];
 			}
 		}

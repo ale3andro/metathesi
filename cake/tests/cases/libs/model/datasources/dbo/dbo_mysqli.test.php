@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * DboMysqliTest file
+ * DboMysqli test
  *
  * PHP versions 4 and 5
  *
@@ -22,14 +22,16 @@
  * @lastmodified  $Date$
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
+
 if (!defined('CAKEPHP_UNIT_TEST_EXECUTION')) {
 	define('CAKEPHP_UNIT_TEST_EXECUTION', 1);
 }
 App::import('Core', array('Model', 'DataSource', 'DboSource', 'DboMysqli'));
+
 /**
- * DboMysqliTestDb class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model.datasources
  */
 class DboMysqliTestDb extends DboMysqli {
@@ -72,9 +74,9 @@ class DboMysqliTestDb extends DboMysqli {
 	}
 }
 /**
- * MysqliTestModel class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model.datasources
  */
 class MysqliTestModel extends Model {
@@ -148,16 +150,16 @@ class MysqliTestModel extends Model {
 	}
 }
 /**
- * DboMysqliTest class
+ * The test class for the DboMysqli
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs.model.datasources.dbo
  */
 class DboMysqliTest extends CakeTestCase {
 /**
  * The Dbo instance to be tested
  *
- * @var DboSource
+ * @var object
  * @access public
  */
 	var $Db = null;
@@ -168,7 +170,7 @@ class DboMysqliTest extends CakeTestCase {
  */
 	function skip() {
 		$this->_initDb();
-		$this->skipUnless($this->db->config['driver'] == 'mysqli', '%s MySQLi connection not available');
+		$this->skipif($this->db->config['driver'] != 'mysqli', 'MySQLi connection not available');
 	}
 /**
  * Sets up a Dbo class instance for testing
@@ -297,21 +299,6 @@ class DboMysqliTest extends CakeTestCase {
 		$expected = 'float';
 		$this->assertEqual($result, $expected);
 	}
-/**
- * undocumented function
- *
- * @return void
- * @access public
- */
-	function testTransactions() {
-		$this->db->begin($this->model);
-		$this->assertTrue($this->db->_transactionStarted);
-
-		$beginSqlCalls = Set::extract('/.[query=START TRANSACTION]', $this->db->_queriesLog);
-		$this->assertEqual(1, count($beginSqlCalls));
-
-		$this->db->commit($this->model);
-		$this->assertFalse($this->db->_transactionStarted);
-	}
 }
+
 ?>

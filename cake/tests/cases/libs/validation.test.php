@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * ValidationTest file
+ * Validation Class Test Case
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -43,13 +43,14 @@ class CustomValidator {
 		return preg_match('/^[0-9]{3}$/', $check);
 	}
 }
+
 /**
  * Test Case for Validation Class
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
-class ValidationTest extends CakeTestCase {
+class ValidationTestCase extends CakeTestCase {
 /**
  * Validation property
  *
@@ -63,18 +64,8 @@ class ValidationTest extends CakeTestCase {
  * @access public
  * @return void
  */
-	function setUp() {
+	function setup() {
 		$this->Validation =& Validation::getInstance();
-		$this->_appEncoding = Configure::read('App.encoding');
-	}
-/**
- * tearDown method
- *
- * @access public
- * @return void
- */
-	function tearDown() {
-		Configure::write('App.encoding', $this->_appEncoding);
 	}
 /**
  * testNotEmpty method
@@ -86,28 +77,7 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::notEmpty('abcdefg'));
 		$this->assertTrue(Validation::notEmpty('fasdf '));
 		$this->assertTrue(Validation::notEmpty('fooo'.chr(243).'blabla'));
-		$this->assertTrue(Validation::notEmpty('abçďĕʑʘπй'));
-		$this->assertTrue(Validation::notEmpty('José'));
-		$this->assertTrue(Validation::notEmpty('é'));
-		$this->assertTrue(Validation::notEmpty('π'));
-		$this->assertFalse(Validation::notEmpty("\t "));
-		$this->assertFalse(Validation::notEmpty(""));
 
-	}
-/**
- * testNotEmptyISO88591Encoding method
- *
- * @return void
- * @access public
- */
-	function testNotEmptyISO88591AppEncoding() {
-		Configure::write('App.encoding', 'ISO-8859-1');
-		$this->assertTrue(Validation::notEmpty('abcdefg'));
-		$this->assertTrue(Validation::notEmpty('fasdf '));
-		$this->assertTrue(Validation::notEmpty('fooo'.chr(243).'blabla'));
-		$this->assertTrue(Validation::notEmpty('abçďĕʑʘπй'));
-		$this->assertTrue(Validation::notEmpty('José'));
-		$this->assertTrue(Validation::notEmpty(utf8_decode('José')));
 		$this->assertFalse(Validation::notEmpty("\t "));
 		$this->assertFalse(Validation::notEmpty(""));
 	}
@@ -1522,8 +1492,6 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::email('abc.efg@12345.co.jp'));
 		$this->assertTrue(Validation::email('abc@g.cn'));
 		$this->assertTrue(Validation::email('abc@x.com'));
-		$this->assertTrue(Validation::email('henrik@sbcglobal.net'));
-		$this->assertTrue(Validation::email('sani@sbcglobal.net'));
 
 		// all ICANN TLDs
 		$this->assertTrue(Validation::email('abc@example.aero'));

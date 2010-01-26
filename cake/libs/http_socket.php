@@ -66,7 +66,7 @@ class HttpSocket extends CakeSocket {
 			'fragment' => null
 		),
 		'auth' => array(
-			'method' => 'Basic',
+			'method' => 'basic',
 			'user' => null,
 			'pass' => null
 		),
@@ -121,7 +121,7 @@ class HttpSocket extends CakeSocket {
 				'port' => 80
 			),
 			'auth' => array(
-				'method' => 'Basic',
+				'method' => 'basic',
 				'user' => null,
 				'pass' => null
 			),
@@ -202,10 +202,10 @@ class HttpSocket extends CakeSocket {
 		}
 
 		if (isset($this->request['auth']['user']) && isset($this->request['auth']['pass'])) {
-			$this->request['header']['Authorization'] = $this->request['auth']['method'] . " " . base64_encode($this->request['auth']['user'] . ":" . $this->request['auth']['pass']);
+			$this->request['header']['Authorization'] = $this->request['auth']['method'] ." ". base64_encode($this->request['auth']['user'] .":".$this->request['auth']['pass']);
 		}
 		if (isset($this->request['uri']['user']) && isset($this->request['uri']['pass'])) {
-			$this->request['header']['Authorization'] = $this->request['auth']['method'] . " " . base64_encode($this->request['uri']['user'] . ":" . $this->request['uri']['pass']);
+			$this->request['header']['Authorization'] = $this->request['auth']['method'] ." ". base64_encode($this->request['uri']['user'] .":".$this->request['uri']['pass']);
 		}
 
 		if (is_array($this->request['body'])) {
@@ -220,10 +220,7 @@ class HttpSocket extends CakeSocket {
 			$this->request['header']['Content-Length'] = strlen($this->request['body']);
 		}
 
-		$connectionType = null;
-		if (isset($this->request['header']['Connection'])) {
-			$connectionType = $this->request['header']['Connection'];
-		}
+		$connectionType = @$this->request['header']['Connection'];
 		$this->request['header'] = $this->buildHeader($this->request['header']).$cookies;
 
 		if (empty($this->request['line'])) {
@@ -398,11 +395,7 @@ class HttpSocket extends CakeSocket {
 		}
 
 		$response['header'] = $this->parseHeader($response['raw']['header']);
-		$transferEncoding = null;
-		if (isset($response['header']['Transfer-Encoding'])) {
-			$transferEncoding = $response['header']['Transfer-Encoding'];
-		}
-		$decoded = $this->decodeBody($response['raw']['body'], $transferEncoding);
+		$decoded = $this->decodeBody($response['raw']['body'], @$response['header']['Transfer-Encoding']);
 		$response['body'] = $decoded['body'];
 
 		if (!empty($decoded['header'])) {
@@ -812,7 +805,7 @@ class HttpSocket extends CakeSocket {
 			return false;
 		}
 
-		preg_match_all("/(.+):(.+)(?:(?<![\t ])" . $this->lineBreak . "|\$)/Uis", $header, $matches, PREG_SET_ORDER);
+		preg_match_all("/(.+):(.+)(?:(?<![\t ])".$this->lineBreak."|\$)/Uis", $header, $matches, PREG_SET_ORDER);
 
 		$header = array();
 		foreach ($matches as $match) {
@@ -852,16 +845,9 @@ class HttpSocket extends CakeSocket {
 
 		$cookies = array();
 		foreach ((array)$header['Set-Cookie'] as $cookie) {
-			if (strpos($cookie, '";"') !== false) {
-				$cookie = str_replace('";"', "{__cookie_replace__}", $cookie);
-				$parts  = str_replace("{__cookie_replace__}", '";"', preg_split('/\;/', $cookie));
-			} else {
-				$parts = preg_split('/\;[ \t]*/', $cookie);
-			}
-
-			list($name, $value) = explode('=', array_shift($parts), 2);
+			$parts = preg_split('/(?<![^;]");[ \t]*/', $cookie);
+			list($name, $value) = explode('=', array_shift($parts));
 			$cookies[$name] = compact('value');
-
 			foreach ($parts as $part) {
 				if (strpos($part, '=') !== false) {
 					list($key, $value) = explode('=', $part);

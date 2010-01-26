@@ -1,7 +1,7 @@
 <?php
 /* SVN FILE: $Id$ */
 /**
- * CodeCoverageManagerTest file
+ * Short description for file.
  *
  * Long description for file
  *
@@ -16,7 +16,7 @@
  * @filesource
  * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
  * @link          https://trac.cakephp.org/wiki/Developement/TestSuite CakePHP(tm) Tests
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  * @since         CakePHP(tm) v 1.2.0.4206
  * @version       $Revision$
@@ -28,20 +28,13 @@ App::import('Core', 'CodeCoverageManager');
 require_once CAKE . 'tests' . DS . 'lib' . DS . 'cli_reporter.php';
 require_once CAKE . 'tests' . DS . 'lib' . DS . 'cake_reporter.php';
 /**
- * CodeCoverageManagerTest class
+ * Short description for class.
  *
- * @package       cake
+ * @package       cake.tests
  * @subpackage    cake.tests.cases.libs
  */
 class CodeCoverageManagerTest extends CakeTestCase {
-/**
- * Skip if XDebug not installed
- *
- * @access public
- */
-	function skip() {
-		$this->skipIf(!extension_loaded('xdebug'), '%s XDebug not installed');
-	}
+
 /**
  * startTest Method
  * Store reference of $_GET to restore later.
@@ -51,6 +44,7 @@ class CodeCoverageManagerTest extends CakeTestCase {
 	function startCase() {
 		$this->_get = $_GET;
 	}
+
 /**
  * End Case - restore GET vars.
  *
@@ -58,6 +52,14 @@ class CodeCoverageManagerTest extends CakeTestCase {
  **/
 	function endCase() {
 		$_GET = $this->_get;
+	}
+/**
+ * Skip if XDebug not installed
+ *
+ * @access public
+ */
+	function skip() {
+		$this->skipif (!extension_loaded('xdebug'), 'XDebug not installed');
 	}
 /**
  * testNoTestCaseSupplied method
@@ -115,9 +117,6 @@ class CodeCoverageManagerTest extends CakeTestCase {
 
 		$expected = $manager->__testObjectFileFromCaseFile('models/some_file.test.php', true);
 		$this->assertIdentical(APP.'models'.DS.'some_file.php', $expected);
-
-		$expected = $manager->__testObjectFileFromCaseFile('datasources/some_file.test.php', true);
-		$this->assertIdentical(APP.'models'.DS.'datasources'.DS.'some_file.php', $expected);
 
 		$expected = $manager->__testObjectFileFromCaseFile('controllers/some_file.test.php', true);
 		$this->assertIdentical(APP.'controllers'.DS.'some_file.php', $expected);

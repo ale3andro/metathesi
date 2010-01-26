@@ -33,7 +33,7 @@ class MemcacheEngine extends CacheEngine {
 /**
  * Memcache wrapper.
  *
- * @var Memcache
+ * @var object
  * @access private
  */
 	var $__Memcache = null;
@@ -100,8 +100,8 @@ class MemcacheEngine extends CacheEngine {
  */
 	function write($key, &$value, $duration) {
 		$expires = time() + $duration;
-		$this->__Memcache->set($key.'_expires', $expires, $this->settings['compress'], $expires);
-		return $this->__Memcache->set($key, $value, $this->settings['compress'], $expires);
+		$this->__Memcache->set($key.'_expires', $expires, $this->settings['compress'], $duration);
+		return $this->__Memcache->set($key, $value, $this->settings['compress'], $duration);
 	}
 /**
  * Read a key from the cache

@@ -136,7 +136,7 @@ class PluginTask extends Shell {
 
 		$looksGood = $this->in('Look okay?', array('y', 'n', 'q'), 'y');
 
-		if (strtolower($looksGood) == 'y' || strtolower($looksGood) == 'yes') {
+		if (low($looksGood) == 'y' || low($looksGood) == 'yes') {
 			$verbose = $this->in(__('Do you want verbose output?', true), array('y', 'n'), 'n');
 
 			$Folder = new Folder($this->path . $pluginPath);
@@ -146,7 +146,7 @@ class PluginTask extends Shell {
 				$Folder->create($this->path . $pluginPath . DS . $directory);
 			}
 
-			if (strtolower($verbose) == 'y' || strtolower($verbose) == 'yes') {
+			if (low($verbose) == 'y' || low($verbose) == 'yes') {
 				foreach ($Folder->messages() as $message) {
 					$this->out($message);
 				}
