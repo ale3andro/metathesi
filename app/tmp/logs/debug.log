@@ -237,3 +237,7 @@
 2010-02-01 10:54:04 Notice: Notice (8): Array to string conversion in [APP/controllers/components/mobile_detection.php, line 39]
 2010-02-01 12:11:09 Notice: Notice (8): Undefined variable: class in [APP/views/elements/waplText.ctp, line 5]
 2010-02-01 12:12:19 Notice: Notice (8): Undefined variable: class in [APP/views/elements/waplText.ctp, line 5]
+2010-02-05 11:44:14 Notice: Notice (8): Undefined variable: Base in [APP/views/b_bases/wapl/show.ctp, line 37]
+2010-02-05 11:44:52 Notice: Notice (8): Undefined variable: Base in [APP/views/b_bases/wapl/show.ctp, line 38]
+2010-02-05 11:49:24 Notice: Notice (8): Undefined index:  ABasis in [APP/views/b_bases/wapl/show.ctp, line 38]
+2010-02-05 12:34:43 Notice: Notice (8): Undefined property: PaginatorHelper::$BBasis in [APP/views/b_bases/show.ctp, line 61]
