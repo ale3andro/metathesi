@@ -1,43 +1,25 @@
-<!-- File: /app/views/provinces/pages/athina.ctp -->
 <?php
-	echo  $this->element("header", array( "activeTab" => 3) );
-	$this->set('title', 'metathesi.gr - Νομός Θεσσαλονίκης');
+	$title = 'metathesi.gr - Νομός Αττικής';
+	$this->set('title', $title);
+
+	echo  $this->element("waplText", array( "text" => "[h2]" . $title . "[/h2]") );	
+	$text = "Ο Νομός Αττικής υποδιαιρείται σε 6 ΠΥΣΔΕ /ΠΥΣΠΕ:";
+	echo  $this->element("waplText", array( "text" => $text) );	
+	
+	echo  $this->element("waplLink", array( "label" => "Α' Αθήνας",
+						"url" => $this->webroot . "provinces/show/1") );
+	echo  $this->element("waplLink", array( "label" => "Β' Αθήνας",
+						"url" => $this->webroot . "provinces/show/9") );
+	echo  $this->element("waplLink", array( "label" => "Γ' Αθήνας",
+						"url" => $this->webroot . "provinces/show/12") );
+	echo  $this->element("waplLink", array( "label" => "Δ' Αθήνας",
+						"url" => $this->webroot . "provinces/show/13") );
+	echo  $this->element("waplLink", array( "label" => "Ανατολικής Αττικής",
+						"url" => $this->webroot . "provinces/show/3") );
+	echo  $this->element("waplLink", array( "label" => "Δυτικής Αττικής",
+						"url" => $this->webroot . "provinces/show/16") );
+	echo  $this->element("waplLink", array( "label" => "Πειραιά",
+						"url" => $this->webroot . "provinces/show/46") );
 ?>
-
-<div id="wrapper">
-<div class="btm">
-	<div id="page">
-		<div id="content" style="float:left">
-			<div class="post">
-				<h1 class="title">Νομός Αττικής</h1>
-				<div class="entry">
-					<p>
-						Ο Νομός Αττικής υποδιαιρείται σε 6 ΠΥΣΔΕ /ΠΥΣΠΕ: 
-						<ul>
-							<li><?php echo $html->link("Α' Αθήνας", "/provinces/show/1"); ?></li>
-							<li><?php echo $html->link("Β' Αθήνας", "/provinces/show/9"); ?></li>
-							<li><?php echo $html->link("Γ' Αθήνας", "/provinces/show/12"); ?></li>
-							<li><?php echo $html->link("Δ' Αθήνας", "/provinces/show/13"); ?></li>
-							<li><?php echo $html->link("Ανατολικής Αττικής", "/provinces/show/3"); ?></li>
-							<li><?php echo $html->link("Δυτικής Αττικής", "/provinces/show/16"); ?></li>
-							<li><?php echo $html->link("Πειραιά", "/provinces/show/46"); ?></li>
-						</ul>						
-					</p>
-				</div>
-				<p class="meta">Posted by <a href="#">ale3andro</a> on March 10, 2008
-					&nbsp;&bull;&nbsp;
-				</p>
-			</div>
-			
-			
-		</div>
-		<!-- end #content -->
-		<div style="clear: both;">&nbsp;</div>
-	</div>
-</div>
-
-
-
-
 
 		

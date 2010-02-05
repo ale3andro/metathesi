@@ -27,6 +27,8 @@
 	
 	$this->set('title', $title);
 		
+	echo  $this->element("waplText", array( "text" => "[h2]" . $title . "[/h2]") );	
+	
 	if ($ab!=1 && $ab!=2)
 	{
 		

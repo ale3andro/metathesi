@@ -1,37 +1,21 @@
-<!-- File: /app/views/provinces/pages/about.ctp -->
 <?php
-	echo  $this->element("header", array( "activeTab" => 4) );
-	$this->set('title', 'Άδειες Template, εικόνων');
-?>
+	$title = 'Άδειες Template, εικόνων';
+	$this->set('title', $title);
 
-<div id="wrapper">
-<div class="btm">
-	<div id="page">
-		<div id="contentBIG" style="float:left">
-			<div class="post">
-				<h1 class="title">Άδειες Template, εικόνων</h1>
-				<div class="entry">
-					<p>
-						Όλες οι εικόνες και τα εικονίδια που χρησιμοποιούνται στο <a href="http://metathesi.gr">metathesi.gr</a>
-						 έχουν άδεια <a href="http://www.creativecommons.org">Creative Commons<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>. Πιο συγκεκριμένα:
-						<ol>
-							<li>Το template του metathesi.gr είναι το <a href="http://www.freecsstemplates.org/preview/compromise">Compromise<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>
-							</li>
-							<li>Ο χάρτης της Ελλάδας που χρησιμοποιείται στην κεντρική σελίδα (μαζί με την άδεια του) βρέθηκε
-									<a href="http://commons.wikimedia.org/wiki/File:Greece_prefectures_map.png">εδώ<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>.
-							</li>
-							<li>Το εικονίδιο του εξωτερικού συνδέσμου (external link) βρέθηκε 
-									<a href="http://commons.wikimedia.org/wiki/File:Icon_External_Link.png">εδώ<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>.
-							</li>
-						</ol>
-					</p>
-				</div>
-				
-			</div>
-			
-			
-		</div>
-		<!-- end #content -->
-		<div style="clear: both;">&nbsp;</div>
-	</div>
-</div>
+	echo  $this->element("waplText", array( "text" => "[h2]" . $title . "[/h2]") );	
+
+	$text = "Όλες οι εικόνες και τα εικονίδια που χρησιμοποιούνται στο [url=http://metathesi.gr]metathesi.gr[/url]
+				έχουν άδεια [url=http://www.creativecommons.org]Creative Commons[/url]. Πιο συγκεκριμένα:
+						[list]
+							[*]Το template του metathesi.gr είναι το [url=http://www.freecsstemplates.org/preview/compromise]
+								Compromise[/url].
+							[/*]
+							[*]Ο χάρτης της Ελλάδας που χρησιμοποιείται στην κεντρική σελίδα (μαζί με την άδεια του) βρέθηκε
+									[url=http://commons.wikimedia.org/wiki/File:Greece_prefectures_map.png]εδώ[/url].
+							[/*]
+							[*]Το εικονίδιο του εξωτερικού συνδέσμου (external link) βρέθηκε 
+									[url=http://commons.wikimedia.org/wiki/File:Icon_External_Link.png]εδώ[/url].
+							[/*]
+						[/list]";
+	echo  $this->element("waplText", array( "text" => $text) );	
+?>

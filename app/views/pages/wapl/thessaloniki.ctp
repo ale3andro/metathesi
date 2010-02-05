@@ -1,35 +1,18 @@
-<!-- File: /app/views/provinces/pages/thessaloniki.ctp -->
 <?php
-	echo  $this->element("header", array( "activeTab" => 3) );
-	$this->set('title', 'metathesi.gr - Νομός Θεσσαλονίκης');
+	$title = 'metathesi.gr - Νομός Θεσσαλονίκης';
+	$this->set('title', $title);
+
+	echo  $this->element("waplText", array( "text" => "[h2]" . $title . "[/h2]") );	
+	$text = "Ο Νομός Θεσσαλονίκης υποδιαιρείται σε 2 ΠΥΣΔΕ /ΠΥΣΠΕ:";
+	echo  $this->element("waplText", array( "text" => $text) );	
+	
+	echo  $this->element("waplLink", array( "label" => "Α' Θεσσαλονίκης (κέντρο και Ανατολική Θεσσαλονίκη)",
+						"url" => $this->webroot . "provinces/show/7") );
+	echo  $this->element("waplLink", array( "label" => "Β' Θεσσαλονίκης (Δυτική Θεσσαλονίκη και υπόλοιπο νομού)",
+						"url" => $this->webroot . "provinces/show/11") );
+	
 ?>
 
-<div id="wrapper">
-<div class="btm">
-	<div id="page">
-		<div id="content" style="float:left">
-			<div class="post">
-				<h1 class="title">Νομός Θεσσαλονίκης</h1>
-				<div class="entry">
-					<p>
-						Ο Νομός Θεσσαλονίκης διαιρείται σε 2 ΠΥΣΔΕ / ΠΥΣΠΕ:
-						<ul>
-							<li><?php echo $html->link("Α' Θεσσαλονίκης", "/provinces/show/7"); ?> (κέντρο και Ανατολική Θεσσαλονίκη)</li>
-							<li><?php echo $html->link("Β' Θεσσαλονίκης", "/provinces/show/11"); ?> (Δυτική Θεσσαλονίκη και υπόλοιπο νομού)</li>							
-						</ul>
-					</p>
-				</div>
-				<p class="meta">Posted by <a href="#">ale3andro</a> on March 10, 2008
-					&nbsp;&bull;&nbsp;
-				</p>
-			</div>
-			
-			
-		</div>
-		<!-- end #content -->
-		<div style="clear: both;">&nbsp;</div>
-	</div>
-</div>
 
 
 
