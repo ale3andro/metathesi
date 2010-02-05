@@ -233,3 +233,7 @@
 2010-01-26 10:42:57 Notice: Notice (8): Undefined variable: javascript in [APP/views/b_bases/from_specialty.ctp, line 12]
 2010-01-26 10:47:45 Notice: Notice (8): Undefined variable: javascript in [APP/views/b_bases/from_specialty.ctp, line 12]
 2010-01-26 10:47:45 Notice: Notice (8): Undefined variable: javascript in [APP/views/b_bases/from_specialty.ctp, line 12]
+2010-02-01 10:53:53 Notice: Notice (8): Array to string conversion in [APP/controllers/components/mobile_detection.php, line 39]
+2010-02-01 10:54:04 Notice: Notice (8): Array to string conversion in [APP/controllers/components/mobile_detection.php, line 39]
+2010-02-01 12:11:09 Notice: Notice (8): Undefined variable: class in [APP/views/elements/waplText.ctp, line 5]
+2010-02-01 12:12:19 Notice: Notice (8): Undefined variable: class in [APP/views/elements/waplText.ctp, line 5]

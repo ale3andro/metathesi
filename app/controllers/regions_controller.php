@@ -2,6 +2,7 @@
 	class RegionsController extends AppController
 	{
 		var $name="Regions";
+		
 		function index()
 		{
 			if (isset($this->params['requested']))
@@ -13,6 +14,4 @@
 			return $this->Region->findById($id);
 		}
 	}
-?>	
-	
-	
+?>

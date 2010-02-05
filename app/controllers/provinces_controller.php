@@ -2,6 +2,7 @@
 	class ProvincesController extends AppController
 	{
 		var $name="Provinces";
+		
 		function index()
 		{
 			$this->pageTitle = "Οι περιοχές της Ελληνικής Εκπαίδευσης";

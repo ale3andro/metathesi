@@ -99,7 +99,6 @@
 				}
 			}
 		}
-		
 		function getAvailableYears()
 		{
 			if (isset($this->params['requested']))
