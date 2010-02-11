@@ -77,7 +77,8 @@
 										$i++; 
 									}
 									echo "</ul>";
-									
+									echo "<br />Τηλέφωνο: " . $theProvince['Province']['A_telephone'];
+									echo "<br />Fax: " . $theProvince['Province']['A_fax'];
 									echo "<br /><a href=\"" . $theProvince['Province']['A_url'] . "\">Ιστοσελίδα ΔΙΠΕ (εξωτερικός σύνδεσμος)" . 
 												$html->image("external_link.gif", array('class' => 'external')) . "</a><br />";
 								}
@@ -109,6 +110,8 @@
 									}
 									echo "</ul>";
 									
+									echo "<br />Τηλέφωνο: " . $theProvince['Province']['B_telephone'];
+									echo "<br />Fax: " . $theProvince['Province']['B_fax'];
 									echo "<br /><a href=\"" . $theProvince['Province']['B_url'] . "\">Ιστοσελίδα ΔΙΔΕ (εξωτερικός σύνδεσμος)" . 
 											$html->image("external_link.gif", array('class' => 'external')) . "</a><br />";
 								}

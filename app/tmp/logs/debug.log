@@ -241,3 +241,4 @@
 2010-02-05 11:44:52 Notice: Notice (8): Undefined variable: Base in [APP/views/b_bases/wapl/show.ctp, line 38]
 2010-02-05 11:49:24 Notice: Notice (8): Undefined index:  ABasis in [APP/views/b_bases/wapl/show.ctp, line 38]
 2010-02-05 12:34:43 Notice: Notice (8): Undefined property: PaginatorHelper::$BBasis in [APP/views/b_bases/show.ctp, line 61]
+2010-02-11 12:57:37 Notice: Notice (8): Undefined variable: province in [APP/views/provinces/show.ctp, line 114]
