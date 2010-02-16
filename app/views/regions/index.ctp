@@ -21,6 +21,8 @@
 											<th scope=\"col\" class=\"narrow\">Α/Α</th>
 											<th scope=\"col\">Περιγραφή</th>					
 											<th scope=\"col\">Ιστοσελίδα</th>
+											<th scope=\"col\">Τηλ.</th>
+											<th scope=\"col\">Fax</th>
 										</tr>
 									</thead>
 									<tbody>";
@@ -30,6 +32,8 @@
 								echo "<td>" . $region['Region']['id'] . "</td>";
 								echo "<td>" . $region['Region']['description'] . "</td>";
 								echo "<td>" . $html->link($region['Region']['url'], $region['Region']['url']) . "</td>";
+								echo "<td>" . $region['Region']['telephone'] . "</td>";
+								echo "<td>" . $region['Region']['fax'] . "</td>";
 								echo "</tr>";							
 							}
 							echo "</tbody></table>";
