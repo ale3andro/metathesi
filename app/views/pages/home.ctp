@@ -16,6 +16,8 @@
 						<strong>μεταθέσεις</strong>... Για περισσότερες πληροφορίες σχετικά με το <a href="http://metathesi.gr">metathesi.gr</a> επισκεφθείτε 
 						<a href="pages/about">αυτή</a> τη σελίδα.
 						<br /><?php echo $html->link("Disclaimer", "disclaimer"); ?>
+						<br />
+						<br /><b>Νέο! (30/03/2010) Προστέθηκαν οι βάσεις μετάθεσης Πρωτοβάθμιας Εκπαίδευσης του 2010!</b>
 					</p>
 				</div>
 				
