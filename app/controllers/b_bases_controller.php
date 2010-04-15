@@ -2,8 +2,36 @@
 	class BBasesController extends AppController
 	{
 		var $name = "BBases";
-		var $paginate = array('limit' => 25, 'order' => array('BBasis.specialty_id' => 'asc'));
+		var $paginate = array('limit' => 25, 'order' => array('BBasis.specialty_id' => 'asc', 'BBasis.points' => 'desc'));
 		var $helpers = array('Html', 'Javascript');
+		
+		function index()
+		{
+			$this->set('areas_list_box', $this->requestAction("/b_areas/getSelectBox/b_areas"));
+			$this->set('years_list_box', $this->requestAction("/b_bases/getYearsListBox/years"));
+		}
+		
+		function year($year=-1)
+		{
+			$years = $this->requestAction("/b_bases/getAvailableYears");
+			$maxYear = $years[0]['BBasis']['year'];
+			$found = false;
+			
+			foreach ($years as $AYear)
+			{
+				if ($AYear['BBasis']['year']>$maxYear)
+					$maxYear = $AYear['BBasis']['year'];
+				if ($AYear['BBasis']['year']==$year)
+					$found=true;
+			}		
+			if (!$found)
+				$year=$maxYear;
+	
+			$this->set('year', $year);
+			$this->set('bases', $this->paginate('BBasis', array('BBasis.year' => $year)));
+			$this->set('b_specialties', $this->requestAction("/b_specialties/"));
+			$this->set('b_areas_list', $this->requestAction("/b_areas/getDescriptionList"));
+		}
 		
 		function show($areaId, $year=-1)
 		{
@@ -100,6 +128,19 @@
 		{
 			if (isset($this->params['requested']))
 				return $this->BBasis->findAll(null, 'DISTINCT BBasis.year', 'ORDER BY BBasis.year');			
+		}
+		
+		function getYearsListBox($selectName)
+		{
+			$years = $this->requestAction("b_bases/getAvailableYears");
+			
+			$retVal = "<select name=\"" . $selectName . "\">";
+			$retVal .= "<option value=\"-1\">Όλες</option>";
+			for ($i=0; $i<count($years); $i++)
+				$retVal .= "<option value=\"" . $years[$i]['BBasis']['year'] . "\">" .  $years[$i]['BBasis']['year'] . "</option>";
+			
+			$retVal .= "</select>";
+			return $retVal;	
 		}
 	}
 ?>

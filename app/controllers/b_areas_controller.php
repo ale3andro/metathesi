@@ -66,5 +66,32 @@
 				return $this->requestAction("/provinces/getDideAll/" . $dide['BArea']['dide_id']);
 			}
 		}
+		
+		function getDescriptionList()
+		{
+			if (isset($this->params['requested']))
+			{
+				$allProvinces = $this->requestAction("/provinces/getAll");
+				$allAreas = $this->BArea->find("all");
+				$counter=0;
+				foreach ($allProvinces as $province)
+				{
+					for ($i=0; $i<count($allAreas); $i++)
+					{
+						if ($allAreas[$i]['BArea']['dide_id'] == $province['Province']['id'])
+						{
+							$final[$allAreas[$i]['BArea']['id']]['id'] = $allAreas[$i]['BArea']['id'];
+							$final[$allAreas[$i]['BArea']['id']]['descr'] = $province['Province']['description'];
+							$temp = explode(" ", $final[$allAreas[$i]['BArea']['id']]['descr']);
+							if ( (count($temp) != 1) && ($temp[1]!="Αττικής") )
+								$final[$allAreas[$i]['BArea']['id']]['descr'] = $temp[0];
+							$final[$allAreas[$i]['BArea']['id']]['prefix'] = $allAreas[$i]['BArea']['description'];
+							$counter++;	
+						}
+					}
+				}			
+			}
+			return $final;			
+		}
 	}
 ?>
