@@ -13,8 +13,12 @@
 				<div class="entry">
 					<p>
 						<?php
-							echo $areas_list_box;
-							echo $years_list_box;							
+							echo "Περιοχή:<br />";
+							echo $areas_select_box . "<br />";
+							echo "Χρονιά:<br />";
+							echo $years_select_box . "<br />";
+							echo "Ειδικότητα:<br />";
+							echo $specialties_select_box;				
 						?>
 					</p>
 				</div>

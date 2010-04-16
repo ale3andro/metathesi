@@ -7,8 +7,9 @@
 		
 		function index()
 		{
-			$this->set('areas_list_box', $this->requestAction("/b_areas/getSelectBox/b_areas"));
-			$this->set('years_list_box', $this->requestAction("/b_bases/getYearsListBox/years"));
+			$this->set('areas_select_box', $this->requestAction("/b_areas/getSelectBox/b_areas"));
+			$this->set('years_select_box', $this->requestAction("/b_bases/getYearsSelectBox/years"));
+			$this->set('specialties_select_box', $this->requestAction("b_specialties/getSelectBox/b_specialties"));
 		}
 		
 		function year($year=-1)
@@ -130,7 +131,7 @@
 				return $this->BBasis->findAll(null, 'DISTINCT BBasis.year', 'ORDER BY BBasis.year');			
 		}
 		
-		function getYearsListBox($selectName)
+		function getYearsSelectBox($selectName)
 		{
 			$years = $this->requestAction("b_bases/getAvailableYears");
 			
