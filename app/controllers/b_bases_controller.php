@@ -7,9 +7,9 @@
 		
 		function index()
 		{
-			$this->set('areas_select_box', $this->requestAction("/b_areas/getSelectBox/b_areas"));
-			$this->set('years_select_box', $this->requestAction("/b_bases/getYearsSelectBox/years"));
-			$this->set('specialties_select_box', $this->requestAction("b_specialties/getSelectBox/b_specialties"));
+			$this->set('areas_select_box', $this->requestAction("/b_areas/getSelectBox/data[BBasis][area_code]"));
+			$this->set('years_select_box', $this->requestAction("/b_bases/getYearsSelectBox/data[BBasis][year]"));
+			$this->set('specialties_select_box', $this->requestAction("b_specialties/getSelectBox/data[BBasis][specialty_id]"));
 		}
 		
 		function year($year=-1)
@@ -142,6 +142,52 @@
 			
 			$retVal .= "</select>";
 			return $retVal;	
+		}
+		
+		function view()
+		{
+			$sFlag = (isset($_SESSION['year'])) && (isset($_SESSION['specialty_id'])) && (isset($_SESSION['area_code']));
+			
+			if ( (empty($this->data)) && (!$sFlag) )
+				$this->flash('Πρέπει να οριστούν κριτήρια αναζήτησης', '/b_bases', 3);
+			else
+			{
+				if (!empty($this->data))
+				{
+					$_SESSION['year'] = $this->data['BBasis']['year'];
+					$_SESSION['specialty_id'] = $this->data['BBasis']['specialty_id'];
+					$_SESSION['area_code'] = $this->data['BBasis']['area_code'];
+				}
+			
+				
+				// Να βάλω έλεγχο για να μην είναι όλες οι τιμές -1;;
+				
+				$year = $_SESSION['year'];
+				$specialty_id = $_SESSION['specialty_id'];
+				$area_code = $_SESSION['area_code'];
+				
+				if ($year != -1)
+					$conditions['BBasis.year'] = $year;
+				if ($specialty_id != -1)
+					$conditions['BBasis.specialty_id'] = $specialty_id;
+				if ($area_code != -1)
+					$conditions['BBasis.area_code'] = $area_code;
+								
+				if ($year!=-1)
+					$this->paginate = array('BBasis' => array('limit' => 25, 'order' => array('BBasis.specialty_id' => 'asc', 'BBasis.area_code' => 'asc')));
+				else
+					$this->paginate = array('BBasis' => array('limit' => 25, 'order' => array('BBasis.specialty_id' => 'asc', 
+								'BBasis.year' => 'asc', 'BBasis.area_code' => 'asc')));
+				
+				if (isset($conditions))
+					$bases = $this->paginate('BBasis', $conditions);
+				else
+					$bases = $this->paginate('BBasis');
+							
+				$this->set('bases', $bases);
+				$this->set('b_specialties', $this->requestAction("/b_specialties/"));
+				$this->set('b_areas_list', $this->requestAction("/b_areas/getDescriptionList"));
+			}
 		}
 	}
 ?>

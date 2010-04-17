@@ -73,28 +73,35 @@
 		
 		function showResults()
 		{
-			if (!empty($this->data))
+			$sFlag = (isset($_SESSION['municipality'])) && (isset($_SESSION['points'])) && (isset($_SESSION['moreLess'])) && (isset($_SESSION['area_id']));
+			
+			if ( (empty($this->data)) && (!$sFlag) )
+				$this->flash('Πρέπει να οριστούν κριτήρια αναζήτησης', '/b_schools/search', 3);
+			else
 			{
-				$_SESSION['municipality'] = $this->data['BSchool']['municipality'];
-				$_SESSION['points'] = $this->data['BSchool']['points'];
-				$_SESSION['moreLess'] = $_REQUEST['moreLess'];
-				$_SESSION['area_id'] = $this->data['BSchool']['area_id'];
-			}
-			
-			$this->set('title', "Αποτελέσματα Αναζήτησης Σχολείων");
+				if (!empty($this->data))
+				{
+					$_SESSION['municipality'] = $this->data['BSchool']['municipality'];
+					$_SESSION['points'] = $this->data['BSchool']['points'];
+					$_SESSION['moreLess'] = $_REQUEST['moreLess'];
+					$_SESSION['area_id'] = $this->data['BSchool']['area_id'];
+				}
 				
-			if ($_SESSION['municipality'] != "")
-				$conditions['BSchool.municipality LIKE'] = $_SESSION['municipality'] . "%";
+				$this->set('title', "Αποτελέσματα Αναζήτησης Σχολείων");
 				
-			$conditions['BSchool.points ' . $_SESSION['moreLess']] = $_SESSION['points'];
+				if ($_SESSION['municipality'] != "")
+					$conditions['BSchool.municipality LIKE'] = $_SESSION['municipality'] . "%";
+				
+				$conditions['BSchool.points ' . $_SESSION['moreLess']] = $_SESSION['points'];
 			
-			if ($_SESSION['area_id'] != "-1")
-				$conditions['BSchool.area_id'] = $_SESSION['area_id'];
+				if ($_SESSION['area_id'] != "-1")
+					$conditions['BSchool.area_id'] = $_SESSION['area_id'];
 		
-			$this->set("schools", $this->paginate('BSchool', $conditions));
-			$this->set("b_school_types", $this->requestAction("/b_school_types/getDescriptions"));
-			$this->set("b_areas", $this->requestAction("/b_areas/"));	
-			$this->set("provinces", $this->requestAction("/provinces/"));
+				$this->set("schools", $this->paginate('BSchool', $conditions));
+				$this->set("b_school_types", $this->requestAction("/b_school_types/getDescriptions"));
+				$this->set("b_areas", $this->requestAction("/b_areas/"));	
+				$this->set("provinces", $this->requestAction("/provinces/"));
+			}
 		}
 		
 		function search()

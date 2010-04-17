@@ -70,28 +70,35 @@
 		
 		function showResults()
 		{
-			if (!empty($this->data))
+			$sFlag = (isset($_SESSION['description'])) && (isset($_SESSION['points'])) && (isset($_SESSION['moreLess'])) && (isset($_SESSION['area_id']));
+			
+			if ( (empty($this->data)) && (!$sFlag) )
+				$this->flash('Πρέπει να οριστούν κριτήρια αναζήτησης', '/a_schools/search', 3);
+			else
 			{
-				$_SESSION['description'] = $this->data['ASchool']['description'];
-				$_SESSION['points'] = $this->data['ASchool']['points'];
-				$_SESSION['moreLess'] = $_REQUEST['moreLess'];
-				$_SESSION['area_id'] = $this->data['ASchool']['area_id'];
-			}
+				if (!empty($this->data))
+				{
+					$_SESSION['description'] = $this->data['ASchool']['description'];
+					$_SESSION['points'] = $this->data['ASchool']['points'];
+					$_SESSION['moreLess'] = $_REQUEST['moreLess'];
+					$_SESSION['area_id'] = $this->data['ASchool']['area_id'];
+				}
 			
-			$this->set('title', "Αποτελέσματα Αναζήτησης Σχολείων");
+				$this->set('title', "Αποτελέσματα Αναζήτησης Σχολείων");
 				
-			if ($_SESSION['description'] != "")
-				$conditions['ASchool.description LIKE'] = $_SESSION['description'] . "%";
+				if ($_SESSION['description'] != "")
+					$conditions['ASchool.description LIKE'] = $_SESSION['description'] . "%";
 				
-			$conditions['ASchool.points ' . $_SESSION['moreLess']] = $_SESSION['points'];
+				$conditions['ASchool.points ' . $_SESSION['moreLess']] = $_SESSION['points'];
 			
-			if ($_SESSION['area_id'] != "-1")
-				$conditions['ASchool.area_id'] = $_SESSION['area_id'];
+				if ($_SESSION['area_id'] != "-1")
+					$conditions['ASchool.area_id'] = $_SESSION['area_id'];
 		
-			$this->set("schools", $this->paginate('ASchool', $conditions));
-			$this->set("a_school_types", $this->requestAction("/a_school_types/getDescriptions"));
-			$this->set("a_areas", $this->requestAction("/a_areas/"));
-			$this->set("provinces", $this->requestAction("/provinces/"));			
+				$this->set("schools", $this->paginate('ASchool', $conditions));
+				$this->set("a_school_types", $this->requestAction("/a_school_types/getDescriptions"));
+				$this->set("a_areas", $this->requestAction("/a_areas/"));
+				$this->set("provinces", $this->requestAction("/provinces/"));
+			}
 		}
 		
 		function search()
