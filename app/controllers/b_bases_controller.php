@@ -107,7 +107,8 @@
 						
 					$bases = $this->BBasis->find('all', array(
 												'conditions' => array('BBasis.specialty_id' => $specialtyId,					
-													'BBasis.area_code' => $areaId)));
+													'BBasis.area_code' => $areaId),
+													'order' => array('BBasis.year' => 'asc')));
 					if ($bases == false)
 						$this->flash('Δεν υπάρχει ειδικότητα με αυτό τον κωδικό', '/provinces/viewAll/2', 3);
 					else

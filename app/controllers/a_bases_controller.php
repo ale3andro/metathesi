@@ -22,7 +22,8 @@
 			
 					$bases = $this->ABasis->find('all', array(
 												'conditions' => array('ABasis.specialty_id' => $specialtyId,					
-													'ABasis.area_code' => $areaId)));
+													'ABasis.area_code' => $areaId),
+													'order' => array('ABasis.year' => 'asc')));
 					if ($bases == false)
 						$this->flash('Δεν υπάρχει ειδικότητα με αυτό τον κωδικό', '/provinces/viewAll/1', 3);
 					else
