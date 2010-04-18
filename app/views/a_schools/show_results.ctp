@@ -12,11 +12,14 @@
 				<div class="entry">
 					<p>
 					<?php
-						echo $this->element("showASchoolsFull",
-							array(	"areas" => $a_areas,
-							"schoolTypes" => $a_school_types,
-							"schools" => $schools,
-							"provinces" => $provinces));
+						if (count($schools)==0)
+							echo "Δεν βρέθηκαν σχολεία για τα δεδομένα κριτήρια...<br />";
+						else
+							echo $this->element("showASchoolsFull",
+								array(	"areas" => $a_areas,
+								"schoolTypes" => $a_school_types,
+								"schools" => $schools,
+								"provinces" => $provinces));
 						
 						echo $html->link('Νέα αναζήτηση', "/a_schools/search");
 					?>

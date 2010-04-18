@@ -12,8 +12,11 @@
 				<div class="entry">
 					<p>
 					<?php
-						echo $this->element("showBSchoolsFull",
-							array(	"areas" => $b_areas,
+						if (count($schools)==0)
+							echo "Δεν βρέθηκαν σχολεία για τα δεδομένα κριτήρια...<br />";
+						else
+							echo $this->element("showBSchoolsFull",
+								array(	"areas" => $b_areas,
 									"schoolTypes" => $b_school_types,
 									"schools" => $schools,
 									"provinces" => $provinces));

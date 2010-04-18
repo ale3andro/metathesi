@@ -7,9 +7,15 @@
 		
 		function index()
 		{
-			$this->set('areas_select_box', $this->requestAction("/b_areas/getSelectBox/data[BBasis][area_code]"));
-			$this->set('years_select_box', $this->requestAction("/b_bases/getYearsSelectBox/data[BBasis][year]"));
-			$this->set('specialties_select_box', $this->requestAction("b_specialties/getSelectBox/data[BBasis][specialty_id]"));
+			if (!isset($this->data))
+			{
+				$this->set('areas_select_box', $this->requestAction("/b_areas/getSelectBox/data[BBasis][area_code]"));
+				$this->set('years_select_box', $this->requestAction("/b_bases/getYearsSelectBox/data[BBasis][year]"));
+				$this->set('specialties_select_box', $this->requestAction("b_specialties/getSelectBox/data[BBasis][specialty_id]"));
+			}
+			else
+				$this->redirect("/b_bases/view/" . $this->data['BBasis']['year'] . "/" . $this->data['BBasis']['specialty_id'] . "/" .
+									$this->data['BBasis']['area_code']);
 		}
 		
 		function year($year=-1)
@@ -145,28 +151,12 @@
 			return $retVal;	
 		}
 		
-		function view()
+		function view($year, $specialty_id, $area_code)
 		{
-			$sFlag = (isset($_SESSION['year'])) && (isset($_SESSION['specialty_id'])) && (isset($_SESSION['area_code']));
-			
-			if ( (empty($this->data)) && (!$sFlag) )
-				$this->flash('Πρέπει να οριστούν κριτήρια αναζήτησης', '/b_bases', 3);
+			if ( (!isset($year)) || (!isset($specialty_id)) || (!isset($area_code)) )
+				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος', '/b_bases', 3);
 			else
 			{
-				if (!empty($this->data))
-				{
-					$_SESSION['year'] = $this->data['BBasis']['year'];
-					$_SESSION['specialty_id'] = $this->data['BBasis']['specialty_id'];
-					$_SESSION['area_code'] = $this->data['BBasis']['area_code'];
-				}
-			
-				
-				// Να βάλω έλεγχο για να μην είναι όλες οι τιμές -1;;
-				
-				$year = $_SESSION['year'];
-				$specialty_id = $_SESSION['specialty_id'];
-				$area_code = $_SESSION['area_code'];
-				
 				if ($year != -1)
 					$conditions['BBasis.year'] = $year;
 				if ($specialty_id != -1)

@@ -2,7 +2,21 @@
 	class ABasesController extends AppController
 	{
 		var $name = "ABases";
+		var $paginate = array('limit' => 25, 'order' => array('ABasis.specialty_id' => 'asc', 'ABasis.points' => 'desc'));
 		var $helpers = array('Html', 'Javascript');
+		
+		function index()
+		{
+			if (!isset($this->data))
+			{
+				$this->set('areas_select_box', $this->requestAction("/a_areas/getSelectBox/data[ABasis][area_code]"));
+				$this->set('years_select_box', $this->requestAction("/a_bases/getYearsSelectBox/data[ABasis][year]"));
+				$this->set('specialties_select_box', $this->requestAction("a_specialties/getSelectBox/data[ABasis][specialty_id]"));
+			}
+			else
+				$this->redirect("/a_bases/view/" . $this->data['ABasis']['year'] . "/" . $this->data['ABasis']['specialty_id'] . "/" .
+									$this->data['ABasis']['area_code']);
+		}
 		
 		function fromSpecialty($specialtyId, $areaId)
 		{
@@ -100,10 +114,54 @@
 				}
 			}
 		}
+		
 		function getAvailableYears()
 		{
 			if (isset($this->params['requested']))
 				return $this->ABasis->findAll(null, 'DISTINCT ABasis.year', 'ORDER BY ABasis.year');			
+		}
+		
+		function getYearsSelectBox($selectName)
+		{
+			$years = $this->requestAction("a_bases/getAvailableYears");
+			
+			$retVal = "<select name=\"" . $selectName . "\">";
+			$retVal .= "<option value=\"-1\">Όλες</option>";
+			for ($i=0; $i<count($years); $i++)
+				$retVal .= "<option value=\"" . $years[$i]['ABasis']['year'] . "\">" .  $years[$i]['ABasis']['year'] . "</option>";
+			
+			$retVal .= "</select>";
+			return $retVal;	
+		}
+		
+		function view($year, $specialty_id, $area_code)
+		{
+			if ( (!isset($year)) || (!isset($specialty_id)) || (!isset($area_code)) )
+				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος', '/a_bases', 3);
+			else
+			{
+				if ($year != -1)
+					$conditions['ABasis.year'] = $year;
+				if ($specialty_id != -1)
+					$conditions['ABasis.specialty_id'] = $specialty_id;
+				if ($area_code != -1)
+					$conditions['ABasis.area_code'] = $area_code;
+								
+				if ($year!=-1)
+					$this->paginate = array('ABasis' => array('limit' => 25, 'order' => array('ABasis.specialty_id' => 'asc', 'ABasis.area_code' => 'asc')));
+				else
+					$this->paginate = array('ABasis' => array('limit' => 25, 'order' => array('ABasis.specialty_id' => 'asc', 
+								'ABasis.year' => 'asc', 'ABasis.area_code' => 'asc')));
+				
+				if (isset($conditions))
+					$bases = $this->paginate('ABasis', $conditions);
+				else
+					$bases = $this->paginate('ABasis');
+							
+				$this->set('bases', $bases);
+				$this->set('a_specialties', $this->requestAction("/a_specialties/"));
+				$this->set('a_areas_list', $this->requestAction("/a_areas/getDescriptionList"));
+			}
 		}
 	}
 ?>

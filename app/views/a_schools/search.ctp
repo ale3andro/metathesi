@@ -12,7 +12,7 @@
 				<div class="entry">
 					<p>
 					<?php
-						echo $form->create('ASchool', array('action' => 'showResults'));
+						echo $form->create('ASchool', array('action' => 'search'));
 						echo $form->input('description', array('label' => 'Περιγραφή:'));
 						echo "Μόρια Σχολείου" . $this->element("moreLess", array("selectName" => "moreLess")) . 
 							$this->element("selectMoriaA", array("selectName" => "data[ASchool][points]")) . "<br />";

@@ -71,31 +71,25 @@
 			$this->set("region", $this->requestAction("/regions/getRegionFromId/" . $regionId));
 		}
 		
-		function showResults()
+		function showResults($municipality, $points, $moreLess, $area_id)
 		{
-			$sFlag = (isset($_SESSION['municipality'])) && (isset($_SESSION['points'])) && (isset($_SESSION['moreLess'])) && (isset($_SESSION['area_id']));
+			$values = array('=', '>=', '<=');
 			
-			if ( (empty($this->data)) && (!$sFlag) )
-				$this->flash('Πρέπει να οριστούν κριτήρια αναζήτησης', '/b_schools/search', 3);
+			if ( (!isset($municipality)) || (!isset($points)) || (!isset($moreLess)) || (!isset($area_id)) )
+				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος...', '/b_schools/search', 3);
+			elseif (!in_array($moreLess, $values))
+				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος...', '/b_schools/search', 3);
 			else
 			{
-				if (!empty($this->data))
-				{
-					$_SESSION['municipality'] = $this->data['BSchool']['municipality'];
-					$_SESSION['points'] = $this->data['BSchool']['points'];
-					$_SESSION['moreLess'] = $_REQUEST['moreLess'];
-					$_SESSION['area_id'] = $this->data['BSchool']['area_id'];
-				}
-				
 				$this->set('title', "Αποτελέσματα Αναζήτησης Σχολείων");
 				
-				if ($_SESSION['municipality'] != "")
-					$conditions['BSchool.municipality LIKE'] = $_SESSION['municipality'] . "%";
+				if ($municipality != "-1")
+					$conditions['BSchool.municipality LIKE'] = $municipality . "%";
 				
-				$conditions['BSchool.points ' . $_SESSION['moreLess']] = $_SESSION['points'];
+				$conditions['BSchool.points ' . $moreLess] = $points;
 			
-				if ($_SESSION['area_id'] != "-1")
-					$conditions['BSchool.area_id'] = $_SESSION['area_id'];
+				if ($area_id != "-1")
+					$conditions['BSchool.area_id'] = $area_id;
 		
 				$this->set("schools", $this->paginate('BSchool', $conditions));
 				$this->set("b_school_types", $this->requestAction("/b_school_types/getDescriptions"));
@@ -106,9 +100,20 @@
 		
 		function search()
 		{
-			$this->set('title', "Αναζήτηση Σχολείων Β/θμιας Εκπαίδευσης");
-			$selectName = "data[BSchool][area_id]";
-			$this->set("b_areas_select", $this->requestAction("/b_areas/getSelectBox/" . $selectName));
+			if (!isset($this->data))
+			{
+				$this->set('title', "Αναζήτηση Σχολείων Β/θμιας Εκπαίδευσης");
+				$selectName = "data[BSchool][area_id]";
+				$this->set("b_areas_select", $this->requestAction("/b_areas/getSelectBox/" . $selectName));
+			}
+			else
+			{
+				if ($this->data['BSchool']['municipality']=='')
+					$this->data['BSchool']['municipality'] = -1;
+					
+				$this->redirect("/b_schools/showResults/" . $this->data['BSchool']['municipality'] . "/" . $this->data['BSchool']['points'] . "/" . 
+									$_REQUEST['moreLess'] . "/" . $this->data['BSchool']['area_id']);
+			}
 		}
 		
 		function getPointRange($areaId)

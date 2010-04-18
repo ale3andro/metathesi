@@ -1,7 +1,7 @@
-<!-- File: /app/views/b_bases/index.ctp -->
+<!-- File: /app/views/a_bases/index.ctp -->
 <?php
-	echo  $this->element("header", array( "activeTab" => 2) );
-	$title = "Αναζήτηση Βάσεων Β/θμιας Εκπαίδευσης";
+	echo  $this->element("header", array( "activeTab" => 1) );
+	$title = "Αναζήτηση Βάσεων Α/θμιας Εκπαίδευσης";
 	$this->set('title', $title);
 ?>
 <div id="wrapper">
@@ -13,7 +13,7 @@
 				<div class="entry">
 					<p>
 						<?php
-							echo $form->create('BBasis', array('action' => 'index'));
+							echo $form->create('ABasis', array('action' => 'index'));
 							echo "Περιοχή:<br />";
 							echo $areas_select_box . "<br />";
 							echo "Χρονιά:<br />";
@@ -26,6 +26,7 @@
 				</div>
 			</div>
 		</div>
+		<!-- end #content -->	
 <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #page -->

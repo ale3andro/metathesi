@@ -68,31 +68,25 @@
 			$this->set("region", $this->requestAction("/regions/getRegionFromId/" . $regionId));
 		}
 		
-		function showResults()
+		function showResults($description, $points, $moreLess, $area_id)
 		{
-			$sFlag = (isset($_SESSION['description'])) && (isset($_SESSION['points'])) && (isset($_SESSION['moreLess'])) && (isset($_SESSION['area_id']));
+			$values = array('=', '>=', '<=');
 			
-			if ( (empty($this->data)) && (!$sFlag) )
-				$this->flash('Πρέπει να οριστούν κριτήρια αναζήτησης', '/a_schools/search', 3);
+			if ( (!isset($description)) || (!isset($points)) || (!isset($moreLess)) || (!isset($area_id)) )
+				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος...', '/a_schools/search', 3);
+			elseif (!in_array($moreLess, $values))
+				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος..,', '/a_schools/search', 3);
 			else
 			{
-				if (!empty($this->data))
-				{
-					$_SESSION['description'] = $this->data['ASchool']['description'];
-					$_SESSION['points'] = $this->data['ASchool']['points'];
-					$_SESSION['moreLess'] = $_REQUEST['moreLess'];
-					$_SESSION['area_id'] = $this->data['ASchool']['area_id'];
-				}
-			
 				$this->set('title', "Αποτελέσματα Αναζήτησης Σχολείων");
 				
-				if ($_SESSION['description'] != "")
-					$conditions['ASchool.description LIKE'] = $_SESSION['description'] . "%";
+				if ($description != "-1")
+					$conditions['ASchool.description LIKE'] = $description . "%";
 				
-				$conditions['ASchool.points ' . $_SESSION['moreLess']] = $_SESSION['points'];
+				$conditions['ASchool.points ' . $moreLess] = $points;
 			
-				if ($_SESSION['area_id'] != "-1")
-					$conditions['ASchool.area_id'] = $_SESSION['area_id'];
+				if ($area_id != "-1")
+					$conditions['ASchool.area_id'] = $area_id;
 		
 				$this->set("schools", $this->paginate('ASchool', $conditions));
 				$this->set("a_school_types", $this->requestAction("/a_school_types/getDescriptions"));
@@ -103,9 +97,20 @@
 		
 		function search()
 		{
-			$this->set('title', "Αναζήτηση Σχολείων Α/θμιας Εκπαίδευσης");
-			$selectName = "data[ASchool][area_id]";
-			$this->set("a_areas_select", $this->requestAction("/a_areas/getSelectBox/" . $selectName));
+			if (!isset($this->data))
+			{
+				$this->set('title', "Αναζήτηση Σχολείων Α/θμιας Εκπαίδευσης");
+				$selectName = "data[ASchool][area_id]";
+				$this->set("a_areas_select", $this->requestAction("/a_areas/getSelectBox/" . $selectName));
+			}
+			else
+			{
+				if ($this->data['ASchool']['description']=='')
+					$this->data['ASchool']['description'] = -1;
+					
+				$this->redirect("/a_schools/showResults/" . $this->data['ASchool']['description'] . "/" . $this->data['ASchool']['points'] . "/" . 
+									$_REQUEST['moreLess'] . "/" . $this->data['ASchool']['area_id']);
+			}
 		}
 		
 		function getPointRange($areaId)
