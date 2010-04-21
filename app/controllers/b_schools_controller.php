@@ -2,7 +2,9 @@
 	class BSchoolsController extends AppController
 	{
 		var $name = "BSchools";
-		var $paginate = array('limit' => 25, 'order' => array('BSchool.type' => 'asc', 'BSchool.municipality' => 'asc'));
+		var $paginate = array('limit' => 25, 'order' => array('BSchool.type' => 'asc', 
+							'BSchool.municipality' => 'asc',
+							'BSchool.number' => 'asc'));
 		
 		function index()
 		{			

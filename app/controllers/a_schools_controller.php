@@ -2,7 +2,8 @@
 	class ASchoolsController extends AppController
 	{
 		var $name = "ASchools";
-		var $paginate = array('limit' => 25, 'order' => array('ASchool.type' => 'asc', 'ASchool.description' => 'asc'));
+		var $paginate = array('limit' => 25, 'order' => array('ASchool.type' => 'asc', 
+							'ASchool.description' => 'asc', 'ASchool.number' => 'asc'));
 								
 		function index()
 		{			
