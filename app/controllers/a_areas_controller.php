@@ -49,8 +49,15 @@
 							$final[$counter]['id'] = $allAreas[$i]['AArea']['id'];
 							$final[$counter]['descr'] = $province['Province']['description'];
 							$temp = explode(" ", $final[$counter]['descr']);
-							if ( (count($temp) != 1) && ($temp[1]!="Αττικής") )
-								$final[$counter]['descr'] = $temp[0];
+							
+							if (count($temp) != 1)
+							{
+								if ($temp[1]!="Αττικής")
+									$final[$counter]['descr'] = $temp[0];
+								if ($temp[0]=='Αθήνας')
+									$final[$counter]['descr'] = $temp[0] . " " . $temp[1];
+							}
+							
 							$final[$counter]['prefix'] = $allAreas[$i]['AArea']['description'];
 							$counter++;	
 						}
@@ -85,8 +92,13 @@
 							$final[$allAreas[$i]['AArea']['id']]['id'] = $allAreas[$i]['AArea']['id'];
 							$final[$allAreas[$i]['AArea']['id']]['descr'] = $province['Province']['description'];
 							$temp = explode(" ", $final[$allAreas[$i]['AArea']['id']]['descr']);
-							if ( (count($temp) != 1) && ($temp[1]!="Αττικής") )
-								$final[$allAreas[$i]['AArea']['id']]['descr'] = $temp[0];
+							if (count($temp) != 1)
+							{
+								if ($temp[1]!="Αττικής")
+									$final[$counter]['descr'] = $temp[0];
+								if ($temp[0]=='Αθήνας')
+									$final[$counter]['descr'] = $temp[0] . " " . $temp[1];
+							}
 							$final[$allAreas[$i]['AArea']['id']]['prefix'] = $allAreas[$i]['AArea']['description'];
 							$counter++;	
 						}

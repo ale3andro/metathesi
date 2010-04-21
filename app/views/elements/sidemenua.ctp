@@ -24,7 +24,8 @@
 			<h2>Βάσεις Μετάθεσης</h2>
 			<ul>
 				<?php 	foreach ($a_areas as $a_area)
-							echo "<li>" . $html->link("Περιοχή " . $a_area['AArea']['description'], 
+							echo "<li>" . $html->link("Περιοχή " . 
+											(($a_area['AArea']['description']=='')?($province):($a_area['AArea']['description'])), 
 										"/a_bases/show/" . $a_area['AArea']['id']) . "</li>";
 				?>
 			</ul>

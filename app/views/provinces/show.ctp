@@ -67,10 +67,12 @@
 									foreach ($a_areas as $a_area)
 									{
 										echo "<li>";
-										echo $html->link("Περιοχή " . $a_area['AArea']['description'], 
-													"/a_bases/show/" . $a_area['AArea']['id']);
+										echo $html->link("Περιοχή " . 
+											(($a_area['AArea']['description']=='')?($theProvince['Province']['description']):($a_area['AArea']['description'])), 
+												"/a_bases/show/" . $a_area['AArea']['id']);
+										
 										if ($a_points_range[$i][0] != $a_points_range[$i][1])
-											echo " (" . $a_points_range[$i][0] . " - " . $a_points_range[$i][1] . " μόρια)";
+											echo "<br />(Τα σχολεία της περιοχής δίνουν " . $a_points_range[$i][0] . " - " . $a_points_range[$i][1] . " μόρια)";
 										else
 											echo " (" . $a_points_range[$i][0] . " μόρια)";
 										echo "</li>";
