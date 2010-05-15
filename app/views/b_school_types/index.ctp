@@ -1,7 +1,7 @@
 <!-- File: /app/views/b_school_types/index.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 0) );
-	$this->set('title', 'Τύποι Σχολείων Β/θμιας Εκπαίδευσης');
+	$this->set('title_for_layout', 'Τύποι Σχολείων Β/θμιας Εκπαίδευσης');
 ?>
 
 <div id="wrapper">

@@ -8,7 +8,7 @@
 	echo  $this->element("header", array( "activeTab" => 1));
 	$title = $theProvince['Province']['description'] . " - Περιοχή " . $area['AArea']['description'] . " - Ειδικότητα " . 
 		$aspec[$specialtyId]['code'];
-	$this->set('title', $title);
+	$this->set('title_for_layout', $title);
 	echo $javascript->link('MochiKit/MochiKit.js');
 	echo $javascript->link('PlotKit/excanvas.js');
 	echo $javascript->link('PlotKit/Base.js');

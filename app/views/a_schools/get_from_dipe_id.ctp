@@ -11,7 +11,7 @@
 			<div class="post">
 				<?php
 					$title = "Διεύθυνση Πρωτοβάθμιας Εκπαίδευσης " . $theProvince['Province']['description'];
-					$this->set('title', $title);
+					$this->set('title_for_layout', $title);
 				?>
 				<h1 class="title"><?php echo $title?></h1>
 				<div class="entry">

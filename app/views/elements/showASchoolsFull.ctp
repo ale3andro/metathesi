@@ -9,7 +9,8 @@
 	echo "<p style=\"text-align:right\">" . $paginator->counter(array('format' => 'Σελίδα %page% από %pages%')) . "</p>";
 	echo "<thead>
 				<tr>
-					<th scope=\"col\">Α/Α</th>				
+					<th scope=\"col\">Α/Α</th>
+					<th scope=\"col\" class=\"narrow\">Αριθμός</th>				
 					<th scope=\"col\">Τύπος σχολείου</th>
 					<th scope=\"col\">Όνομα σχολείου</th>
 					<th scope=\"col\">Μόρια Μετάθεσης</th>					
@@ -32,6 +33,7 @@
 		echo "<tr" . ((($i%2)!=0) ?" class=\"odd\" ":"") . ">";
 			$resultNum = ($paginator->current()-1)*($paginator->params['paging']['ASchool']['options']['limit']) + (++$i);
 			echo "<th scope=\"row\"	id=\"id" . $i . "\">" . ($resultNum) . "</th>";
+			echo "<td>" . $aSchool['ASchool']['number'] ."</td>";
 			echo "<td>" . $schoolTypes[$aSchool['ASchool']['type']] ."</td>";
 			echo "<td>" . $aSchool['ASchool']['description'] ."</td>";
 			echo "<td>" . $aSchool['ASchool']['points'] . "</td>";

@@ -2,7 +2,7 @@
 <?php
 	echo  $this->element("header", array( "activeTab" => 1) );
 	$title = "Αναζήτηση Βάσεων Α/θμιας Εκπαίδευσης";
-	$this->set('title', $title);
+	$this->set('title_for_layout', $title);
 ?>
 <div id="wrapper">
 <div class="btm">

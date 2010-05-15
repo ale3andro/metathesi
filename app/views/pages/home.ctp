@@ -2,7 +2,7 @@
 
 <?php
 	echo  $this->element("header", array( "activeTab" => 0) );
-	$this->set('title', 'metathesi.gr - Αρχική Σελίδα');
+	$this->set('title_for_layout', 'metathesi.gr - Αρχική Σελίδα');
 ?>
 
 <div id="wrapper">

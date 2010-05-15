@@ -10,7 +10,7 @@
 			<div class="post">
 				<?php
 					$title = "Όλα τα σχολεία της Πρωτοβάθμιας Εκπαίδευσης";
-					$this->set('title', $title);
+					$this->set('title_for_layout', $title);
 				?>
 				<h1 class="title"><?php echo $title?></h1>
 				<div class="entry">

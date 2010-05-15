@@ -1,7 +1,7 @@
 <!-- File: /app/views/provinces/pages/diafora.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 4) );
-	$this->set('title', 'Διάφορα');
+	$this->set('title_for_layout', 'Διάφορα');
 ?>
 
 <div id="wrapper">

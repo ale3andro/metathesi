@@ -1,7 +1,7 @@
 <!-- File: /app/views/provinces/pages/about.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 4) );
-	$this->set('title', 'Άδειες Template, εικόνων');
+	$this->set('title_for_layout', 'Άδειες Template, εικόνων');
 ?>
 
 <div id="wrapper">

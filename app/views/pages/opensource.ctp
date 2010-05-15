@@ -1,7 +1,7 @@
 <!-- File: /app/views/provinces/pages/diafora.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 5) );
-	$this->set('title', 'Ανοιχτός Κώδικας');
+	$this->set('title_for_layout', 'Ανοιχτός Κώδικας');
 ?>
 
 <div id="wrapper">

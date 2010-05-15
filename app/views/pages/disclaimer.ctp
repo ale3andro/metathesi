@@ -1,7 +1,7 @@
 <!-- File: /app/views/provinces/pages/disclaimer.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 4) );
-	$this->set('title', 'Disclaimer');
+	$this->set('title_for_layout', 'Disclaimer');
 ?>
 
 <div id="wrapper">

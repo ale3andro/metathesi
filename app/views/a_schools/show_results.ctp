@@ -1,6 +1,7 @@
 <!-- File: /app/views/a_schools/show_results.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 1) );
+	$this->set('title_for_layout', 'Αποτελέσματα Αναζήτησης');
 ?>
 
 <div id="wrapper">

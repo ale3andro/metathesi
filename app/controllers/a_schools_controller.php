@@ -24,7 +24,7 @@
 			$conditions = array("ASchool.dipe_id" => $dipeId,
 									"ASchool.type" => $typeId);
 			if (isset($this->params['requested']))
-				return $this->ASchool->findAll($conditions);
+				return $this->ASchool->find('all', $conditions);
 			$this->set("theProvince", $this->requestAction("/provinces/getProvinceFromId/" . $dipeId));
 			$this->set("a_areas", $this->requestAction("/a_areas/getFromDipeId/" . $dipeId));
 			$this->set("a_school_types", $this->requestAction("/a_school_types/getDescriptions"));
@@ -69,49 +69,51 @@
 			$this->set("region", $this->requestAction("/regions/getRegionFromId/" . $regionId));
 		}
 		
-		function showResults($description, $points, $moreLess, $area_id)
+		function search($arg = "n")
 		{
-			$values = array('=', '>=', '<=');
-			
-			if ( (!isset($description)) || (!isset($points)) || (!isset($moreLess)) || (!isset($area_id)) )
-				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος...', '/a_schools/search', 3);
-			elseif (!in_array($moreLess, $values))
-				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος..,', '/a_schools/search', 3);
-			else
+			if ($arg=="n")
+				$this->Session->delete("searchdata");
+				
+			if (isset($this->data) || $this->Session->check("searchdata"))
 			{
-				$this->set('title', "Αποτελέσματα Αναζήτησης Σχολείων");
-				
-				if ($description != "-1")
-					$conditions['ASchool.description LIKE'] = $description . "%";
-				
-				$conditions['ASchool.points ' . $moreLess] = $points;
-			
-				if ($area_id != "-1")
-					$conditions['ASchool.area_id'] = $area_id;
-		
+				if (isset($this->data))
+				{
+					$this->Session->delete("searchdata");
+					$this->Session->write("searchdata", $this->data);
+					$this->Session->write("moreLess", $_REQUEST['moreLess']);
+					
+					if ($this->data['ASchool']['description']!='')
+						$conditions['ASchool.description LIKE'] = "%" . $this->data['ASchool']['description'] . "%";
+					
+					$conditions['ASchool.points ' . $_REQUEST['moreLess']] = $this->data['ASchool']['points'];
+					
+					if ($this->data['ASchool']['area_id'] != "-1")
+						$conditions['ASchool.area_id'] = $this->data['ASchool']['area_id'];		
+				}
+				else
+				{
+					$data = $this->Session->read("searchdata");
+					$moreLess = $this->Session->read("moreLess");
+					
+					if ($data['ASchool']['description']!='')
+						$conditions['ASchool.description LIKE'] = "%" . $data['ASchool']['description'] . "%";
+					
+					$conditions['ASchool.points ' . $moreLess] = $data['ASchool']['points'];
+					
+					if ($data['ASchool']['area_id'] != "-1")
+						$conditions['ASchool.area_id'] = $data['ASchool']['area_id'];		
+				}
 				$this->set("schools", $this->paginate('ASchool', $conditions));
 				$this->set("a_school_types", $this->requestAction("/a_school_types/getDescriptions"));
-				$this->set("a_areas", $this->requestAction("/a_areas/"));
+				$this->set("a_areas", $this->requestAction("/a_areas/"));	
 				$this->set("provinces", $this->requestAction("/provinces/"));
 			}
-		}
-		
-		function search()
-		{
-			if (!isset($this->data))
+			else
 			{
-				$this->set('title', "Αναζήτηση Σχολείων Α/θμιας Εκπαίδευσης");
 				$selectName = "data[ASchool][area_id]";
 				$this->set("a_areas_select", $this->requestAction("/a_areas/getSelectBox/" . $selectName));
 			}
-			else
-			{
-				if ($this->data['ASchool']['description']=='')
-					$this->data['ASchool']['description'] = -1;
-					
-				$this->redirect("/a_schools/showResults/" . $this->data['ASchool']['description'] . "/" . $this->data['ASchool']['points'] . "/" . 
-									$_REQUEST['moreLess'] . "/" . $this->data['ASchool']['area_id']);
-			}
+			
 		}
 		
 		function getPointRange($areaId)

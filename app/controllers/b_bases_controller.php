@@ -135,7 +135,7 @@
 		function getAvailableYears()
 		{
 			if (isset($this->params['requested']))
-				return $this->BBasis->findAll(null, 'DISTINCT BBasis.year', 'ORDER BY BBasis.year');			
+				return $this->BBasis->find('all',  array('fields'=>array('DISTINCT (BBasis.year)'), 'order'=>array('BBasis.year')));
 		}
 		
 		function getYearsSelectBox($selectName)

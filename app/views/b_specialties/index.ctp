@@ -1,6 +1,7 @@
 <!-- File: /app/views/b_specialties/index.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 2));
+	$this->set('title_for_layout', "Ειδικότητες Εκπαιδευτικών Β/θμιας Εκπ/σης");
 ?>
 
 <div id="wrapper">

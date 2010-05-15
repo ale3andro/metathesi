@@ -3,7 +3,7 @@
 	echo  $this->element("header", array( "activeTab" => 2,
 					"provinceId" => $theProvince['Province']['id'] ) );
 	$title = $theProvince['Province']['description'] . " - Περιοχή " . $area['BArea']['description'] . " - " . $year;
-	$this->set('title', $title);
+	$this->set('title_for_layout', $title);
 ?>
 <div id="wrapper">
 <div class="btm">

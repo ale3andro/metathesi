@@ -8,7 +8,6 @@
 		{			
 			if (isset($this->params['requested']))
 				return $this->ASpecialty->find('all', array('order' => array('ASpecialty.code')));
-			$this->set('title', "Ειδικότητες Εκπαιδευτικών Α/θμιας Εκπ/σης");		
 			$this->set('data', $this->paginate());	
 		}
 		

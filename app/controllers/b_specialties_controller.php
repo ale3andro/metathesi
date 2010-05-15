@@ -9,7 +9,6 @@
 			if (isset($this->params['requested']))
 				return $this->BSpecialty->find('all', array('order' => array('BSpecialty.code')));
 			
-			$this->set('title', "Ειδικότητες Εκπαιδευτικών Β/θμιας Εκπ/σης");
 			$this->set('data', $this->paginate());		
 		}
 		

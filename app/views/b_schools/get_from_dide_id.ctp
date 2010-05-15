@@ -2,6 +2,7 @@
 <?php
 	echo  $this->element("header", array( "activeTab" => 2,
 							"provinceId" => $theProvince['Province']['id'] ) );
+	$this->set("title_for_layout", "Όλα τα σχολεία της Διεύθυνσης");
 ?>
 
 <div id="wrapper">
@@ -15,7 +16,7 @@
 					<p>
 						<?php 
 							echo $this->element("showBSchools",
-										array(	"areas" => $b_areas,
+										array("areas" => $b_areas,
 											"schoolTypes" => $b_school_types,
 											"schools" => $schools));
 						?>

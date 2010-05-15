@@ -19,7 +19,7 @@
 			<h2>Σχολεία</h2>
 			<ul>
 				<li><?php echo $html->link('Α/θμια Εκπαίδευσης', "/a_schools/getFromDipeId/" . $theProvince['Province']['id']); ?>
-						<span><?php echo count($a_areas); ?> περιοχές - <?php echo $numSchoolsA; ?> σχολεία</span></li>
+						<span><?php echo count($a_areas) . (count($a_areas)==1?" περιοχή - ":"  περιοχές - ") . $numSchoolsA; ?> σχολεία</span></li>
 				<li><?php echo $html->link('Β/θμια Εκπαίδευσης', "/b_schools/getFromDideId/" . $theProvince['Province']['id']); ?>
 						<span><?php echo count($b_areas); ?> περιοχές - <?php echo $numSchoolsB; ?> σχολεία</span></li>
 				<li><?php echo $html->link("Αναζήτηση Σχολείων Α/θμιας", "/a_schools/search/"); ?></li>
@@ -33,9 +33,9 @@
 						if ($provinceId == 46)
 							$province = "Πειραιά";
 						foreach ($a_areas as $a_area)
-							echo "<li>" . $html->link("Α - " . $a_area['AArea']['description'] . "' " . $province,
+							echo "<li>" . $html->link("Α - " . $a_area['AArea']['description'] . ((count($a_areas)!=1)?"' ":"") . $province,
 											"/a_bases/show/" . $a_area['AArea']['id']) . 
-											"<span>Α/θμια Εκπαίδευση - " . $a_area['AArea']['description'] . "' $province</span></li>";
+											"<span>Α/θμια Εκπαίδευση - " . $a_area['AArea']['description'] . ((count($a_areas)!=1)?"' ":"") . $province . "</span></li>";
 						foreach ($b_areas as $b_area)
 							echo "<li>" . $html->link("Β -  " . $b_area['BArea']['description'] . "' " . $province, 
 											"/b_bases/show/" . $b_area['BArea']['id']) . 

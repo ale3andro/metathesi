@@ -30,7 +30,7 @@
 	if ($ab==2)
 		$title .= " - Δευτεροβάθμια Εκπαίδευση";
 		
-	$this->set('title', $title);
+	$this->set('title_for_layout', $title);
 ?>
 
 <div id="wrapper">

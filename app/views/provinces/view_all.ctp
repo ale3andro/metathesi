@@ -10,7 +10,7 @@
 		$title = "Διευθύνσεις Δευτεροβάθμιας Εκπαίδευσης";
 	if ($ab==0)
 		$title = "Όλες οι Διευθύνσεις Εκπαίδευσης της χώρας";
-	$this->set('title', $title);
+	$this->set('title_for_layout', $title);
 ?>
 
 <div id="wrapper">

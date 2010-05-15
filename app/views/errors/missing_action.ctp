@@ -2,7 +2,7 @@
 
 <?php
 	echo  $this->element("header", array( "activeTab" => 0) );
-	$this->set('title', 'Σφάλμα');
+	$this->set('title_for_layout', 'Σφάλμα');
 ?>
 
 <div id="wrapper">

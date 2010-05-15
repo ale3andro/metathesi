@@ -1,7 +1,7 @@
 <!-- File: /app/views/provinces/pages/athina.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 3) );
-	$this->set('title', 'metathesi.gr - Νομός Θεσσαλονίκης');
+	$this->set('title_for_layout', 'metathesi.gr - Νομός Θεσσαλονίκης');
 ?>
 
 <div id="wrapper">

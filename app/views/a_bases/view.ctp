@@ -8,7 +8,7 @@
 	
 	echo  $this->element("header", array( "activeTab" => 1 ) );
 	$title = "Αποτελέσματα Αναζήτησης Βάσεων";
-	$this->set('title', $title);
+	$this->set('title_for_layout', $title);
 ?>
 <div id="wrapper">
 <div class="btm">
