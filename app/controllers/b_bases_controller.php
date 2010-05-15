@@ -61,7 +61,7 @@
 			}
 			
 			if (!isset($areaId) || (!is_numeric($areaId)) )
-				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος', '/provinces/viewAll/2', 3);
+				$this->flash('Δεν υπάρχει κατάλληλη είσοδος', '/provinces/viewAll/2', 3);
 			else
 			{
 				$area = $this->requestAction("/b_areas/getDescriptionFromAreaId/" . $areaId);
@@ -154,7 +154,7 @@
 		function view($year, $specialty_id, $area_code)
 		{
 			if ( (!isset($year)) || (!isset($specialty_id)) || (!isset($area_code)) )
-				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος', '/b_bases', 3);
+				$this->flash('Δεν υπάρχει κατάλληλη είσοδος', '/b_bases', 3);
 			else
 			{
 				if ($year != -1)

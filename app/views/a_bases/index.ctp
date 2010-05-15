@@ -13,14 +13,13 @@
 				<div class="entry">
 					<p>
 						<?php
-							echo $form->create('ABasis', array('action' => 'index'));
-							echo "Περιοχή:<br />";
-							echo $areas_select_box . "<br />";
-							echo "Χρονιά:<br />";
-							echo $years_select_box . "<br />";
-							echo "Ειδικότητα:<br />";
-							echo $specialties_select_box . "<br />";
+							echo "<p>";
+							echo $form->create('ABasis', array('action' => 'index', 'class' => 'cssform'));
+							echo "<label>Περιοχή:</label>" . $areas_select_box . "<br /><br />";
+							echo "<label>Χρονιά:</label>" . $years_select_box . "<br /><br />";
+							echo "<label>Ειδικότητα:</label>" . $specialties_select_box . "<br /><br />";
 							echo $form->end('Αναζήτηση');			
+							echo "</p>";
 						?>
 					</p>
 				</div>

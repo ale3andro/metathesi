@@ -179,3 +179,8 @@
 2010-05-15 17:17:32 Warning: Warning (512): <span style="color:Red;text-align:left"><b>SQL Error:</b> 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'findAll' at line 1</span> in [/var/www/metathesi/cake/libs/model/datasources/dbo_source.php, line 666]
 2010-05-15 17:17:32 Warning: Warning (2): Invalid argument supplied for foreach() in [/var/www/metathesi/app/controllers/a_bases_controller.php, line 66]
 2010-05-15 17:17:32 Warning: Warning (2): Invalid argument supplied for foreach() in [/var/www/metathesi/app/views/a_bases/show.ctp, line 28]
+2010-05-15 20:50:42 Warning: Warning (2): Missing argument 1 for BBasesController::show() in [/var/www/metathesi/app/controllers/b_bases_controller.php, line 43]
+2010-05-15 20:51:16 Warning: Warning (2): Missing argument 1 for BBasesController::show() in [/var/www/metathesi/app/controllers/b_bases_controller.php, line 43]
+2010-05-15 20:51:42 Warning: Warning (2): Missing argument 1 for BBasesController::view() in [/var/www/metathesi/app/controllers/b_bases_controller.php, line 154]
+2010-05-15 20:51:42 Warning: Warning (2): Missing argument 2 for BBasesController::view() in [/var/www/metathesi/app/controllers/b_bases_controller.php, line 154]
+2010-05-15 20:51:42 Warning: Warning (2): Missing argument 3 for BBasesController::view() in [/var/www/metathesi/app/controllers/b_bases_controller.php, line 154]

@@ -82,7 +82,6 @@
 			{
 				$allProvinces = $this->requestAction("/provinces/getAll");
 				$allAreas = $this->AArea->find("all");
-				$counter=0;
 				foreach ($allProvinces as $province)
 				{
 					for ($i=0; $i<count($allAreas); $i++)
@@ -90,17 +89,16 @@
 						if ($allAreas[$i]['AArea']['dipe_id'] == $province['Province']['id'])
 						{
 							$final[$allAreas[$i]['AArea']['id']]['id'] = $allAreas[$i]['AArea']['id'];
+							$final[$allAreas[$i]['AArea']['id']]['prefix'] = $allAreas[$i]['AArea']['description'];
 							$final[$allAreas[$i]['AArea']['id']]['descr'] = $province['Province']['description'];
 							$temp = explode(" ", $final[$allAreas[$i]['AArea']['id']]['descr']);
 							if (count($temp) != 1)
 							{
 								if ($temp[1]!="Αττικής")
-									$final[$counter]['descr'] = $temp[0];
+									$final[$allAreas[$i]['AArea']['id']]['descr'] = $temp[0];
 								if ($temp[0]=='Αθήνας')
-									$final[$counter]['descr'] = $temp[0] . " " . $temp[1];
+									$final[$allAreas[$i]['AArea']['id']]['descr'] = $temp[0] . " " . $temp[1];
 							}
-							$final[$allAreas[$i]['AArea']['id']]['prefix'] = $allAreas[$i]['AArea']['description'];
-							$counter++;	
 						}
 					}
 				}			

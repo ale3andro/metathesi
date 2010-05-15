@@ -15,8 +15,8 @@
 					<?php
 						if (!isset($schools))
 						{
-							echo $form->create('ASchool', array('action' => 'search/r', 'class' => 'cssform'));
 							echo "<p>";
+							echo $form->create('ASchool', array('action' => 'search/r', 'class' => 'cssform'));
 							echo $form->input('description', array('label' => 'Περιγραφή:')) . "<br />";
 							echo "<label>Μόρια Σχολείου:</label>" . $this->element("moreLess", array("selectName" => "moreLess")) . 
 								$this->element("selectMoriaA", array("selectName" => "data[ASchool][points]")) . "<br /><br />";

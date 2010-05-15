@@ -1,7 +1,7 @@
 <!-- File: /app/views/b_schools/index.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 2) );
-	$this->set('title_for_layout', Όλα σχολεία της Δευτεροβάθμιας Εκπαίδευσης');			
+	$this->set('title_for_layout', 'Όλα σχολεία της Δευτεροβάθμιας Εκπαίδευσης');			
 ?>
 
 <div id="wrapper">

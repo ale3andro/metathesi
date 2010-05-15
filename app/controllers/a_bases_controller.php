@@ -157,7 +157,7 @@
 					$bases = $this->paginate('ABasis', $conditions);
 				else
 					$bases = $this->paginate('ABasis');
-							
+					
 				$this->set('bases', $bases);
 				$this->set('a_specialties', $this->requestAction("/a_specialties/"));
 				$this->set('a_areas_list', $this->requestAction("/a_areas/getDescriptionList"));
