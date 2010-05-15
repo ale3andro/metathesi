@@ -14,11 +14,11 @@
 		$date = implode(" ", array($exp[0], $exp[1], $exp[2], $exp[3]));
 		$news .= "<a href=\"" . $item['feedburner']['origlink'] . "\">" . $item['title'] . "</a> (" . $date . ")<br />";
 		$counter++;
-		var_dump($item);
 		if ($counter>=$num_items)
 			break;
 	}
 	
 	fwrite($fh, $news);
 	fclose($fh);
+	echo "Thank you for updating my index!";
 ?>
