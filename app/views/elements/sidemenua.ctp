@@ -17,7 +17,7 @@
 					foreach ($a_areas as $a_area)
 						echo "<li>" . $html->link("Σχολεία Περιοχής " . $a_area['AArea']['description'], "/a_schools/getFromAreaId/" . $a_area['AArea']['id']) . "</li>";
 				?>
-				<li><?php echo $html->link("Αναζήτηση Σχολείων", "/a_schools/search"); ?></li>
+				<li><?php echo $html->link("Αναζήτηση Σχολείων Α/θμιας", "/a_schools/search"); ?></li>
 			</ul>
 		</li>
 		<li>
@@ -27,6 +27,7 @@
 							echo "<li>" . $html->link("Περιοχή " . 
 											(($a_area['AArea']['description']=='')?($province):($a_area['AArea']['description'])), 
 										"/a_bases/show/" . $a_area['AArea']['id']) . "</li>";
+						echo "<li>" . $html->link("Αναζήτηση Βάσεων Α/θμιας", "/a_bases/search") . "</li>"; 
 				?>
 			</ul>
 		</li>

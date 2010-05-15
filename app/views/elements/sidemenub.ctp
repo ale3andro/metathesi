@@ -19,7 +19,7 @@
 					foreach ($b_areas as $b_area)
 						echo "<li>" . $html->link("Σχολεία Περιοχής " . $b_area['BArea']['description'], "/b_schools/getFromAreaId/" . $b_area['BArea']['id']) . "</li>";
 				?>
-				<li><?php echo $html->link("Αναζήτηση Σχολείων", "/b_schools/search"); ?></li>			
+				<li><?php echo $html->link("Αναζήτηση Σχολείων Β/θμιας", "/b_schools/search"); ?></li>			
 			</ul>
 		</li>
 		<li>
@@ -28,6 +28,7 @@
 				<?php 	foreach ($b_areas as $b_area)
 							echo "<li>" . $html->link("Περιοχή " . $b_area['BArea']['description'], 
 										"/b_bases/show/" . $b_area['BArea']['id']) . "</li>";
+						echo "<li>" . $html->link("Αναζήτηση Βάσεων Β/θμιας", "/b_bases/search") . "</li>";
 				?>
 			</ul>
 		</li>

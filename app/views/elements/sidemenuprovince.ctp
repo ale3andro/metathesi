@@ -36,10 +36,12 @@
 							echo "<li>" . $html->link("Α - " . $a_area['AArea']['description'] . ((count($a_areas)!=1)?"' ":"") . $province,
 											"/a_bases/show/" . $a_area['AArea']['id']) . 
 											"<span>Α/θμια Εκπαίδευση - " . $a_area['AArea']['description'] . ((count($a_areas)!=1)?"' ":"") . $province . "</span></li>";
+						echo "<li>" . $html->link("Αναζήτηση Βάσεων Α/θμιας", "/a_bases/search") . "</li>"; 
 						foreach ($b_areas as $b_area)
 							echo "<li>" . $html->link("Β -  " . $b_area['BArea']['description'] . "' " . $province, 
 											"/b_bases/show/" . $b_area['BArea']['id']) . 
 											"<span>Β/θμια Εκπαίδευση - " . $b_area['BArea']['description'] . "' $province</span></li>";
+						echo "<li>" . $html->link("Αναζήτηση Βάσεων Β/θμιας", "/b_bases/search") . "</li>";
 				?>
 			</ul>
 		</li>

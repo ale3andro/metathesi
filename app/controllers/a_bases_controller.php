@@ -7,15 +7,49 @@
 		
 		function index()
 		{
-			if (!isset($this->data))
+			$this->redirect('/a_bases/search');
+		}
+		
+		function search($arg = "n")
+		{
+			if ($arg=="n")
+				$this->Session->delete("search_a_bases");
+			
+			if ( (isset($this->data)) || $this->Session->check("search_a_bases") )
+			{
+				if (isset($this->data))
+				{
+					$this->Session->delete("search_a_bases");
+					$this->Session->write("search_a_bases", $this->data);
+					
+					if ($this->data['ABasis']['year'] != -1)
+						$conditions['ABasis.year'] = $this->data['ABasis']['year'];
+					if ($this->data['ABasis']['specialty_id'] != -1)
+						$conditions['ABasis.specialty_id'] = $this->data['ABasis']['specialty_id'];
+					if ($this->data['ABasis']['area_code'] != -1)
+						$conditions['ABasis.area_code'] = $this->data['ABasis']['area_code'];
+				}
+				else
+				{
+					$data = $this->Session->read("search_a_bases");
+					
+					if ($data['ABasis']['year'] != -1)
+						$conditions['ABasis.year'] = $data['ABasis']['year'];
+					if ($data['ABasis']['specialty_id'] != -1)
+						$conditions['ABasis.specialty_id'] = $data['ABasis']['specialty_id'];
+					if ($data['ABasis']['area_code'] != -1)
+						$conditions['ABasis.area_code'] = $data['ABasis']['area_code'];
+				}
+				$this->set('a_bases', $this->paginate("ABasis", $conditions));
+				$this->set('a_specialties', $this->requestAction("/a_specialties/"));
+				$this->set('a_areas_list', $this->requestAction("/a_areas/getDescriptionList"));
+			}
+			else
 			{
 				$this->set('areas_select_box', $this->requestAction("/a_areas/getSelectBox/data[ABasis][area_code]"));
 				$this->set('years_select_box', $this->requestAction("/a_bases/getYearsSelectBox/data[ABasis][year]"));
 				$this->set('specialties_select_box', $this->requestAction("a_specialties/getSelectBox/data[ABasis][specialty_id]"));
-			}
-			else
-				$this->redirect("/a_bases/view/" . $this->data['ABasis']['year'] . "/" . $this->data['ABasis']['specialty_id'] . "/" .
-									$this->data['ABasis']['area_code']);
+			}				
 		}
 		
 		function fromSpecialty($specialtyId, $areaId)
@@ -132,36 +166,6 @@
 			
 			$retVal .= "</select>";
 			return $retVal;	
-		}
-		
-		function view($year, $specialty_id, $area_code)
-		{
-			if ( (!isset($year)) || (!isset($specialty_id)) || (!isset($area_code)) )
-				$this->flash('Δεν υπάρχει η κατάλληλη είσοδος', '/a_bases', 3);
-			else
-			{
-				if ($year != -1)
-					$conditions['ABasis.year'] = $year;
-				if ($specialty_id != -1)
-					$conditions['ABasis.specialty_id'] = $specialty_id;
-				if ($area_code != -1)
-					$conditions['ABasis.area_code'] = $area_code;
-								
-				if ($year!=-1)
-					$this->paginate = array('ABasis' => array('limit' => 25, 'order' => array('ABasis.specialty_id' => 'asc', 'ABasis.area_code' => 'asc')));
-				else
-					$this->paginate = array('ABasis' => array('limit' => 25, 'order' => array('ABasis.specialty_id' => 'asc', 
-								'ABasis.year' => 'asc', 'ABasis.area_code' => 'asc')));
-				
-				if (isset($conditions))
-					$bases = $this->paginate('ABasis', $conditions);
-				else
-					$bases = $this->paginate('ABasis');
-					
-				$this->set('bases', $bases);
-				$this->set('a_specialties', $this->requestAction("/a_specialties/"));
-				$this->set('a_areas_list', $this->requestAction("/a_areas/getDescriptionList"));
-			}
 		}
 	}
 ?>

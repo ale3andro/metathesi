@@ -74,15 +74,14 @@
 		function search($arg = "n")
 		{
 			if ($arg=="n")
-				$this->Session->delete("searchdata");
+				$this->Session->delete("search_b_schools");			
 			
-			
-			if (isset($this->data) || $this->Session->check("searchdata"))
+			if (isset($this->data) || $this->Session->check("search_b_schools"))
 			{
 				if (isset($this->data))
 				{
-					$this->Session->delete("searchdata");
-					$this->Session->write("searchdata", $this->data);
+					$this->Session->delete("search_b_schools");
+					$this->Session->write("search_b_schools", $this->data);
 					$this->Session->write("moreLess", $_REQUEST['moreLess']);
 					
 					if ($this->data['BSchool']['municipality']!='')
@@ -95,7 +94,7 @@
 				}
 				else
 				{
-					$data = $this->Session->read("searchdata");
+					$data = $this->Session->read("search_b_schools");
 					$moreLess = $this->Session->read("moreLess");
 					
 					if ($data['BSchool']['municipality']!='')
