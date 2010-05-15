@@ -10,22 +10,27 @@
 	<div id="page">
 		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title"><a href="#">Καλώς ορίσατε στο metathesi.gr</a></h1>
+				<h1 class="title">Καλώς ορίσατε στο metathesi.gr</h1>
 				<div class="entry">
 					<p>Καλώς ορίσατε στο <strong>metathesi.gr</strong>, ένα site αφιερωμένο στο μεγαλύτερο - μετά τον διορισμό - βάσανο των εκπαιδευτικών: τις 
 						<strong>μεταθέσεις</strong>... Για περισσότερες πληροφορίες σχετικά με το <a href="http://metathesi.gr">metathesi.gr</a> επισκεφθείτε 
 						<a href="pages/about">αυτή</a> τη σελίδα.
 						<br /><?php echo $html->link("Disclaimer", "disclaimer"); ?>
-						<br />
-						<br /><b>Νέο! (30/03/2010) Προστέθηκαν οι βάσεις μετάθεσης Πρωτοβάθμιας Εκπαίδευσης του 2010!</b>
-						<br /><b>Νέο! (31/03/2010) Προστέθηκαν οι βάσεις μετάθεσης Δευτεροβάθμιας Εκπαίδευσης του 2010!</b>
 					</p>
+					<?php 
+						if (file_exists("news/news.alx"))
+						{
+							$fp = fopen("news/news.alx", "r");
+							$alxData = fread($fp, 3096);
+							echo "<p>Τελευταίες αναρτήσεις του <a target=\"_blank\" href=\"http://metathesi.gr/blog\">Ιστολογίου " . 
+									$html->image('external_link.gif', array('class'=>'external')) . "</a>:<br />";
+							echo "$alxData</p>";
+						}
+					?>
 				</div>
-				
 			</div>
-			
 			<div class="post">
-				<h1 class="title"><a href="#">Επιλογή Περιοχής</a></h1>
+				<h1 class="title">Επιλογή Περιοχής</h1>
 				<div class="entry">
 					Η επιλογή περιοχής μπορεί να γίνει από 
 					<?php echo $html->link("τη λίστα", "/provinces/viewAll"); ?>
