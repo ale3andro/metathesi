@@ -11,6 +11,7 @@
 			$this->set("schools", $this->paginate());
 			$this->set("b_areas", $this->requestAction("/b_areas"));
 			$this->set("b_school_types", $this->requestAction("/b_school_types/getDescriptions"));
+			$this->set("provinces", $this->requestAction("/provinces/getAll"));
 		}
 		
 		function getSchoolsOfTypeFromDideId($dideId, $typeId)

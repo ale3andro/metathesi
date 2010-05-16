@@ -15,26 +15,22 @@
 				?>
 				<h1 class="title"><?php echo $title; ?></h1>
 				<div class="entry">
-					<p>
 						<?php
 							if ($schoolType==1)
-								echo "Γυμνάσια ";
+								echo "Γυμνάσια Διεύθυνσης</p>";
 							if ($schoolType==2)
-								echo "Γενικά Λύκεια ";
+								echo "Γενικά Λύκεια Διεύθυνσης</p>";
 							if ($schoolType==3)
-								echo "ΕΠΑΛ ";
+								echo "ΕΠΑΛ Διεύθυνσης</p>";
 							if ($schoolType==4)
-								echo "ΕΠΑΣ ";
+								echo "ΕΠΑΣ Διεύθυνσης</p>";
+						
+							if (count($schools)==0)
+								echo "<p>Δεν βρέθηκαν σχολεία</p>";
+							else
+								echo "<p>". $this->element("showBSchools", array(	"b_areas" => $b_areas,
+											"schoolTypes" => $b_school_types, "schools" => $schools)) . "</p>";
 						?>
-						 της Διεύθυνσης</p>
-					<p>
-						<?php 
-							echo $this->element("showBSchools",
-											array(	"b_areas" => $b_areas,
-											"schoolTypes" => $b_school_types,
-											"schools" => $schools));
-						?>						
-					</p>
 				</div>
 			</div>
 		</div>

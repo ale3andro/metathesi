@@ -18,24 +18,14 @@
 						<?php 	echo $this->element("showASchools",
 										array(	"a_areas" => $a_areas,
 										"schoolTypes" => $a_school_types,
-										"schools" => $schools));
+										"schools" => $schools,
+										"provinces" => $provinces));
 						?>
 					</p>
 				</div>
 			</div>
 		</div>
 		<!-- end #content -->
-		
-<?php 
-	/*
-	echo $this->element("sidemenua",
-					array("province" => $theProvince['Province']['description'],
-							"provinceId" => $theProvince['Province']['id'],
-							"region" => $region)); 
-		*/
-?>
-							
-	
 <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #page -->

@@ -6,11 +6,11 @@
 							'ASchool.description' => 'asc', 'ASchool.number' => 'asc'));
 								
 		function index()
-		{			
-			$this->pageTitle = "Όλα σχολεία της Πρωτοβάθμιας Εκπαίδευσης";			
+		{				
 			$this->set("schools", $this->paginate());
 			$this->set("a_areas", $this->requestAction("/a_areas"));
 			$this->set("a_school_types", $this->requestAction("/a_school_types/getDescriptions"));
+			$this->set("provinces", $this->requestAction("/provinces/getAll"));
 		}
 		
 		function getSchoolsOfTypeFromDipeId($dipeId, $typeId)

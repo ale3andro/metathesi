@@ -16,25 +16,14 @@
 							echo $this->element("showBSchools",
 										array(	"areas" => $b_areas,
 											"schoolTypes" => $b_school_types,
-											"schools" => $schools));
+											"schools" => $schools,
+											"provinces" => $provinces));
 						?>
 					</p>
 				</div>
 			</div>
 		</div>
 		<!-- end #content -->
-		
-<?php 
-	/*
-	echo $this->element("sidemenub",
-					array("province" => $theProvince['Province']['description'],
-							"provinceId" => $theProvince['Province']['id'],
-							"b_areas" => $b_areas,
-							"region" => $region)); 
-	*/
-?>
-							
-	
 <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #page -->

@@ -15,16 +15,29 @@
 					<th scope=\"col\">Δήμος</th>
 					<th scope=\"col\" class=\"narrow\">Mόρια Μεταθ.</th>
 					<th scope=\"col\" class=\"narrow\">Ειδ. Τύπου</th>
-					<th scope=\"col\" class=\"narrow\">Περ. Μεταθ.</th>
-					<th scope=\"col\" class=\"narrow\">Κωδ. ΥΠΕΠΘ</th>				
-				</tr>
+					<th scope=\"col\" class=\"narrow\">Περ. Μεταθ.</th>";
+	if (isset($provinces))
+		echo "		<th scope=\"col\" class=\"narrow\">Δ/νση Εκπ/σης</th>";
+	else
+		echo "		<th scope=\"col\" class=\"narrow\">Κωδ. ΥΠΕΠΘ</th>";
+	echo "		</tr>
 			</thead>
 			<tbody>";
 	$i=0;
-	for ($j=0; $j< count($b_areas); $j++)
+	for ($j=0; $j<count($b_areas); $j++)
 	{
 		$myArea[$b_areas[$j]['BArea']['id']][0] = $b_areas[$j]['BArea']['description'];
 		$myArea[$b_areas[$j]['BArea']['id']][1] = $b_areas[$j]['BArea']['ypepth_code'];
+		$myArea[$b_areas[$j]['BArea']['id']][2] = $b_areas[$j]['BArea']['dide_id'];
+	}
+	
+	if (isset($provinces))
+	{
+		foreach ($provinces as $province)
+		{
+			$prov[$province['Province']['id']]['id'] = $province['Province']['id'];
+			$prov[$province['Province']['id']]['description'] = $province['Province']['description'];
+		}
 	}
 	
 	foreach ($schools as $aSchool)
@@ -73,7 +86,10 @@
 			echo "</td>";
 			
 			echo "<td>" . $myArea[$aSchool['BSchool']['area_id']][0] . "</td>";
-			echo "<td>" . $myArea[$aSchool['BSchool']['area_id']][1] . "</td>";
+			if (isset($provinces))
+				echo "<td>" . $prov[$myArea[$aSchool['BSchool']['area_id']][2]]['description'] . "</td>";
+			else
+				echo "<td>" . $myArea[$aSchool['BSchool']['area_id']][1] . "</td>";
 		echo "</tr>";		
 	}
 	

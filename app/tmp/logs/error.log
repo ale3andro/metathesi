@@ -210,3 +210,5 @@
 2010-05-15 22:34:21 Warning: Warning (2): fread() expects parameter 1 to be resource, boolean given in [/var/www/metathesi/app/views/pages/home.ctp, line 27]
 2010-05-15 22:34:31 Warning: Warning (2): fopen(news/news.alx): failed to open stream: No such file or directory in [/var/www/metathesi/app/views/pages/home.ctp, line 27]
 2010-05-15 22:34:31 Warning: Warning (2): fread() expects parameter 1 to be resource, boolean given in [/var/www/metathesi/app/views/pages/home.ctp, line 28]
+2010-05-16 17:38:17 Warning: Warning (2): Missing argument 2 for BSchoolsController::getSchoolsOfTypeFromDideId() in [/var/www/metathesi/app/controllers/b_schools_controller.php, line 16]
+2010-05-16 17:53:17 Warning: Warning (2): Invalid argument supplied for foreach() in [/var/www/metathesi/app/views/elements/showBSchools.ctp, line 34]
