@@ -40,7 +40,10 @@
 					if ($data['ABasis']['area_code'] != -1)
 						$conditions['ABasis.area_code'] = $data['ABasis']['area_code'];
 				}
-				$this->set('a_bases', $this->paginate("ABasis", $conditions));
+				if (isset($conditions))
+					$this->set('a_bases', $this->paginate("ABasis", $conditions));
+				else
+					$this->set('a_bases', $this->paginate("ABasis"));
 				$this->set('a_specialties', $this->requestAction("/a_specialties/"));
 				$this->set('a_areas_list', $this->requestAction("/a_areas/getDescriptionList"));
 			}
