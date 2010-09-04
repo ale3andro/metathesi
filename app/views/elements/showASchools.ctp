@@ -47,7 +47,7 @@
 		echo "<td>" . $aSchool['ASchool']['number'] ."</td>";
 		echo "<td>" . $schoolTypes[$aSchool['ASchool']['type']] ."</td>";
 		echo "<td>" . $aSchool['ASchool']['description'] ."</td>";
-		echo "<td>" . $aSchool['ASchool']['points'] . ":" . $aSchool['ASchool']['id'] . "</td>";
+		echo "<td>" . $aSchool['ASchool']['points'] . "</td>";
 		echo "<td>" . $myArea[$aSchool['ASchool']['area_id']][0] . "</td>";
 		if (isset($provinces))
 			echo "<td>" . $prov[$myArea[$aSchool['ASchool']['area_id']][2]]['description'] . "</td>";
