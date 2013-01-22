@@ -49,26 +49,36 @@
 				$this->set("ab", $ab);
 				$this->set("theProvince", $province);
 			
-				$a_areas = $this->requestAction("/a_areas/getFromDipeId/" . $province['Province']['id']);
-				$this->set("a_areas", $a_areas);
-				$i=0;
-				foreach ($a_areas as $a_area)
-					$aPointsRange[$i++] = $this->requestAction("/a_schools/getPointRange/" . $a_area['AArea']['id']);
-				$this->set("a_points_range", $aPointsRange);
-				$this->set("a_schools", $this->requestAction("/a_schools/getFromDipeId/" . $province['Province']['id']));	
-				$b_areas = $this->requestAction("/b_areas/getFromDideId/" . $province['Province']['id']);
-				$this->set("b_areas", $b_areas);
-				$i=0;
-				foreach ($b_areas as $b_area)
-					$bPointsRange[$i++] = $this->requestAction("/b_schools/getPointRange/" . $b_area['BArea']['id']);
-				$this->set("b_points_range", $bPointsRange);
-				$this->set("b_schools", $this->requestAction("/b_schools/getFromDideId/" . $province['Province']['id']));
+				if ($ab!=0)
+				{
+					$a_areas = $this->requestAction("/a_areas/getFromDipeId/" . $province['Province']['id'] . "/2");
+					$this->set("a_areas", $a_areas);
+					$b_areas = $this->requestAction("/b_areas/getFromDideId/" . $province['Province']['id'] . "/2");
+					$this->set("b_areas", $b_areas);
+					
+					$i=0;
+					if ($ab==1)
+					{
+						foreach ($a_areas as $a_area)
+							if ($a_area['AArea']['id']<1000)
+								$a_m[$i++] = $this->requestAction("/municipalities/getFromAAreaId/" . $a_area['AArea']['id']);
+						$this->set("a_mun", $a_m);
+					}
+					if ($ab==2)
+					{
+						foreach($b_areas as $b_area)
+							if ($b_area['BArea']['id']<1000)
+								$b_m[$i++] = $this->requestAction("/municipalities/getFromBAreaId/" . $b_area['BArea']['id']);
+						$this->set("b_mun", $b_m);
+					}
+				}
+								
 				$this->set("region", $this->requestAction("/regions/getRegionFromId/" . $province['Province']['pde_id']));				
-				$this->set("mapLink", $province['Province']['map_link']);
+				if ($ab==0)
+					$this->set("mapLink", $province['Province']['map_link']);
 				$this->set("neighboors", $this->Province->find("all", array(
 						'conditions' => array('Province.pde_id' => $province['Province']['pde_id'],
-												'Province.id !=' => $id)
-						)));
+												'Province.id !=' => $id))));
 			}
 		}
 		function viewAll($ab=0)

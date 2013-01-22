@@ -24,9 +24,6 @@
 						</ul>						
 					</p>
 				</div>
-				<p class="meta">Posted by <a href="#">ale3andro</a> on March 10, 2008
-					&nbsp;&bull;&nbsp;
-				</p>
 			</div>
 			
 			

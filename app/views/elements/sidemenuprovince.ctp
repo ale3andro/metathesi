@@ -16,33 +16,20 @@
 			</p>
 		</li>
 		<li>
-			<h2>Σχολεία</h2>
+			<h2>Περιοχές Μετάθεσης</h2>
 			<ul>
-				<li><?php echo $html->link('Α/θμια Εκπαίδευσης', "/a_schools/getFromDipeId/" . $theProvince['Province']['id']); ?>
-						<span><?php echo count($a_areas) . (count($a_areas)==1?" περιοχή - ":"  περιοχές - ") . $numSchoolsA; ?> σχολεία</span></li>
-				<li><?php echo $html->link('Β/θμια Εκπαίδευσης', "/b_schools/getFromDideId/" . $theProvince['Province']['id']); ?>
-						<span><?php echo count($b_areas); ?> περιοχές - <?php echo $numSchoolsB; ?> σχολεία</span></li>
-				<li><?php echo $html->link("Αναζήτηση Σχολείων Α/θμιας", "/a_schools/search/"); ?></li>
-				<li><?php echo $html->link("Αναζήτηση Σχολείων Β/θμιας", "/b_schools/search/"); ?></li>
+				<li>Α/θμια Εκπαίδευση
+						<span><?php echo count($a_areas) . (count($a_areas)==1?" περιοχή ":"  περιοχές ") ?>μετάθεσης.</span></li>
+				<li>Β/θμια Εκπαίδευση
+						<span><?php echo count($b_areas) . (count($b_areas)==1?" περιοχή ":"  περιοχές ") ?>μετάθεσης.</span></li>
+				<li>Παλιές περιοχές μετάθεσης TODO</li>
 			</ul>
 		</li>
 		<li>
-			<h2>Βάσεις Μετάθεσης</h2>
+			<h2>Δήμοι Περιοχής</h2>
 			<ul>
-				<?php 	
-						if ($provinceId == 46)
-							$province = "Πειραιά";
-						foreach ($a_areas as $a_area)
-							echo "<li>" . $html->link("Α - " . $a_area['AArea']['description'] . ((count($a_areas)!=1)?"' ":"") . $province,
-											"/a_bases/show/" . $a_area['AArea']['id']) . 
-											"<span>Α/θμια Εκπαίδευση - " . $a_area['AArea']['description'] . ((count($a_areas)!=1)?"' ":"") . $province . "</span></li>";
-						echo "<li>" . $html->link("Αναζήτηση Βάσεων Α/θμιας", "/a_bases/search") . "</li>"; 
-						foreach ($b_areas as $b_area)
-							echo "<li>" . $html->link("Β -  " . $b_area['BArea']['description'] . "' " . $province, 
-											"/b_bases/show/" . $b_area['BArea']['id']) . 
-											"<span>Β/θμια Εκπαίδευση - " . $b_area['BArea']['description'] . "' $province</span></li>";
-						echo "<li>" . $html->link("Αναζήτηση Βάσεων Β/θμιας", "/b_bases/search") . "</li>";
-				?>
+				<li>Foo TODO</li>
+				<li>Foo TODO</li>
 			</ul>
 		</li>
 		<li>

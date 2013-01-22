@@ -14,14 +14,11 @@
 					<p>
 						Ο Νομός Θεσσαλονίκης διαιρείται σε 2 ΠΥΣΔΕ / ΠΥΣΠΕ:
 						<ul>
-							<li><?php echo $html->link("Α' Θεσσαλονίκης", "/provinces/show/7"); ?> (κέντρο και Ανατολική Θεσσαλονίκη)</li>
-							<li><?php echo $html->link("Β' Θεσσαλονίκης", "/provinces/show/11"); ?> (Δυτική Θεσσαλονίκη και υπόλοιπο νομού)</li>							
+							<li><?php echo $html->link("Ανατολικής Θεσσαλονίκης", "/provinces/show/7"); ?> (Περιοχή μετάθεσης Α' Θεσσαλονίκης)</li>
+							<li><?php echo $html->link("Δυτικής Θεσσαλονίκης", "/provinces/show/11"); ?> (Περιοχή μετάθεσης Β' Θεσσαλονίκης)</li>							
 						</ul>
 					</p>
 				</div>
-				<p class="meta">Posted by <a href="#">ale3andro</a> on March 10, 2008
-					&nbsp;&bull;&nbsp;
-				</p>
 			</div>
 			
 			

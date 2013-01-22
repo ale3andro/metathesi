@@ -26,7 +26,7 @@
 		$title = "Περιοχή Πειραιά";
 		
 	if ($ab==1)
-		$title .= " - Πρωτοβάθμια Εκπάιδευση";
+		$title .= " - Πρωτοβάθμια Εκπαίδευση";
 	if ($ab==2)
 		$title .= " - Δευτεροβάθμια Εκπαίδευση";
 		
@@ -37,11 +37,11 @@
 <div class="btm">
 	<div id="page">
 	
-		<div id="content">
+		<div id="content" style="float:left">
 			<div class="post">
 				<h1 class="title"><?php echo $title; ?></h1>
 				<div class="entry">
-					<p>
+					<p>					
 						<?php 	
 							if ($ab!=1 && $ab!=2)
 							{
@@ -53,76 +53,86 @@
 							else
 							{
 								if ($ab==1)
-								{
-									echo "<p><h3>Σχολεία</h3>";
-									echo "<ul>";
-									echo "<li>" . $html->link("Νηπιαγωγεία", "/a_schools/getSchoolsOfTypeFromDipeId/" . $theProvince['Province']['id'] . "/2") . "</li>";
-									echo "<li>" . $html->link("Δημοτικά", "/a_schools/getSchoolsOfTypeFromDipeId/" . $theProvince['Province']['id'] . "/1") . "</li>";
-									echo "</ul>";
-									echo "Συνολικά: " . count($a_schools) . ((count($a_schools)==1)?" σχολείο ":" σχολεία ");
+								{									
+									echo "<p><h2>Περιοχές μετάθεσης</h2>";
 									
-									echo "<p><h3>Βάσεις Μετάθεσης</h3>";
-									echo "<ul>";
 									$i=0;
 									foreach ($a_areas as $a_area)
 									{
-										echo "<li>";
-										echo $html->link("Περιοχή " . 
-											(($a_area['AArea']['description']=='')?($theProvince['Province']['description']):($a_area['AArea']['description'])), 
-												"/a_bases/show/" . $a_area['AArea']['id']);
+										if ($a_area['AArea']['id']<1000)
+										{
+											echo "<p><h3>" . trim($a_area['AArea']['description'] . " " . $theProvince['Province']['description']) . "</h3>";
+											echo "Στην περιοχή ανήκουν σχολεία των παρακάτω Δήμων:<br />";
 										
-										if ($a_points_range[$i][0] != $a_points_range[$i][1])
-											echo "<br />(Τα σχολεία της περιοχής δίνουν " . $a_points_range[$i][0] . " - " . $a_points_range[$i][1] . " μόρια)";
-										else
-											echo " (" . $a_points_range[$i][0] . " μόρια)";
-										echo "</li>";
-										$i++; 
+											foreach($a_mun[$i++] as $mun)
+												echo $mun['Municipality']['description'] . "<br />";
+										
+											echo $html->link("Βάσεις Μετάθεσης", "/a_bases/show/" . $a_area['AArea']['id']) . "<br />";
+											echo "</p>";
+										}
 									}
-									echo "</ul>";
-									echo "<br />Τηλέφωνο: " . $theProvince['Province']['A_telephone'];
+									
+									echo "<br /><br />";																		
+									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών " . $html->link("*TODO", "") . "</h2>";
+									foreach ($a_areas as $a_area)
+									{
+										if ($a_area['AArea']['id']>1000)
+										{
+											echo $html->link(trim($a_area['AArea']['description'] . " " . $theProvince['Province']['description']), "/a_bases/show/" . $a_area['AArea']['id']) . "<br />";
+										}
+									}
+									
+									echo "<br /><br />";
+									echo "<p><h2>Στοιχεία Επικοινωνίας Διεύθυνσης</h2>";
+									echo "Τηλέφωνο: " . $theProvince['Province']['A_telephone'];
 									echo "<br />Fax: " . $theProvince['Province']['A_fax'];
 									echo "<br /><a href=\"" . $theProvince['Province']['A_url'] . "\">Ιστοσελίδα ΔΙΠΕ (εξωτερικός σύνδεσμος)" . 
 												$html->image("external_link.gif", array('class' => 'external')) . "</a><br />";
+									echo "</p>";
 								}
 								if ($ab==2)
 								{
-									echo "<p><h3>Σχολεία</h3>";
-									echo "<ul>";
-									echo "<li>" . $html->link("Γυμνάσια", "/b_schools/getSchoolsOfTypeFromDideId/" . $theProvince['Province']['id'] . "/1") . "</li>";
-									echo "<li>" . $html->link("Λύκεια", "/b_schools/getSchoolsOfTypeFromDideId/" . $theProvince['Province']['id'] . "/2") . "</li>";
-									echo "<li>" . $html->link("ΕΠΑΛ", "/b_schools/getSchoolsOfTypeFromDideId/" . $theProvince['Province']['id'] . "/3") . "</li>";
-									echo "<li>" . $html->link("ΕΠΑΣ", "/b_schools/getSchoolsOfTypeFromDideId/" . $theProvince['Province']['id'] . "/4") . "</li>";
-									echo "</ul>";
-									echo "Συνολικά: " . count($b_schools) . ((count($b_schools)==1)?" σχολείο ":" σχολεία ");
+									echo "<p><h2>Περιοχές μετάθεσης</h2>";
 									
-									echo "<p><h3>Βάσεις Μετάθεσης</h3>";
-									echo "<ul>";
-									$i=0;
+									$i=0;	
 									foreach ($b_areas as $b_area)
 									{
-										echo "<li>";
-										echo $html->link("Περιοχή " . $b_area['BArea']['description'], 
-														"/b_bases/show/" . $b_area['BArea']['id']);
-										if ($b_points_range[$i][0] != $b_points_range[$i][1])
-											echo " (" . $b_points_range[$i][0] . " - " . $b_points_range[$i][1] . " μόρια)";
-										else
-											echo " (" . $b_points_range[$i][0] . " μόρια)";
-										echo "</li>";
-										$i++;
+										if ($b_area['BArea']['id']<1000)
+										{
+											echo "<p><h3>" . trim($b_area['BArea']['description'] . " " . $theProvince['Province']['description']) . "</h3>";
+											echo "Στην περιοχή ανήκουν σχολεία των παρακάτω Δήμων:<br />";
+										
+											foreach($b_mun[$i++] as $mun)
+												echo $mun['Municipality']['description'] . "<br />";
+										
+											echo $html->link("Βάσεις μετάθεσης", "/b_bases/show/" . $b_area['BArea']['id']) . "<br />";
+											echo "</p>";
+										}
 									}
-									echo "</ul>";
 									
-									echo "<br />Τηλέφωνο: " . $theProvince['Province']['B_telephone'];
+									echo "<br /><br />";
+									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών " . $html->link("*TODO", "") . "</h2>";
+									foreach ($b_areas as $b_area)
+									{
+										if ($b_area['BArea']['id']>1000)
+										{
+											echo $html->link(trim($b_area['BArea']['description'] . " " . $theProvince['Province']['description']), "/b_bases/show/" . $b_area['BArea']['id']) . "<br />";
+										}
+									}						
+									
+									echo "<br /><br />";								
+									echo "<p><h2>Στοιχεία Επικοινωνίας Διεύθυνσης</h2>";
+									echo "Τηλέφωνο: " . $theProvince['Province']['B_telephone'];
 									echo "<br />Fax: " . $theProvince['Province']['B_fax'];
 									echo "<br /><a href=\"" . $theProvince['Province']['B_url'] . "\">Ιστοσελίδα ΔΙΔΕ (εξωτερικός σύνδεσμος)" . 
 											$html->image("external_link.gif", array('class' => 'external')) . "</a><br />";
+									echo "</p>";
 								}
 							}
-							echo "<p><h3>Γειτονικές Περιοχές (στην ίδια ΠΔΕ)</h3>";
-							echo "<ul>";
+							echo "<br /><br />";
+							echo "<p><h2>Γειτονικές Περιοχές (στην ίδια ΠΔΕ)</h2>";
 							foreach ($neighboors as $neighboor)
-								echo "<li>" . $html->link($neighboor['Province']['description'], "/provinces/show/" . $neighboor['Province']['id']) . "</li>";
-							echo "</ul>";
+								echo $html->link($neighboor['Province']['description'], "/provinces/show/" . $neighboor['Province']['id']) . "<br />";
 							echo "</p>";
 							
 						?>
@@ -131,27 +141,6 @@
 			</div>
 		</div>
 		<!-- end #content -->
-		
-<?php
-	if ($ab==0)
-		echo  $this->element("sidemenuprovince", 
-					array("province" => $theProvince['Province']['description'],
-							"provinceId" => $theProvince['Province']['id'],
-							"numSchoolsA" => count($a_schools), 
-							"a_areas" => $a_areas,
-							"numSchoolsB" => count($b_schools),
-							"b_areas" => $b_areas,
-							"region" => $region));
-	if ($ab==1)
-		echo $this->element("sidemenua",
-					array("province" => $theProvince['Province']['description'],
-							"provinceId" => $theProvince['Province']['id']));
-	if ($ab==2)
-		echo $this->element("sidemenub",
-					array("province" => $theProvince['Province']['description'],
-							"provinceId" => $theProvince['Province']['id']));
-?>
-	
 <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #page -->
