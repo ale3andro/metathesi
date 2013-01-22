@@ -57,7 +57,11 @@
 		
 		function show($areaId, $year=-1)
 		{
-			$years = $this->requestAction("/b_bases/getAvailableYears");
+			$old = true;
+			if ($areaId<1000)
+				$old = false;
+				
+			$years = $this->requestAction("/b_bases/getAvailableYears/" . $old);
 			if ( (!is_numeric($year)) )
 				$year=-1;
 			else
@@ -147,10 +151,20 @@
 			}	
 		}
 		
-		function getAvailableYears()
+		function getAvailableYears($old=false)
 		{
+			# Αν το $old είναι true, επιστρέφει χρονολογίες μέχρι 2012
+			# Διαφορετικά χρονολογιές από 2013 και μετά - μετά την αλλαγή των περιοχών
+			if ($old)
+				$conditions = array('BBasis.year <' => 2013);
+			else
+				$conditions = array('BBasis.year >=' => 2013);
+				
 			if (isset($this->params['requested']))
-				return $this->BBasis->find('all',  array('fields'=>array('DISTINCT (BBasis.year)'), 'order'=>array('BBasis.year')));
+				return $this->BBasis->find('all',  
+										array(	'conditions'=>$conditions,
+												'fields'=>array('DISTINCT (BBasis.year)'), 
+												'order'=>array('BBasis.year')));
 		}
 		
 		function getYearsSelectBox($selectName)

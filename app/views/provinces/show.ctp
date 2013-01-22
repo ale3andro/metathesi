@@ -73,7 +73,7 @@
 									}
 									
 									echo "<br /><br />";																		
-									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών " . $html->link("*TODO", "") . "</h2>";
+									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών</h2>";
 									foreach ($a_areas as $a_area)
 									{
 										if ($a_area['AArea']['id']>1000)
@@ -111,7 +111,7 @@
 									}
 									
 									echo "<br /><br />";
-									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών " . $html->link("*TODO", "") . "</h2>";
+									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών</h2>";
 									foreach ($b_areas as $b_area)
 									{
 										if ($b_area['BArea']['id']>1000)

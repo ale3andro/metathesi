@@ -8,7 +8,7 @@
 <div id="wrapper">
 <div class="btm">
 	<div id="page">
-		<div id="content">
+		<div id="content" style="float:left">
 			<div class="post">
 				<h1 class="title"><?php echo $title; ?></h1>
 				<div class="entry">
@@ -43,9 +43,6 @@
 			</div>
 		</div>
 		<!-- end #content -->
-
-<?php echo $this->element("sidemenuspecialties"); ?>
-	
 <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #page -->

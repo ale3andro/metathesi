@@ -23,6 +23,10 @@
 							<li>Το εικονίδιο του εξωτερικού συνδέσμου (external link) βρέθηκε 
 									<a href="http://commons.wikimedia.org/wiki/File:Icon_External_Link.png">εδώ<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>.
 							</li>
+							<li>Τα δεδομένα των Περιφερειακών Ενοτήτων, Δήμων, Κοινοτήτων κλπ με το βάση το πρόγραμμα "Καλλικράτης", είναι από την εξαιρετική σημαντική πρωτοβουλία Ανοιχτά Δεδομένα
+									και μπορείτε να τα βρείτε <a href="http://www.geodata.gov.gr/geodata/index.php?option=com_sobi2&sobi2Task=sobi2Details&catid=21&sobi2Id=198&Itemid=" target="_blank">εδώ 
+									<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>
+							</li>
 						</ol>
 					</p>
 				</div>
