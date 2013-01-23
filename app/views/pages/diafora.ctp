@@ -18,8 +18,11 @@
 							<li><?php echo $html->link("Περιφερειακές Διευθύνσεις Εκπαίδευσης", "/regions"); ?></li><br />
 							<li><?php echo $html->link("Ειδικότητες Εκπαιδετικών Α/θμιας", "/a_specialties"); ?></li>
 							<li><?php echo $html->link("Ειδικότητες Εκπαιδετικών Β/θμιας", "/b_specialties"); ?></li><br />
+							<!--
+							TODO
 							<li><?php echo $html->link("Αναζήτηση Σχολείων Α/θμιας", "/a_schools/search"); ?></li>
 							<li><?php echo $html->link("Αναζήτηση Σχολείων Β/θμιας", "/b_schools/search"); ?></li><br />
+							-->
 							<li><?php echo $html->link("Αναζήτηση Bάσεων Α/θμιας", "/a_bases/search"); ?></li>
 							<li><?php echo $html->link("Αναζήτηση Βάσεων Β/θμιας", "/b_bases/search"); ?></li><br />
 							<li><?php echo $html->link("Άδειες Template, Εικόνων", "license"); ?></li>

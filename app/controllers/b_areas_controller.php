@@ -16,7 +16,7 @@
 			if (isset($this->params['requested']))
 			{
 				$allProvinces = $this->requestAction("/provinces/getAll");
-				$allAreas = $this->BArea->find("all");
+				$allAreas = $this->BArea->find("all", array('conditions'=> array('BArea.id <' => 1000)));
 				$counter=0;
 				foreach ($allProvinces as $province)
 				{
@@ -26,21 +26,22 @@
 						{
 							$final[$counter]['id'] = $allAreas[$i]['BArea']['id'];
 							$final[$counter]['descr'] = $province['Province']['description'];
-							$temp = explode(" ", $final[$counter]['descr']);
-							if ( (count($temp) != 1) && ($temp[1]!="Αττικής") )
-								$final[$counter]['descr'] = $temp[0];
 							$final[$counter]['prefix'] = $allAreas[$i]['BArea']['description'];
+							
 							$counter++;	
 						}
 					}
 				}			
+				for ($i=0; $i<count($final); $i++)
+					$names[$i] = $final[$i]['descr'];
+				array_multisort($names, SORT_ASC, $final);
 				
 				$retVal = "<select name=\"" . $selectName . "\">";
 				$retVal .= "<option value=\"-1\">Όλες</option>";
 				for ($i=0; $i<count($final); $i++)
 					$retVal .= "<option value=\"" . $final[$i]['id'] . "\"" . 
-						(($selectedId==$final[$i]['id'])?" selected=\"selected\"":"") . ">" .  $final[$i]['descr'] .
-							" " . $final[$i]['prefix'] . "</option>";
+						(($selectedId==$final[$i]['id'])?" selected=\"selected\"":"") . ">" .  $final[$i]['prefix'] .
+							" " . $final[$i]['descr'] . "</option>";
 				$retVal .= "</select>";
 				return $retVal;				
 			}
@@ -87,7 +88,7 @@
 		function getDescriptionList()
 		{
 			$allProvinces = $this->requestAction("/provinces/getAll");
-			$allAreas = $this->BArea->find("all");
+			$allAreas = $this->BArea->find("all", array('conditions' => array('BArea.id <' => 1000)));
 			foreach ($allProvinces as $province)
 			{
 				for ($i=0; $i<count($allAreas); $i++)
@@ -97,15 +98,19 @@
 						$final[$allAreas[$i]['BArea']['id']]['id'] = $allAreas[$i]['BArea']['id'];
 						$final[$allAreas[$i]['BArea']['id']]['descr'] = $province['Province']['description'];
 						$final[$allAreas[$i]['BArea']['id']]['prefix'] = $allAreas[$i]['BArea']['description'];
-						if ($final[$allAreas[$i]['BArea']['id']]['id'] == 3)
+						$final[$allAreas[$i]['BArea']['id']]['ypepth_code'] = $allAreas[$i]['BArea']['ypepth_code'];
+						$tmp2 = explode(" ", $province['Province']['description']);
+						if ($allAreas[$i]['BArea']['full_name']!="null")
 						{
-							$final[$allAreas[$i]['BArea']['id']]['descr'] = "Θεσσαλονίκης";
-							$final[$allAreas[$i]['BArea']['id']]['prefix'] = "Α";
+							$tmp = explode(" ", $allAreas[$i]['BArea']['full_name']);
+							$final[$allAreas[$i]['BArea']['id']]['prefix'] = trim($tmp[0]);
+							$final[$allAreas[$i]['BArea']['id']]['descr'] = trim($tmp[1]);
 						}
-						if ($final[$allAreas[$i]['BArea']['id']]['id'] == 4)
+						/* Το παρακάτω είναι για πιάσω τις περιοχές μετάθεσης Α-Δ Αθήνας και Δυτικής Αττικής */
+						if ((count($tmp2)!=1) && $final[$allAreas[$i]['BArea']['id']]['prefix']=="" && strlen(trim($tmp2[0]))<=2)
 						{
-							$final[$allAreas[$i]['BArea']['id']]['descr'] = "Θεσσαλονίκης";
-							$final[$allAreas[$i]['BArea']['id']]['prefix'] = "Β";
+							$final[$allAreas[$i]['BArea']['id']]['prefix'] = trim($tmp2[0]);
+							$final[$allAreas[$i]['BArea']['id']]['descr'] = trim($tmp2[1]);
 						}
 					}
 				}

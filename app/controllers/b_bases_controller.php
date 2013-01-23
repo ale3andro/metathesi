@@ -28,6 +28,7 @@
 						$conditions['BBasis.specialty_id'] = $this->data['BBasis']['specialty_id'];
 					if ($this->data['BBasis']['area_code'] != -1)
 						$conditions['BBasis.area_code'] = $this->data['BBasis']['area_code'];
+					$conditions['BBasis.year >'] = 2012;
 				}
 				else
 				{
@@ -39,6 +40,7 @@
 						$conditions['BBasis.specialty_id'] = $data['BBasis']['specialty_id'];
 					if ($data['BBasis']['area_code'] != -1)
 						$conditions['BBasis.area_code'] = $data['BBasis']['area_code'];
+					$conditions['ABasis.year >'] = 2012;
 				}
 				if (isset($conditions))
 					$this->set('b_bases', $this->paginate("BBasis", $conditions));

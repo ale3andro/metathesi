@@ -55,7 +55,7 @@
 			if (isset($this->params['requested']))
 			{
 				$allProvinces = $this->requestAction("/provinces/getAll");
-				$allAreas = $this->AArea->find("all");
+				$allAreas = $this->AArea->find("all", array('conditions'=> array('AArea.id <' => 1000)));
 				$counter=0;
 				foreach ($allProvinces as $province)
 				{
@@ -65,28 +65,33 @@
 						{
 							$final[$counter]['id'] = $allAreas[$i]['AArea']['id'];
 							$final[$counter]['descr'] = $province['Province']['description'];
-							$temp = explode(" ", $final[$counter]['descr']);
-							
-							if (count($temp) != 1)
-							{
-								if ($temp[1]!="Αττικής")
-									$final[$counter]['descr'] = $temp[0];
-								if ($temp[0]=='Αθήνας')
-									$final[$counter]['descr'] = $temp[0] . " " . $temp[1];
-							}
-							
 							$final[$counter]['prefix'] = $allAreas[$i]['AArea']['description'];
+							$tmp2 = explode(" ", $province['Province']['description']);
+							if ($allAreas[$i]['AArea']['full_name']!="null")
+							{
+								$tmp = explode(" ", $allAreas[$i]['AArea']['full_name']);
+								$final[$counter]['prefix'] = trim($tmp[0]);
+								$final[$counter]['descr'] = trim($tmp[1]);
+							}
+							if ((count($tmp2)!=1) && $final[$counter]['prefix']=="" )
+							{
+								$final[$counter]['prefix'] = trim($tmp2[0]);
+								$final[$counter]['descr'] = trim($tmp2[1]);
+							}
 							$counter++;	
 						}
 					}
 				}			
+				for ($i=0; $i<count($final); $i++)
+					$names[$i] = $final[$i]['descr'];
+				array_multisort($names, SORT_ASC, $final);
 				
 				$retVal = "<select name=\"" . $selectName . "\">";
 				$retVal .= "<option value=\"-1\">Όλες</option>";
 				for ($i=0; $i<count($final); $i++)
 					$retVal .= "<option value=\"" . $final[$i]['id'] . "\"" . 
-						(($selectedId==$final[$i]['id'])?" selected=\"selected\"":"") . ">" .  $final[$i]['descr'] .
-							" " . $final[$i]['prefix'] . "</option>";
+						(($selectedId==$final[$i]['id'])?" selected=\"selected\"":"") . ">" .  $final[$i]['prefix'] .
+							" " . $final[$i]['descr'] . "</option>";
 				$retVal .= "</select>";
 				return $retVal;				
 			}
@@ -96,7 +101,7 @@
 		function getDescriptionList()
 		{
 			$allProvinces = $this->requestAction("/provinces/getAll");
-			$allAreas = $this->AArea->find("all");
+			$allAreas = $this->AArea->find("all", array('conditions' => array('AArea.id <' => 1000)));
 			foreach ($allProvinces as $province)
 			{
 				for ($i=0; $i<count($allAreas); $i++)
@@ -106,19 +111,23 @@
 						$final[$allAreas[$i]['AArea']['id']]['id'] = $allAreas[$i]['AArea']['id'];
 						$final[$allAreas[$i]['AArea']['id']]['prefix'] = $allAreas[$i]['AArea']['description'];
 						$final[$allAreas[$i]['AArea']['id']]['descr'] = $province['Province']['description'];
-						if ($final[$allAreas[$i]['AArea']['id']]['id'] == 3)
+						$final[$allAreas[$i]['AArea']['id']]['ypepth_code'] = $allAreas[$i]['AArea']['ypepth_code'];
+						$tmp2 = explode(" ", $province['Province']['description']);
+						if ($allAreas[$i]['AArea']['full_name']!="null")
 						{
-							$final[$allAreas[$i]['AArea']['id']]['descr'] = "Θεσσαλονίκης";
-							$final[$allAreas[$i]['AArea']['id']]['prefix'] = "Α";
+							$tmp = explode(" ", $allAreas[$i]['AArea']['full_name']);
+							$final[$allAreas[$i]['AArea']['id']]['prefix'] = trim($tmp[0]);
+							$final[$allAreas[$i]['AArea']['id']]['descr'] = trim($tmp[1]);
 						}
-						if ($final[$allAreas[$i]['AArea']['id']]['id'] == 	4)
+						/* Το παρακάτω είναι για πιάσω τις περιοχές μετάθεσης Α-Δ Αθήνας και Δυτικής Αττικής */
+						if ((count($tmp2)!=1) && $final[$allAreas[$i]['AArea']['id']]['prefix']=="" && strlen(trim($tmp2[0]))<=2)
 						{
-							$final[$allAreas[$i]['AArea']['id']]['descr'] = "Θεσσαλονίκης";
-							$final[$allAreas[$i]['AArea']['id']]['prefix'] = "Β";
+							$final[$allAreas[$i]['AArea']['id']]['prefix'] = trim($tmp2[0]);
+							$final[$allAreas[$i]['AArea']['id']]['descr'] = trim($tmp2[1]);
 						}
 					}
 				}
-			}			
+			}
 			if (isset($this->params['requested']))
 				return $final;			
 			else

@@ -5,26 +5,8 @@
 		$activeTab = 3;
 	echo  $this->element("header", array( "activeTab" => $activeTab,
 											"provinceId" => $theProvince['Province']['id'] ) );
-	$title = "Νομός " . $theProvince['Province']['description'];
-	if ($theProvince['Province']['id'] == 1)
-		$title = "Περιοχή Α' Αθήνας";
-	if ($theProvince['Province']['id'] == 9)
-		$title = "Περιοχή Β' Αθήνας";
-	if ($theProvince['Province']['id'] == 12)
-		$title = "Περιοχή Γ' Αθήνας";
-	if ($theProvince['Province']['id'] == 13)
-		$title = "Περιοχή Δ' Αθήνας";
-	if ($theProvince['Province']['id'] == 3)
-		$title = "Περιοχή Ανατολικής Αττικής";
-	if ($theProvince['Province']['id'] == 16)
-		$title = "Περιοχή Δυτικής Αττικής";
-	if ($theProvince['Province']['id'] == 7)
-		$title = "Περιοχή Α' Θεσσαλονίκης";
-	if ($theProvince['Province']['id'] == 11)
-		$title = "Περιοχή Β' Θεσσαλονίκης";
-	if ($theProvince['Province']['id'] == 46)
-		$title = "Περιοχή Πειραιά";
-		
+	$title = "Περιοχή: " . $theProvince['Province']['description'];
+	
 	if ($ab==1)
 		$title .= " - Πρωτοβάθμια Εκπαίδευση";
 	if ($ab==2)
@@ -61,7 +43,11 @@
 									{
 										if ($a_area['AArea']['id']<1000)
 										{
-											echo "<p><h3>" . trim($a_area['AArea']['description'] . " " . $theProvince['Province']['description']) . "</h3>";
+											if ($a_area['AArea']['full_name']=="null")
+												echo "<p><h3>" . trim($a_area['AArea']['description'] . " " . $theProvince['Province']['description']) . "</h3>";
+											else
+												echo "<p><h3>" . $a_area['AArea']['full_name'] . "</h3>";
+												
 											echo "Στην περιοχή ανήκουν σχολεία των παρακάτω Δήμων:<br />";
 										
 											foreach($a_mun[$i++] as $mun)
@@ -78,7 +64,10 @@
 									{
 										if ($a_area['AArea']['id']>1000)
 										{
-											echo $html->link(trim($a_area['AArea']['description'] . " " . $theProvince['Province']['description']), "/a_bases/show/" . $a_area['AArea']['id']) . "<br />";
+											if ($a_area['AArea']['full_name']=="null")
+												echo $html->link(trim($a_area['AArea']['description'] . " " . $theProvince['Province']['description']), "/a_bases/show/" . $a_area['AArea']['id']) . "<br />";
+											else
+												echo $html->link($a_area['AArea']['full_name'], "/a_bases/show/" . $a_area['AArea']['id']) . "<br />";
 										}
 									}
 									
@@ -99,7 +88,11 @@
 									{
 										if ($b_area['BArea']['id']<1000)
 										{
-											echo "<p><h3>" . trim($b_area['BArea']['description'] . " " . $theProvince['Province']['description']) . "</h3>";
+											if ($b_area['BArea']['full_name']=="null")
+												echo "<p><h3>" . trim($b_area['BArea']['description'] . " " . $theProvince['Province']['description']) . "</h3>";
+											else
+												echo "<p><h3>" . $b_area['BArea']['full_name'] . "</h3>";
+											
 											echo "Στην περιοχή ανήκουν σχολεία των παρακάτω Δήμων:<br />";
 										
 											foreach($b_mun[$i++] as $mun)
@@ -116,7 +109,10 @@
 									{
 										if ($b_area['BArea']['id']>1000)
 										{
-											echo $html->link(trim($b_area['BArea']['description'] . " " . $theProvince['Province']['description']), "/b_bases/show/" . $b_area['BArea']['id']) . "<br />";
+											if ($b_area['BArea']['full_name']=="null")
+												echo $html->link(trim($b_area['BArea']['description'] . " " . $theProvince['Province']['description']), "/b_bases/show/" . $b_area['BArea']['id']) . "<br />";
+											else
+												echo $html->link($b_area['BArea']['full_name'], "/b_bases/show/" . $b_area['BArea']['id']) . "<br />";
 										}
 									}						
 									

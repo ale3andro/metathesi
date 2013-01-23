@@ -263,3 +263,5 @@
 2013-01-21 14:14:19 Warning: Warning (2): Missing argument 1 for BAreasController::getFromDideId() in [/var/www/metathesi/app/controllers/b_areas_controller.php, line 50]
 2013-01-21 14:14:19 Warning: Warning (2): Missing argument 1 for RegionsController::getRegionFromId() in [/var/www/metathesi/app/controllers/regions_controller.php, line 12]
 2013-01-21 14:40:19 Warning: Warning (2): Invalid argument supplied for foreach() in [/var/www/metathesi/app/views/provinces/show.ctp, line 66]
+2013-01-22 21:55:04 Warning: Warning (2): Illegal offset type in [/var/www/metathesi/app/controllers/a_areas_controller.php, line 121]
+2013-01-22 21:55:06 Warning: Warning (2): Illegal offset type in [/var/www/metathesi/app/controllers/a_areas_controller.php, line 121]
