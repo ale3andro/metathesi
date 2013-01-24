@@ -56,16 +56,25 @@
 								}
 								echo "</ul>";
 							
-								$paginator->options(array('url' => $this->passedArgs));
-								echo "<p style=\"text-align:right\">" . $paginator->counter(array('format' => 'Σελίδα %page% από %pages%')) . "</p>";
-								echo "<p style=\"text-align:center\">";
-								echo $paginator->numbers() . "<br />";
-								echo $paginator->prev('« Προηγούμενη ');
-								if ( ($paginator->counter() != 1) && ($paginator->counter() != $paginator->params['paging']['BSpecialty']['pageCount']) )
-									echo " : ";
-								echo $paginator->next(' Επόμενη »'); 
-								echo "</p>";
-								echo "<br />* <span style=\"font-weight:bold\">Εμφανίζονται μόνοι οι ειδικότητες για τις οποίες υπάρχει βάση τη δεδομένη χρονιά.</span>";
+								if (substr($paginator->counter(),0,1)!="0")
+								{
+									$paginator->options(array('url' => $this->passedArgs));
+									echo "<p style=\"text-align:right\">" . $paginator->counter(array('format' => 'Σελίδα %page% από %pages%')) . "</p>";
+									echo "<p style=\"text-align:center\">";
+																
+									echo $paginator->numbers() . "<br />";
+									if (substr($paginator->counter(),0,1)!="1")
+									{
+										echo $paginator->prev('« Προηγούμενη ');
+										if ( ($paginator->counter() != 1) && ($paginator->counter() != $paginator->params['paging']['BSpecialty']['pageCount']) )
+											echo " : ";
+										echo $paginator->next(' Επόμενη »'); 
+										echo "</p>";
+									}
+									echo "<br />* <span style=\"font-weight:bold\">Εμφανίζονται μόνοι οι ειδικότητες για τις οποίες υπάρχει βάση τη δεδομένη χρονιά.</span>";
+								}
+								else
+									echo "<span style=\"font-weight:bold\">Δεν έγιναν μεταθέσεις στην περιοχή αυτή το $year </span>";
 							}
 							else
 							{

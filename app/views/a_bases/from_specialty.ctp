@@ -6,9 +6,15 @@
 		$aspec[$a_specialty['ASpecialty']['id']]['description'] = $a_specialty['ASpecialty']['description'];
 	}
 	echo  $this->element("header", array( "activeTab" => 1));
-	$title = $theProvince['Province']['description'] . " - Περιοχή " . $area['AArea']['description'] . " - Ειδικότητα " . 
-		$aspec[$specialtyId]['code'];
+	
+	if ($area['AArea']['full_name']=="null")
+		$title = trim($area['AArea']['description'] . " " . $theProvince['Province']['description']);
+	else
+		$title = $area['AArea']['full_name'];
+		
+	$title .= " - Ειδικότητα " . $aspec[$specialtyId]['code'];
 	$this->set('title_for_layout', $title);
+	
 	echo $javascript->link('MochiKit/MochiKit.js');
 	echo $javascript->link('PlotKit/excanvas.js');
 	echo $javascript->link('PlotKit/Base.js');

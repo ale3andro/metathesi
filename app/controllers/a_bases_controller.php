@@ -84,7 +84,10 @@
 						$this->set('specialtyId', $specialtyId);						
 						$this->set('bases', $bases);
 						$this->set('areaId', $areaId);
-						$this->set('availableYears', $this->requestAction("/a_bases/getAvailableYears"));
+						if ($areaId>1000)
+							$this->set('availableYears', $this->requestAction("/a_bases/getAvailableYears/true"));
+						else
+							$this->set('availableYears', $this->requestAction("/a_bases/getAvailableYears"));
 						$this->set('area', $area);
 						$this->set('theProvince', $province);
 						$this->set('a_areas', $a_areas);
