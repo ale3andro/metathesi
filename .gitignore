@@ -1,3 +1,5 @@
 app/config/database.php
+app/tmp/logs/debug.log
+app/tmp/error.log
 app/tmp/cache/*
 magpierss/*

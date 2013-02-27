@@ -19,8 +19,10 @@ Released   : 20081103
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title><?php echo $title_for_layout ?></title>
 <?php 
+	echo $html->css("typeplate-unminified");
 	echo $html->css("style"); 
 	echo $html->css("form"); 
+	
 ?>
 </head>
 <body>
