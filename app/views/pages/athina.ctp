@@ -7,10 +7,10 @@
 <div id="wrapper">
 <div class="btm">
 	<div id="page">
-		<div id="content" style="float:left">
+		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Νομός Αττικής</h1>
-				<div class="entry">
+				<h1 class="gamma">Νομός Αττικής</h1>
+				<div class="entry epsilon">
 					<p>
 						Ο Νομός Αττικής υποδιαιρείται σε 6 ΠΥΣΔΕ /ΠΥΣΠΕ: 
 						<ul>

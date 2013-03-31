@@ -9,8 +9,8 @@
 	<div id="page">
 		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Σχετικά με το metathesi.gr</h1>
-				<div class="entry">
+				<h1 class="gamma">Σχετικά με το metathesi.gr</h1>
+				<div class="entry epsilon">
 					<p>
 						Καλώς ορίσατε στο metathesi.gr...<br /><br />
 						Το metathesi.gr φιλοδοξεί να γίνει - όταν με το καλό ολοκληρωθεί πλήρως - ένα site που θα καλύπτει όλα τα θέματα που αφορούν τις μεταθέσεις των 

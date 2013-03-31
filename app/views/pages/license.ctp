@@ -9,8 +9,8 @@
 	<div id="page">
 		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Άδειες Template, εικόνων</h1>
-				<div class="entry">
+				<h1 class="gamma">Άδειες Template, εικόνων</h1>
+				<div class="entry drop-cap epsilon">
 					<p>
 						Όλες οι εικόνες και τα εικονίδια που χρησιμοποιούνται στο <a href="http://metathesi.gr">metathesi.gr</a>
 						 έχουν άδεια <a href="http://www.creativecommons.org">Creative Commons<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>. Πιο συγκεκριμένα:

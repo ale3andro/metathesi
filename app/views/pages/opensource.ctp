@@ -1,4 +1,4 @@
-<!-- File: /app/views/provinces/pages/diafora.ctp -->
+<!-- File: /app/views/provinces/pages/opensource.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 5) );
 	$this->set('title_for_layout', 'Ανοιχτός Κώδικας');
@@ -9,8 +9,8 @@
 	<div id="page">
 		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Λογισμικό Ανοιχτού Κώδικα</h1>
-				<div class="entry">
+				<h1 class="gamma">Λογισμικό Ανοιχτού Κώδικα</h1>
+				<div class="entry drop-cap epsilon">
 					<p>
 						Το <a href="http://metathesi.gr">metathesi.gr</a> αποτελεί έργο <a href="http://hellug.gr/index.php/Linux/Ellak">Ελεύθερου Λογισμικού / Λογισμικού 
 							Ανοιχτού Κώδικα<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>.

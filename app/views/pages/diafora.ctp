@@ -7,10 +7,10 @@
 <div id="wrapper">
 <div class="btm">
 	<div id="page">
-		<div id="content" style="float:left">
+		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Διάφορα</h1>
-				<div class="entry">
+				<h1 class="gamma">Διάφορα</h1>
+				<div class="entry epsilon">
 					<p>
 						<ul>
 							<li><?php echo $html->link("Λίστα περιοχών μετάθεσης Πρωτοβάθμιας Εκπαίδευσης", "/a_areas/getDescriptionList"); ?></li>

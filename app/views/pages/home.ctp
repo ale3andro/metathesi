@@ -10,28 +10,17 @@
 	<div id="page">
 		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Καλώς ορίσατε στο metathesi.gr</h1>
-				<div class="entry">
-					<p>Καλώς ορίσατε στο <strong>metathesi.gr</strong>, ένα site αφιερωμένο στο μεγαλύτερο - μετά τον διορισμό - βάσανο των εκπαιδευτικών: τις 
+				<h1 class="gamma">Καλώς ορίσατε στο metathesi.gr</h1>
+				<div class="entry drop-cap epsilon">
+					Καλώς ορίσατε στο <strong>metathesi.gr</strong>, ένα site αφιερωμένο στο μεγαλύτερο - μετά τον διορισμό - βάσανο των εκπαιδευτικών: τις 
 						<strong>μεταθέσεις</strong>... Για περισσότερες πληροφορίες σχετικά με το <a href="http://metathesi.gr">metathesi.gr</a> επισκεφθείτε 
 						<a href="pages/about">αυτή</a> τη σελίδα.
 						<br /><?php echo $html->link("Disclaimer", "disclaimer"); ?>
-					</p>
-					<?php 
-						if (file_exists("news/news.alx"))
-						{
-							$fp = fopen("news/news.alx", "r");
-							$alxData = fread($fp, 3096);
-							echo "<p>Τελευταίες αναρτήσεις του <a target=\"_blank\" href=\"http://metathesi.gr/blog\">Ιστολογίου " . 
-									$html->image('external_link.gif', array('class'=>'external')) . "</a>:<br />";
-							echo "$alxData</p>";
-						}
-					?>
 				</div>
 			</div>
 			<div class="post">
-				<h1 class="title">Επιλογή Περιοχής</h1>
-				<div class="entry">
+				<h1 class="gamma">Επιλογή Περιοχής</h1>
+				<div class="entry epsilon">
 					Η επιλογή περιοχής μπορεί να γίνει από 
 					<?php echo $html->link("τη λίστα", "/provinces/viewAll"); ?>
 					με τις περιοχές ή από τον παρακάτω χάρτη:<br /><br />
@@ -89,9 +78,18 @@
   						<area shape="poly" title="Νομός Έβρου" href="provinces/show/19" coords="483,102,487,100,488,98,492,96,493,94,501,90,502,88,504,87,504,84,503,82,501,80,500,78,500,69,502,65,504,64,505,62,507,61,510,61,518,57,523,47,523,41,521,39,520,37,520,34,519,32,519,26,523,24,529,24,535,27,536,29,542,32,544,34,546,35,549,41,549,44,553,52,553,55,554,57,554,63,552,64,551,66,548,66,540,70,539,72,537,73,535,77,535,80,534,82,534,88,533,90,533,93,531,97,529,98,527,102,525,103,522,109,520,110,519,112,519,115,513,127,513,130,511,131,509,135,507,136,506,138,504,139,500,147,498,148,496,152,494,153,493,155,485,159,482,159,480,160,476,158,473,157,469,155,468,153,466,152,465,150,463,148,458,138,458,129,464,117,466,116,468,112,470,111,471,109,475,107,476,105,484,101" />
 					</map>
 					<img src="images/Greece_prefectures_map.png" width="800" height="700" usemap="#greece" style="border:0" />
+					<?php 
+						if (file_exists("news/news.alx"))
+						{
+							$fp = fopen("news/news.alx", "r");
+							$alxData = fread($fp, 3096);
+							echo "<p class=\"zeta\"><br />Τελευταίες αναρτήσεις του <a target=\"_blank\" href=\"http://metathesi.gr/blog\">Ιστολογίου " . 
+									$html->image('external_link.gif', array('class'=>'external')) . "</a>:<br />";
+							echo "$alxData</p>";
+						}
+					?>
 				</div>
 			</div>
-			
 		</div>
 		<!-- end #content -->
 		<div style="clear: both;">&nbsp;</div>

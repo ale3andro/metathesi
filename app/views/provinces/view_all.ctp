@@ -19,8 +19,8 @@
 	
 		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title"><?php echo $title; ?></h1>
-				<div class="entry">
+				<h1 class="gamma"><?php echo $title; ?></h1>
+				<div class="entry epsilon">
 					<p>
 						<?php
 							$i=0;

@@ -9,8 +9,8 @@
 	<div id="page">
 		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Disclaimer</h1>
-				<div class="entry">
+				<h1 class="gamma">Disclaimer</h1>
+				<div class="drop-cap epsilon entry">
 					<p>
 						Τα δεδομένα του <a href="http://metathesi.gr">metathesi.gr</a> έχουν συγκεντρωθεί από <a href="http://metathesi.gr/blog/%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CE%B1/">
 							διάφορες πηγές<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a> στο internet. Όπως είναι λογικό για τα περισσότερα
