@@ -13,8 +13,6 @@
 				<div class="entry epsilon">
 					<p>
 						<ul>
-							<li><?php echo $html->link("Λίστα περιοχών μετάθεσης Πρωτοβάθμιας Εκπαίδευσης", "/a_areas/getDescriptionList"); ?></li>
-							<li><?php echo $html->link("Λίστα περιοχών μετάθεσης Δευτεροβάθμιας Εκπαίδευσης", "/b_areas/getDescriptionList"); ?></li></br />							
 							<li><?php echo $html->link("Περιφερειακές Διευθύνσεις Εκπαίδευσης", "/regions"); ?></li><br />
 							<li><?php echo $html->link("Ειδικότητες Εκπαιδετικών Α/θμιας", "/a_specialties"); ?></li>
 							<li><?php echo $html->link("Ειδικότητες Εκπαιδετικών Β/θμιας", "/b_specialties"); ?></li><br />

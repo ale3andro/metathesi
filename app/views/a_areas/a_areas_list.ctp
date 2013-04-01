@@ -1,4 +1,4 @@
-<!-- File: /app/views/a_areas/get_description_list.ctp -->
+<!-- File: /app/views/a_areas/a_areas_list.ctp -->
 <?php
 	echo  $this->element("header", array( "activeTab" => 1));
 ?>
@@ -14,7 +14,13 @@
 				?>
 				<h1 class="gamma"><?php echo $title?></h1>
 				<div class="entry epsilon">
-					
+				<?php
+					foreach($data as $item)
+					{
+						$description = trim($item['prefix'] . " " . $item['descr']);
+						echo $html->link($description, '/provinces/show/' . $item['id'] . '/1') . "<br />";
+					}
+				?>
 				</div>
 			</div>
 		</div>

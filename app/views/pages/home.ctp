@@ -83,7 +83,7 @@
 						{
 							$fp = fopen("news/news.alx", "r");
 							$alxData = fread($fp, 3096);
-							echo "<p class=\"zeta\"><br />Τελευταίες αναρτήσεις του <a target=\"_blank\" href=\"http://metathesi.gr/blog\">Ιστολογίου " . 
+							echo "<p class=\"epsilon\"><br />Τελευταίες αναρτήσεις του <a target=\"_blank\" href=\"http://metathesi.gr/blog\">Ιστολογίου " . 
 									$html->image('external_link.gif', array('class'=>'external')) . "</a>:<br />";
 							echo "$alxData</p>";
 						}

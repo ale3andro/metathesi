@@ -7,10 +7,10 @@
 <div id="wrapper">
 <div class="btm">
 	<div id="page">
-		<div id="content">
+		<div id="contentBIG" style="float:left">
 			<div class="post">
-				<h1 class="title">Ειδικότητες Εκπαιδευτικών Δευτεροβάθμιας Εκπαίδευσης</h1>
-				<div class="entry">
+				<h1 class="gamma">Ειδικότητες Εκπαιδευτικών Δευτεροβάθμιας Εκπαίδευσης</h1>
+				<div class="entry epsilon">
 					<p>
 						<?php
 							echo $html->css("../app/webroot/css/table_design.css");
@@ -47,9 +47,6 @@
 			</div>
 		</div>
 		<!-- end #content -->
-
-<?php echo $this->element("sidemenuspecialties"); ?>
-	
 <div style="clear: both;">&nbsp;</div>
 	</div>
 	<!-- end #page -->

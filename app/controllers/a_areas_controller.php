@@ -98,10 +98,38 @@
 			
 		}
 		
+		/* 
+		 * Η συνάρτηση αυτή παίρνει μια λίστα περιοχών από την συνάρτηση getDescriptionList()
+		 * και την σορτάρει με αλφαβητική σειρά
+		 */
+		function aAreasList()
+		{
+			$fArray = $this->requestAction("/a_areas/getDescriptionList");
+					
+			print "<pre>";
+			print_r($fArray);
+			print "</pre>";
+			die('1');
+				
+			function alxSort($a, $b)
+			{
+				$bad = array('ά', 'έ', 'ή', 'ί', 'ό', 'ύ', 'ώ');
+				$good = array('α', 'ε', 'η', 'ι'. 'ο', 'υ', 'ω');
+				return strcmp(str_replace($bad, $good, $a), str_replace($bad, $good, $b));
+			}
+			usort($fArray['description'], "alxSort");
+			print "<pre>";
+			print_r($fArray);
+			print "</pre>";
+			die('1');
+			$this->set("data", $fArray);
+		}
+		
 		function getDescriptionList()
 		{
 			$allProvinces = $this->requestAction("/provinces/getAll");
 			$allAreas = $this->AArea->find("all", array('conditions' => array('AArea.id <' => 1000)));
+			
 			foreach ($allProvinces as $province)
 			{
 				for ($i=0; $i<count($allAreas); $i++)
@@ -119,7 +147,6 @@
 							$final[$allAreas[$i]['AArea']['id']]['prefix'] = trim($tmp[0]);
 							$final[$allAreas[$i]['AArea']['id']]['descr'] = trim($tmp[1]);
 						}
-						/* Το παρακάτω είναι για πιάσω τις περιοχές μετάθεσης Α-Δ Αθήνας και Δυτικής Αττικής */
 						if ((count($tmp2)!=1) && $final[$allAreas[$i]['AArea']['id']]['prefix']=="" && strlen(trim($tmp2[0]))<=2)
 						{
 							$final[$allAreas[$i]['AArea']['id']]['prefix'] = trim($tmp2[0]);
@@ -128,6 +155,13 @@
 					}
 				}
 			}
+			/*
+			/*
+			print "<pre>";
+			print_r($final);
+			print "</pre>";
+			die('1');
+			*/
 			if (isset($this->params['requested']))
 				return $final;			
 			else
