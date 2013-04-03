@@ -33,9 +33,6 @@
 							<li>
 								Η βάση δεδομένων που βρίσκεται πίσω από την εφαρμογή είναι διαθέσιμη <a href="http://github.com/ale3andro/metathesidb">εδώ<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>
 							</li>
-							<li>
-								Τέλος σε τη <a href="http://wiki.github.com/ale3andro/metathesi">αυτή<?php echo $html->image('external_link.gif', array('class'=>'external')); ?></a>σελίδα υπάρχει ένας συνοπτικός οδηγός εγκατάστασης του metathesi.gr τοπικά στον υπολογιστή σας!
-							</li>
 						</ul>
 					</p>
 				</div>

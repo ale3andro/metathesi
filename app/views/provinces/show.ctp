@@ -53,13 +53,13 @@
 											foreach($a_mun[$i++] as $mun)
 												echo $mun['Municipality']['description'] . "<br />";
 										
-											echo $html->link("Βάσεις Μετάθεσης", "/a_bases/show/" . $a_area['AArea']['id']) . "<br />";
+											echo $html->link("Βάσεις Μετάθεσης", "/a_bases/show/" . $a_area['AArea']['id']) . "<br /><br />";
 											echo "</p>";
 										}
 									}
 									
 									echo "<br /><br />";																		
-									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών</h2>";
+									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών (μέχρι και 2012)</h2>";
 									foreach ($a_areas as $a_area)
 									{
 										if ($a_area['AArea']['id']>1000)
@@ -98,13 +98,13 @@
 											foreach($b_mun[$i++] as $mun)
 												echo $mun['Municipality']['description'] . "<br />";
 										
-											echo $html->link("Βάσεις μετάθεσης", "/b_bases/show/" . $b_area['BArea']['id']) . "<br />";
+											echo $html->link("Βάσεις μετάθεσης", "/b_bases/show/" . $b_area['BArea']['id']) . "<br /><br />";
 											echo "</p>";
 										}
 									}
 									
 									echo "<br /><br />";
-									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών</h2>";
+									echo "<p><h2>Βάσεις Μετάθεσης παλιών περιοχών (μέχρι και 2012)</h2>";
 									foreach ($b_areas as $b_area)
 									{
 										if ($b_area['BArea']['id']>1000)
