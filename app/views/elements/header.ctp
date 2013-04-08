@@ -20,7 +20,7 @@
 	    	<?php 	if (isset($provinceId))
 	    				echo $html->link("Αρχική Περιοχής", "/provinces/show/" . $provinceId);
 	    			else
-	    					echo $html->link("Όλες οι Περιοχές","/provinces/viewAll"); 
+	    					echo $html->link("Διευθύνσεις","/provinces/viewAll"); 
 	    	?>
 	    </li>
 	    <li <?php echo (($activeTab==4)?" class=\"first\"":"") ?>>
