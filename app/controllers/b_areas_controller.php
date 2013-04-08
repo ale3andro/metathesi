@@ -96,6 +96,7 @@
 					if ($allAreas[$i]['BArea']['dide_id'] == $province['Province']['id'])
 					{
 						$final[$allAreas[$i]['BArea']['id']]['id'] = $allAreas[$i]['BArea']['id'];
+						$final[$allAreas[$i]['BArea']['id']]['dide_id'] = $allAreas[$i]['BArea']['dide_id'];
 						$final[$allAreas[$i]['BArea']['id']]['descr'] = $province['Province']['description'];
 						$final[$allAreas[$i]['BArea']['id']]['prefix'] = $allAreas[$i]['BArea']['description'];
 						$final[$allAreas[$i]['BArea']['id']]['ypepth_code'] = $allAreas[$i]['BArea']['ypepth_code'];
@@ -114,7 +115,24 @@
 						}
 					}
 				}
-			}			
+			}
+			$bad = array('ά', 'έ', 'ή', 'ί', 'ό', 'ύ', 'ώ', 'Έ');
+			$good = array('α', 'ε', 'η', 'ι'. 'ο', 'υ', 'ω', 'Ε');
+			foreach ($final as $row)
+			{
+				$description = str_replace($bad, $good, $row['descr']);
+				$prefix = str_replace($bad, $good, $row['prefix']);
+				$names[] = $description . " " . $prefix;
+			}
+			array_multisort($names, SORT_ASC, $final);
+			
+			/*
+			print "<pre>";
+			print_r($final);
+			print "</pre>";
+			die('1');
+			*/
+						
 			if (isset($this->params['requested']))
 				return $final;			
 			else

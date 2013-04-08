@@ -1,6 +1,6 @@
-<!-- File: /app/views/a_areas/a_areas_list.ctp -->
+<!-- File: /app/views/b_areas/get_description_list.ctp -->
 <?php
-	echo  $this->element("header", array( "activeTab" => 1));
+	echo  $this->element("header", array( "activeTab" => 2));
 ?>
 
 <div id="wrapper">
@@ -9,7 +9,7 @@
 		<div id="contentBIG" style="float:left">
 			<div class="post">
 				<?php
-					$title = "Περιοχές μετάθεσης Α/θμιας Εκπαίδευσης";
+					$title = "Περιοχές μετάθεσης Β/θμιας Εκπαίδευσης";
 					$this->set('title_for_layout', $title);
 				?>
 				<h1 class="gamma"><?php echo $title?></h1>
@@ -18,7 +18,7 @@
 					foreach($data as $item)
 					{
 						$description = trim($item['prefix'] . " " . $item['descr']);
-						echo $html->link($description, '/provinces/show/' . $item['id'] . '/1') . "<br />";
+						echo $html->link($description, '/provinces/show/' . $item['dide_id'] . '/2') . "<br />";
 					}
 				?>
 				</div>

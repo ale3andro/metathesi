@@ -97,34 +97,7 @@
 			}
 			
 		}
-		
-		/* 
-		 * Η συνάρτηση αυτή παίρνει μια λίστα περιοχών από την συνάρτηση getDescriptionList()
-		 * και την σορτάρει με αλφαβητική σειρά
-		 */
-		function aAreasList()
-		{
-			$fArray = $this->requestAction("/a_areas/getDescriptionList");
-					
-			print "<pre>";
-			print_r($fArray);
-			print "</pre>";
-			die('1');
-				
-			function alxSort($a, $b)
-			{
-				$bad = array('ά', 'έ', 'ή', 'ί', 'ό', 'ύ', 'ώ');
-				$good = array('α', 'ε', 'η', 'ι'. 'ο', 'υ', 'ω');
-				return strcmp(str_replace($bad, $good, $a), str_replace($bad, $good, $b));
-			}
-			usort($fArray['description'], "alxSort");
-			print "<pre>";
-			print_r($fArray);
-			print "</pre>";
-			die('1');
-			$this->set("data", $fArray);
-		}
-		
+	
 		function getDescriptionList()
 		{
 			$allProvinces = $this->requestAction("/provinces/getAll");
@@ -137,6 +110,7 @@
 					if ($allAreas[$i]['AArea']['dipe_id'] == $province['Province']['id'])
 					{
 						$final[$allAreas[$i]['AArea']['id']]['id'] = $allAreas[$i]['AArea']['id'];
+						$final[$allAreas[$i]['AArea']['id']]['dipe_id'] = $allAreas[$i]['AArea']['dipe_id'];
 						$final[$allAreas[$i]['AArea']['id']]['prefix'] = $allAreas[$i]['AArea']['description'];
 						$final[$allAreas[$i]['AArea']['id']]['descr'] = $province['Province']['description'];
 						$final[$allAreas[$i]['AArea']['id']]['ypepth_code'] = $allAreas[$i]['AArea']['ypepth_code'];
@@ -154,8 +128,17 @@
 						}
 					}
 				}
+			}		
+			$bad = array('ά', 'έ', 'ή', 'ί', 'ό', 'ύ', 'ώ', 'Έ');
+			$good = array('α', 'ε', 'η', 'ι'. 'ο', 'υ', 'ω', 'Ε');
+			foreach ($final as $row)
+			{
+				$description = str_replace($bad, $good, $row['descr']);
+				$prefix = str_replace($bad, $good, $row['prefix']);
+				$names[] = $description . " " . $prefix;
 			}
-			/*
+			array_multisort($names, SORT_ASC, $final);
+			
 			/*
 			print "<pre>";
 			print_r($final);
