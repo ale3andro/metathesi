@@ -2,7 +2,7 @@
 import MySQLdb
 
 from flask import Flask
-from flask import render_template
+from flask import render_template, request
 app = Flask(__name__)
 
 db = MySQLdb.connect(host="localhost",    # your host, usually localhost
@@ -11,9 +11,14 @@ db = MySQLdb.connect(host="localhost",    # your host, usually localhost
                      db="metathes_moria")        # name of the data base
 cur = db.cursor()
 cur.execute("SET NAMES UTF8")
+global counter
+counter=0
 
 @app.route('/')
 def hello_world():
+    global counter
+    counter += 1
+    print counter
     cur.execute('select * from a_specialties order by code')
     eidikothtes_a = []
     for row in cur.fetchall():
@@ -34,12 +39,12 @@ def hello_world():
     for row in cur.fetchall():
         years_b.append([int(row[0]), row[0].decode('utf8')])
 
-    return render_template('homepage.html', a_eidikothtes=create_select_element("select", eidikothtes_a),
-                                                b_eidikothtes=create_select_element("select", eidikothtes_b),
-                                                a_years=create_select_element("select", years_a),
-                                                b_years=create_select_element("select", years_b),
-                                                a_areas=create_select_element("select", get_perioxes_a()),
-                                                b_areas=create_select_element("select", get_perioxes_b()))
+    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", eidikothtes_a),
+                                                b_eidikothtes=create_select_element("eidikothtes_b", eidikothtes_b),
+                                                a_years=create_select_element("years_a", years_a),
+                                                b_years=create_select_element("years_b", years_b),
+                                                a_areas=create_select_element("areas_a", get_perioxes_a()),
+                                                b_areas=create_select_element("areas_b", get_perioxes_b()))
 
 @app.route('/protobathmia')
 def show_protobathmia():
@@ -51,8 +56,26 @@ def show_deuterobathmia():
 
 @app.route('/anoixtos_kodikas')
 def show_open_source():
-    return render_template('open_source.html');
+    return render_template('open_source.html')
 
+
+@app.route('/baseis', methods=["GET"])
+def baseis():
+    ba8mida = 'a'
+    if (request.method == 'GET'):
+        print 'get'
+    if (request.args.get('years_a')!=None):
+        a_eidikothtes = request.args.get('eidikothtes_a')
+        a_years = request.args.get('years_a')
+        a_areas = request.args.get('areas_a')
+        print a_areas
+    elif (request.args.get('years_b')!=None):
+        ba8mida = 'b'
+        b_eidikothtes = request.args.get('eidikothtes_b')
+        b_years = request.args.get('years_b')
+        b_areas = request.args.get('areas_b')
+        print b_areas
+    return render_template('open_source.html')
 
 @app.route('/perioxes/<name>')
 def show_perioxh(name):
