@@ -86,7 +86,7 @@ Disclaimer
                         <h4 class="card-title"><a href="#">Πρωτοβάθμια Εκπαίδευση</a></h4>
                         <p class="card-text">
                             {% if a_eidikothtes %}
-                                <form action="/baseis">
+                                <form action="/search_results" method="post">
                                 Ειδικότητα: {{ a_eidikothtes|safe }}<br />
                             {% endif %}
                             {% if a_years %}
@@ -108,6 +108,7 @@ Disclaimer
                         <h4 class="card-title"><a href="#">Δευτεροβάθμια Εκπαίδευση</a></h4>
                         <p class="card-text">
                             {% if b_eidikothtes %}
+                                <form action="/search_results" method="post">
                                 Ειδικότητα: {{ b_eidikothtes|safe }}<br />
                                 {% endif %}
                             {% if b_years %}
@@ -115,6 +116,8 @@ Disclaimer
                             {% endif %}
                             {% if b_areas %}
                                 Περιοχές Μετάθεσης: {{ b_areas|safe }}<br />
+                                <input type="submit" value="Αναζήτηση" />
+                                </form>
                             {% endif %}
                         </p>
                     </div>

@@ -41,29 +41,29 @@
         <div class="container">
             <a class="navbar-brand" href="#">metathesi.gr</a>
             <div class="collapse navbar-collapse" id="navbarExample">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Αρχική <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="protobathmia">Πρωτοβάθμια</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="deuterobathmia">Δευτεροβάθμια</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dieuthinseis">Διευθύνσεις</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="diafora">Διάφορα</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="anoixtos_kodikas">Ανοιχτός κώδικας</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://metathesi.gr/blog" target="_blank">Ιστολόγιο</a>
-                    </li>
-                </ul>
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item active">
+                      <a class="nav-link" href="#">Αρχική <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="protobathmia">Περιοχές Πρωτοβάθμιας</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="deuterobathmia">Περιοχές Δευτεροβάθμιας</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="dieuthinseis">Διευθύνσεις Εκπαίδευσης</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="diafora">Διάφορα</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="anoixtos_kodikas">Ανοιχτός κώδικας</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="http://metathesi.gr/blog" target="_blank">Ιστολόγιο</a>
+                  </li>
+              </ul>
             </div>
         </div>
     </nav>
@@ -85,15 +85,9 @@ Disclaimer
                     <div class="card-block">
                         <h4 class="card-title"><a href="#">Πρωτοβάθμια Εκπαίδευση</a></h4>
                         <p class="card-text">
-                            {% if a_eidikothtes %}
-                                Ειδικότητα: {{ a_eidikothtes|safe }}<br />
-                            {% endif %}
-                            {% if a_years %}
-                                Έτος: {{ a_years|safe }}<br />
-                            {% endif %}
-                            {% if a_areas %}
-                                Περιοχές Μετάθεσης: {{ a_areas|safe }}<br />
-                            {% endif %}
+                            {% for item in var %}
+                                {{ item }}<br />
+                            {% endfor %}
                         </p>
                     </div>
                 </div>

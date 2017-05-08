@@ -2,7 +2,7 @@
 import MySQLdb
 
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, redirect
 app = Flask(__name__)
 
 db = MySQLdb.connect(host="localhost",    # your host, usually localhost
@@ -11,6 +11,7 @@ db = MySQLdb.connect(host="localhost",    # your host, usually localhost
                      db="metathes_moria")        # name of the data base
 cur = db.cursor()
 cur.execute("SET NAMES UTF8")
+# TODO Ola ta db queries na ginontai mia fora
 global counter
 counter=0
 
@@ -58,23 +59,22 @@ def show_deuterobathmia():
 def show_open_source():
     return render_template('open_source.html')
 
+@app.route('/baseis/<ba8mida>/<eidikothta>/<etos>/<perioxh>')
+def baseis(ba8mida, eidikothta, etos, perioxh):
+    return render_template('text_content.html', var=[ba8mida, eidikothta, etos, perioxh])
 
-@app.route('/baseis', methods=["GET"])
-def baseis():
-    ba8mida = 'a'
-    if (request.method == 'GET'):
-        print 'get'
-    if (request.args.get('years_a')!=None):
-        a_eidikothtes = request.args.get('eidikothtes_a')
-        a_years = request.args.get('years_a')
-        a_areas = request.args.get('areas_a')
-        print a_areas
-    elif (request.args.get('years_b')!=None):
-        ba8mida = 'b'
-        b_eidikothtes = request.args.get('eidikothtes_b')
-        b_years = request.args.get('years_b')
-        b_areas = request.args.get('areas_b')
-        print b_areas
+@app.route('/search_results', methods=["POST"])
+def search_results():
+    a_years = request.form.get('years_a')
+    b_years = request.form.get('years_b')
+    if (a_years is not None):
+        a_eidikothtes = request.form.get('eidikothtes_a')
+        a_areas = request.form.get('areas_a')
+        return redirect('/baseis/a/' + str(a_eidikothtes) + '/' + str(a_years) + '/' + str(a_areas))
+    elif (b_years is not None):
+        b_eidikothtes = request.form.get('eidikothtes_b')
+        b_areas = request.form.get('areas_b')
+        return redirect('/baseis/b/' + str(b_eidikothtes) + '/' + str(b_years) + '/' + str(b_areas))
     return render_template('open_source.html')
 
 @app.route('/perioxes/<name>')
