@@ -92,7 +92,48 @@ def show_open_source():
 
 @app.route('/baseis/<ba8mida>/<eidikothta>/<etos>/<perioxh>')
 def baseis(ba8mida, eidikothta, etos, perioxh):
-    return render_template('text_content.html', var=[ba8mida, eidikothta, etos, perioxh])
+    if (ba8mida!='a' and ba8mida!='b'):
+        return render_template('text_content.html', var='Δεν υπάρχει αυτή η βαθμίδα'.decode('utf8'))
+    if (eidikothta=='ola' and perioxh=='ola' and etos=='ola'):
+        return render_template('text_content.html', var='δεν μπορεί να είναι όλα'.decode('utf8'))
+    retVal = []
+    if ba8mida=='a':
+        tquery = 'select * from a_bases where'
+        cnt = 0
+        if (eidikothta!='ola'):
+            cnt+=1
+            eid_id = get_specialty_id_from_clean_url(ba8mida, eidikothta)
+            # TODO Check if eid_id == -1
+            eid_query = ' `specialty_id`=\'%s\'' % str(eid_id)
+        if (perioxh!='ola'):
+            cnt+=1
+            per_id = get_area_id_from_clean_url(ba8mida, perioxh)
+            # TODO Check if per_id == -1
+            per_query = ' `area_code`=\'%s\'' % str(per_id)
+        if (etos!='ola'):
+            cnt+=1
+            etos_query = ' `year`=\'%s\'' % str(etos)
+        if (cnt==0):
+            tquery += ' 1'
+        else:
+            if (eidikothta!='ola'):
+                tquery += eid_query
+            if (perioxh!='ola'):
+                tquery += (' and' + per_query)
+            if (etos!='ola'):
+                tquery += (' and' + etos_query)
+        print tquery
+
+
+
+        cur.execute(tquery)
+        for row in cur.fetchall():
+            retVal.append(row)
+    elif ba8mida=='b':
+        cur.executer('select * from b_bases')
+    else:
+        return render_template('error.html')
+    return render_template('text_content.html', var=retVal)
 
 @app.route('/search_results', methods=["POST"])
 def search_results():
@@ -114,9 +155,35 @@ def show_perioxh(name):
 
 
 ## HELPERS
-def create_select_element(element_name, values):
+def create_select_element(element_name, values, add_all_item=True):
+    add_all_name = 'Όλα'
     retval = '<select name="' + element_name + '">'
+    if (add_all_item):
+        retval += '<option value="ola">%s</option>' % add_all_name.decode('utf8')
+
     for item in values:
         retval += '<option value="' + str(item[0]) + '">' + item[1] + '</option>'
     retval += '</select>'
     return retval
+
+def get_specialty_id_from_clean_url(ba8mida, clean_url):
+    global eidikothtes_a, eidikothtes_b
+    specialties = []
+    specialties = eidikothtes_a
+    if ba8mida=='b':
+        specialties = eidikothtes_b
+    for item in specialties:
+        if clean_url==item[0]:
+            return item[3]
+    return -1
+
+def get_area_id_from_clean_url(ba8mida, clean_url):
+    global areas_a, areas_b
+    areas = []
+    areas = areas_a
+    if ba8mida=='b':
+        areas = areas_b
+    for item in areas:
+        if clean_url==item[0]:
+            return item[3]
+    return -1
