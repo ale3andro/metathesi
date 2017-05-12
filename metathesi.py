@@ -80,15 +80,31 @@ def index():
 
 @app.route('/protobathmia')
 def show_protobathmia():
-    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_a, ba8mida='a')
+    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_a, provinces=provinces, ba8mida='a')
 
 @app.route('/deuterobathmia')
 def show_deuterobathmia():
-    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_b, ba8mida='b')
+    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_b, provinces=provinces, ba8mida='b')
 
 @app.route('/anoixtos_kodikas')
 def show_open_source():
     return render_template('open_source.html')
+
+@app.route('/diafora')
+def show_diafora():
+    return render_template('diafora.html')
+
+@app.route('/adeies')
+def show_adeies():
+    return render_template('adeies.html')
+
+@app.route('/disclaimer')
+def show_disclaimer():
+    return render_template('disclaimer.html')
+
+@app.route('/sxetika')
+def show_sxetika():
+    return render_template('sxetika-metathesigr.html')
 
 @app.route('/baseis/<ba8mida>/<eidikothta>/<etos>/<perioxh>')
 def baseis(ba8mida, eidikothta, etos, perioxh):

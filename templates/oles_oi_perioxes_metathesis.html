@@ -78,15 +78,26 @@
         </small></h1>
 
         <div class="row">
-          {% if areas %}
-              {% for area in areas %}
+          {% if provinces %}
+              {% for province in provinces %}
               <div class="col-lg-4 portfolio-item">
                   <div class="card h-100">
                       {# <a href="#"><img class="card-img-top img-fluid" src="http://placehold.it/700x400" alt=""></a> #}
                       <div class="card-block">
-                          <h4 class="card-title">{{ area[1] }}</h4>
+                          <h4 class="card-title">Διεύθυνση
+                            {% if ba8mida=='a' %}
+                                Π.Ε.
+                            {% else %}
+                                Δ.Ε. 
+                            {% endif %}
+                            {{ province[1] }}</h4>
                           <p class="card-text">
-                              {{ area[1] }}
+                              Περιοχές μετάθεσης: <br />
+                              {% for area in areas %}
+                                {% if area[2]==province[0] %}
+                                    {{ area[1] }}<br />
+                                {% endif %}
+                              {% endfor %}
                           </p>
                       </div>
                   </div>
