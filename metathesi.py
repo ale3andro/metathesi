@@ -1,70 +1,78 @@
 # coding=utf-8
-import MySQLdb
-
 from flask import Flask
 from flask import render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
 
-db = MySQLdb.connect(host="localhost",    # your host, usually localhost
-                     user="root",         # your username
-                     passwd="root",  # your password
-                     db="metathes_moria")        # name of the data base
-cur = db.cursor()
-cur.execute("set names utf8")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/metathes_moria'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = "asu9japfj09ruj230jx0q3QR#@#R Kk3"
 
+db = SQLAlchemy(app)
+db.Model.metadata.reflect(db.engine)
 
+class a_areas(db.Model):
+    __table__ = db.Model.metadata.tables['a_areas']
+class a_bases(db.Model):
+    __table__ = db.Model.metadata.tables['a_bases']
+class a_specialties(db.Model):
+    __table__ = db.Model.metadata.tables['a_specialties']
+
+class b_areas(db.Model):
+    __table__ = db.Model.metadata.tables['b_areas']
+class b_bases(db.Model):
+    __table__ = db.Model.metadata.tables['b_bases']
+class b_specialties(db.Model):
+    __table__ = db.Model.metadata.tables['b_specialties']
+
+class provinces(db.Model):
+    __table__ = db.Model.metadata.tables['provinces']
 
 def read_globals_from_db():
-    global eidikothtes_a, eidikothtes_b, years_a, years_b, provinces, areas_a, areas_b
-    cur.execute('select * from a_specialties order by code')
+    global eidikothtes_a, eidikothtes_b, years_a, years_b, all_provinces, areas_a, areas_b
+
     eidikothtes_a = []
-    for row in cur.fetchall():
+    for row in db.session.query(a_specialties).order_by(a_specialties.code):
         # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
-        eidikothtes_a.append([row[3].decode('utf8'), row[1].decode('utf8'), row[2].decode('utf8'), row[0] ])
+        eidikothtes_a.append([row.clean_url, row.code, row.description, row.id ])
 
-    cur.execute('select * from b_specialties order by code')
     eidikothtes_b = []
-    for row in cur.fetchall():
+    for row in db.session.query(b_specialties).order_by(b_specialties.code):
         # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
-        eidikothtes_b.append([row[4].decode('utf8'), row[1].decode('utf8'), row[2].decode('utf8'), row[0]])
+        eidikothtes_b.append([row.clean_url, row.code, row.description, row.id ])
 
-    cur.execute('select distinct(year) from a_bases order by year')
     years_a = []
-    for row in cur.fetchall():
-        years_a.append([int(row[0]), row[0].decode('utf8')])
+    for row in db.session.query(a_bases.year).distinct().order_by(a_bases.year):
+        years_a.append([int(row.year), row.year])
 
-    cur.execute('select distinct(year) from b_bases order by year')
     years_b = []
-    for row in cur.fetchall():
-        years_b.append([int(row[0]), row[0].decode('utf8')])
+    for row in db.session.query(b_bases.year).distinct().order_by(b_bases.year):
+        years_b.append([int(row.year), row.year])
 
-    cur.execute('select * from provinces order by description')
-    provinces = []
-    for row in cur.fetchall():
-        provinces.append([row[0], row[1].decode('utf8'), row[10].decode('utf8')])
+    all_provinces = []
+    for row in db.session.query(provinces).order_by(provinces.description):
+        all_provinces.append([row.id, row.description, row.clean_url])
 
     areas_a = []
-    for item in provinces:
-        cur.execute('select * from a_areas where dipe_id=' + str(item[0]) + ' and id<1000 order by id')
-        for row in cur.fetchall():
-            if (row[4]!='null'):
-                areas_a.append([row[5], row[4].decode('utf8'), row[1], row[0]])
-            elif (row[2]=='null'):
-                areas_a.append([row[5], item[1], row[1], row[0]])
+    for item in all_provinces:
+        for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id<1000):
+            if (row.full_name!='null'):
+                areas_a.append([row.clean_url, row.full_name, row.dipe_id, row.id])
+            elif (row.description=='null'):
+                areas_a.append([row.clean_url, item[1], row.dipe_id, row.id])
             else:
-                areas_a.append([row[5], item[1] + " " + row[2].decode('utf8'), row[1], row[0]])
+                areas_a.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
 
     areas_b = []
-    for item in provinces:
-        cur.execute('select * from b_areas where dide_id=' + str(item[0]) + ' and id<1000 order by id')
-        for row in cur.fetchall():
-            if (row[4]!='null'):
-                areas_b.append([row[5], row[4].decode('utf8'), row[1], row[0]])
-            elif (row[2]=='null'):
-                areas_b.append([row[5], item[1], row[1], row[0]])
+    for item in all_provinces:
+        for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id<1000):
+            if (row.full_name!='null'):
+                areas_b.append([row.clean_url, row.full_name, row.dide_id, row.id])
+            elif (row.description=='null'):
+                areas_b.append([row.clean_url, item[1], row.dide_id, row.id])
             else:
-                areas_b.append([row[5], item[1] + " " + row[2].decode('utf8'), row[1], row[0]])
-
+                areas_b.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
 
 global eidikothtes_a, eidikothtes_b, years_a, years_b
 read_globals_from_db()
@@ -80,11 +88,11 @@ def index():
 
 @app.route('/protobathmia')
 def show_protobathmia():
-    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_a, provinces=provinces, ba8mida='a')
+    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_a, provinces=all_provinces, ba8mida='a')
 
 @app.route('/deuterobathmia')
 def show_deuterobathmia():
-    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_b, provinces=provinces, ba8mida='b')
+    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_b, provinces=all_provinces, ba8mida='b')
 
 @app.route('/anoixtos_kodikas')
 def show_open_source():
