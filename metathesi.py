@@ -121,42 +121,23 @@ def baseis(ba8mida, eidikothta, etos, perioxh):
     if (eidikothta=='ola' and perioxh=='ola' and etos=='ola'):
         return render_template('text_content.html', var='δεν μπορεί να είναι όλα'.decode('utf8'))
     retVal = []
+    kwargs = {}
+    if (eidikothta!='ola'):
+        # TODO Check if eid_id == -1
+        kwargs['specialty_id'] = get_specialty_id_from_clean_url(ba8mida, eidikothta)
+    if (perioxh!='ola'):
+        # TODO Check if per_id == -1
+        kwargs['area_code'] = get_area_id_from_clean_url(ba8mida, perioxh)
+    if (etos!='ola'):
+        kwargs['year'] = etos
+
     if ba8mida=='a':
-        tquery = 'select * from a_bases where'
-        cnt = 0
-        if (eidikothta!='ola'):
-            cnt+=1
-            eid_id = get_specialty_id_from_clean_url(ba8mida, eidikothta)
-            # TODO Check if eid_id == -1
-            eid_query = ' `specialty_id`=\'%s\'' % str(eid_id)
-        if (perioxh!='ola'):
-            cnt+=1
-            per_id = get_area_id_from_clean_url(ba8mida, perioxh)
-            # TODO Check if per_id == -1
-            per_query = ' `area_code`=\'%s\'' % str(per_id)
-        if (etos!='ola'):
-            cnt+=1
-            etos_query = ' `year`=\'%s\'' % str(etos)
-        if (cnt==0):
-            tquery += ' 1'
-        else:
-            if (eidikothta!='ola'):
-                tquery += eid_query
-            if (perioxh!='ola'):
-                tquery += (' and' + per_query)
-            if (etos!='ola'):
-                tquery += (' and' + etos_query)
-        print tquery
-
-
-
-        cur.execute(tquery)
-        for row in cur.fetchall():
-            retVal.append(row)
+        selectedBases = db.session.query(a_bases).filter_by(**kwargs)
     elif ba8mida=='b':
-        cur.executer('select * from b_bases')
-    else:
-        return render_template('error.html')
+        selectedBases = db.session.query(b_bases).filter_by(**kwargs)
+
+    for row in selectedBases:
+        retVal.append([row.area_code, row.points, row.how_many_in, row.year])
     return render_template('text_content.html', var=retVal)
 
 @app.route('/search_results', methods=["POST"])
@@ -181,7 +162,7 @@ def show_perioxh(name):
 ## HELPERS
 def create_select_element(element_name, values, add_all_item=True):
     add_all_name = 'Όλα'
-    retval = '<select name="' + element_name + '">'
+    retval = '<select class="custom-select mb-2 mr-sm-2 mb-sm-0" name="' + element_name + '">'
     if (add_all_item):
         retval += '<option value="ola">%s</option>' % add_all_name.decode('utf8')
 

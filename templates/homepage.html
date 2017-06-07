@@ -84,14 +84,20 @@ Disclaimer
                         <p class="card-text">
                             {% if a_eidikothtes %}
                                 <form action="/search_results" method="post">
-                                Ειδικότητα: {{ a_eidikothtes|safe }}<br />
+                                <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Ειδικότητα</span> {{ a_eidikothtes|safe }}<br />
+                              </div><br />
                             {% endif %}
                             {% if a_years %}
-                                Έτος: {{ a_years|safe }}<br />
+                                <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Έτος</span> {{ a_years|safe }}<br />
+                              </div><br />
                             {% endif %}
                             {% if a_areas %}
-                                Περιοχές Μετάθεσης: {{ a_areas|safe }}<br />
-                                <input type="submit" value="Αναζήτηση" />
+                                <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Περιοχές Μετάθεσης</span> {{ a_areas|safe }}<br />
+                              </div><br />
+                                <button type="submit" class="btn btn-primary btn-lg">Αναζήτηση</button>
                                 </form>
                             {% endif %}
                         </p>
@@ -106,14 +112,20 @@ Disclaimer
                         <p class="card-text">
                             {% if b_eidikothtes %}
                                 <form action="/search_results" method="post">
-                                Ειδικότητα: {{ b_eidikothtes|safe }}<br />
+                                  <div class="input-group">
+                                  <span class="input-group-addon" id="basic-addon1">Ειδικότητα</span> {{ b_eidikothtes|safe }}<br />
+                                </div><br />
                                 {% endif %}
                             {% if b_years %}
-                                Έτος: {{ b_years|safe }}<br />
+                            <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Έτος</span> {{ b_years|safe }}<br />
+                            </div><br />
                             {% endif %}
                             {% if b_areas %}
-                                Περιοχές Μετάθεσης: {{ b_areas|safe }}<br />
-                                <input type="submit" value="Αναζήτηση" />
+                              <div class="input-group">
+                              <span class="input-group-addon" id="basic-addon1">Περιοχές Μετάθεσης</span> {{ b_areas|safe }}<br />
+                              </div><br />
+                                <button type="submit" class="btn btn-primary btn-lg">Αναζήτηση</button>
                                 </form>
                             {% endif %}
                         </p>
@@ -128,7 +140,7 @@ Disclaimer
     <!-- Footer -->
     <footer class="py-5 bg-inverse">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+            <p class="m-0 text-center text-white">No rights reserved - ale3andro.gr</p>
         </div>
         <!-- /.container -->
     </footer>
