@@ -4,10 +4,7 @@ from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/metathes_moria'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = "asu9japfj09ruj230jx0q3QR#@#R Kk3"
+app.config.from_object('config')
 
 db = SQLAlchemy(app)
 db.Model.metadata.reflect(db.engine)
@@ -114,8 +111,13 @@ def show_disclaimer():
 def show_sxetika():
     return render_template('sxetika-metathesigr.html')
 
-@app.route('/baseis/<ba8mida>/<eidikothta>/<etos>/<perioxh>')
-def baseis(ba8mida, eidikothta, etos, perioxh):
+@app.route('/baseis/<ba8mida>/<eidikothta>/<etos>/<perioxh>/<page>')
+def baseis(ba8mida, eidikothta, etos, perioxh, page):
+    from config import RESULTS_PER_PAGE
+    try:
+        page_num=int(page)
+    except ValueError:
+        return render_template("text_content.html", var="Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός".decode('utf8'))
     if (ba8mida!='a' and ba8mida!='b'):
         return render_template('text_content.html', var='Δεν υπάρχει αυτή η βαθμίδα'.decode('utf8'))
     if (eidikothta=='ola' and perioxh=='ola' and etos=='ola'):
@@ -132,13 +134,13 @@ def baseis(ba8mida, eidikothta, etos, perioxh):
         kwargs['year'] = etos
 
     if ba8mida=='a':
-        selectedBases = db.session.query(a_bases).filter_by(**kwargs)
+        selectedBases = db.session.query(a_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
     elif ba8mida=='b':
-        selectedBases = db.session.query(b_bases).filter_by(**kwargs)
+        selectedBases = db.session.query(b_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
 
-    for row in selectedBases:
-        retVal.append([row.area_code, row.points, row.how_many_in, row.year])
-    return render_template('text_content.html', var=retVal)
+    #for row in selectedBases:
+    #    retVal.append([row.area_code, row.points, row.how_many_in, row.year])
+    return render_template('search_results.html', ba8mida=ba8mida, eidikothta=eidikothta, etos=etos, perioxh=perioxh, baseis=selectedBases)
 
 @app.route('/search_results', methods=["POST"])
 def search_results():
@@ -147,11 +149,11 @@ def search_results():
     if (a_years is not None):
         a_eidikothtes = request.form.get('eidikothtes_a')
         a_areas = request.form.get('areas_a')
-        return redirect('/baseis/a/' + str(a_eidikothtes) + '/' + str(a_years) + '/' + str(a_areas))
+        return redirect('/baseis/a/' + str(a_eidikothtes) + '/' + str(a_years) + '/' + str(a_areas)+'/1')
     elif (b_years is not None):
         b_eidikothtes = request.form.get('eidikothtes_b')
         b_areas = request.form.get('areas_b')
-        return redirect('/baseis/b/' + str(b_eidikothtes) + '/' + str(b_years) + '/' + str(b_areas))
+        return redirect('/baseis/b/' + str(b_eidikothtes) + '/' + str(b_years) + '/' + str(b_areas)+'/1')
     return render_template('open_source.html')
 
 @app.route('/perioxes/<name>')
