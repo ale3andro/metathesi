@@ -71,7 +71,6 @@ def read_globals_from_db():
             else:
                 areas_b.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
 
-global eidikothtes_a, eidikothtes_b, years_a, years_b
 read_globals_from_db()
 
 @app.route('/')
@@ -133,14 +132,25 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
     if (etos!='ola'):
         kwargs['year'] = etos
 
+    perioxes = {}
+    eidikothtes = {}
     if ba8mida=='a':
         selectedBases = db.session.query(a_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+        for item in areas_a:
+            perioxes[item[3]] = item[1]
+        for item in eidikothtes_a:
+            eidikothtes[item[3]] = item[2]
+
     elif ba8mida=='b':
         selectedBases = db.session.query(b_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+        for item in areas_b:
+            perioxes[item[3]] = item[1]
+        for item in eidikothtes_b:
+            eidikothtes[item[3]] = item[2]
 
     #for row in selectedBases:
     #    retVal.append([row.area_code, row.points, row.how_many_in, row.year])
-    return render_template('search_results.html', ba8mida=ba8mida, eidikothta=eidikothta, etos=etos, perioxh=perioxh, baseis=selectedBases)
+    return render_template('search_results.html', ba8mida=ba8mida, eidikothta=eidikothta, eidikothtes=eidikothtes, etos=etos, perioxh=perioxh, perioxes=perioxes, baseis=selectedBases)
 
 @app.route('/search_results', methods=["POST"])
 def search_results():

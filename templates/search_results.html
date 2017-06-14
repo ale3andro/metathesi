@@ -95,9 +95,28 @@
                         </h4>
 
                         <p class="card-text">
+                          <table class="table table-striped">
+                              <thead>
+                                  <tr>
+                                    <th>Περιοχή Μετάθεσης</th>
+                                    <th>Ειδικότητα</th>
+                                    <th>Βάση</th>
+                                    <th>Αριθμός εισακτέων</th>
+                                    <th>Έτος</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
                             {% for item in baseis.items %}
-                                {{ item.area_code, item.points, item.how_many_in, item.year }}<br />
+                              <tr>
+                                <th scope="row">{{ perioxes[item.area_code|int] }}</th>
+                                <td>{{ eidikothtes[item.specialty_id|int] }}</td>
+                                <td>{{ item.points }}</td>
+                                <td>{{ item.how_many_in }}</td>
+                                <td>{{ item.year }}</td>
+                              </tr>
                             {% endfor %}
+                              </tbody>
+                            </table>
                         </p>
                     </div>
                 </div>
@@ -106,6 +125,7 @@
         <!-- /.row -->
 
         <!-- Pagination -->
+        <!-- http://derrickgilland.com/posts/demystifying-flask-sqlalchemy/ -->
         Σελίδα {{ baseis.page }} από
         {% if (baseis.total % baseis.per_page)==0 %}
           {{ (baseis.total / baseis.per_page)|int}}
