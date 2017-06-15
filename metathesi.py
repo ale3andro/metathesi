@@ -123,12 +123,14 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
         return render_template('text_content.html', var='δεν μπορεί να είναι όλα'.decode('utf8'))
     retVal = []
     kwargs = {}
+    arg_specialty_id = get_specialty_id_from_clean_url(ba8mida, eidikothta)
+    arg_area_id = get_area_id_from_clean_url(ba8mida, perioxh)
     if (eidikothta!='ola'):
         # TODO Check if eid_id == -1
-        kwargs['specialty_id'] = get_specialty_id_from_clean_url(ba8mida, eidikothta)
+        kwargs['specialty_id'] = arg_specialty_id
     if (perioxh!='ola'):
         # TODO Check if per_id == -1
-        kwargs['area_code'] = get_area_id_from_clean_url(ba8mida, perioxh)
+        kwargs['area_code'] = arg_area_id
     if (etos!='ola'):
         kwargs['year'] = etos
 
@@ -150,7 +152,11 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
 
     #for row in selectedBases:
     #    retVal.append([row.area_code, row.points, row.how_many_in, row.year])
-    return render_template('search_results.html', ba8mida=ba8mida, eidikothta=eidikothta, eidikothtes=eidikothtes, etos=etos, perioxh=perioxh, perioxes=perioxes, baseis=selectedBases)
+    return render_template('search_results.html', ba8mida=ba8mida,
+            eidikothta=eidikothta, arg_specialty_id=arg_specialty_id, eidikothtes=eidikothtes,
+            etos=etos,
+            perioxh=perioxh, arg_area_id=arg_area_id, perioxes=perioxes,
+            baseis=selectedBases)
 
 @app.route('/search_results', methods=["POST"])
 def search_results():

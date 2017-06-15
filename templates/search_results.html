@@ -81,16 +81,27 @@
                     <div class="card-block">
                         <h4>
                             {% if (ba8mida=='a') %}
-                                Πρωτοβάθμια Εκπαίδευση
+                                <button class="btn btn-primary" type="button">Πρωτοβάθμια Εκπαίδευση</button>
                             {% else %}
-                                Δευτεροβάθμια Εκπαίδευση
+                                <button class="btn btn-primary" type="button">Δευτεροβάθμια Εκπαίδευση</button>
                             {% endif %}
-                        </h4>
-                        <h4 class="card-title">
-                            {% if (etos=='ola') %}
-                                Όλες οι χρονιές
+
+                            {% if (perioxh=='ola') %}
+                                <button class="btn btn-primary" type="button">Όλες οι περιοχές</button>
                             {% else %}
-                                {{ etos }}
+                                <button class="btn btn-primary" type="button">{{ perioxes[arg_area_id] }}</button>
+                            {% endif %}
+
+                            {% if (eidikothta=='ola') %}
+                                <button class="btn btn-primary" type="button">Όλες οι ειδικότητες</button>
+                            {% else %}
+                                <button class="btn btn-primary" type="button">{{ eidikothtes[arg_specialty_id] }}</button>
+                            {% endif %}
+
+                            {% if (etos=='ola') %}
+                                <button class="btn btn-primary" type="button">Όλες οι χρονιές</button>
+                            {% else %}
+                                <button class="btn btn-primary" type="button">{{ etos }}</button>
                             {% endif %}
                         </h4>
 
@@ -127,7 +138,9 @@
         <!-- Pagination -->
         <!-- http://derrickgilland.com/posts/demystifying-flask-sqlalchemy/ -->
         Σελίδα {{ baseis.page }} από
-        {% if (baseis.total % baseis.per_page)==0 %}
+        {% if (baseis.total < baseis.per_page) %}
+          1
+        {% elif (baseis.total % baseis.per_page)==0 %}
           {{ (baseis.total / baseis.per_page)|int}}
         {% else %}
           {{ (baseis.total / baseis.per_page)|round|int}}
@@ -136,21 +149,23 @@
             {% if baseis.has_prev %}
             <li class="page-item">
                 <a class="page-link" href="{{ url_for('baseis', ba8mida=ba8mida, eidikothta=eidikothta, etos=etos, perioxh=perioxh, page=baseis.prev_num) }}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
+                    <span aria-hidden="true">&laquo; Προηγούμενη</span>
                     <span class="sr-only">Προηγούμενη</span>
                 </a>
             </li>
             {% endif %}
+            <!--
             <li class="page-item">
                 <a class="page-link" href="#">1</a></li>
             <li class="page-item">
                 <a class="page-link" href="#">2</a></li>
             <li class="page-item">
                 <a class="page-link" href="#">3</a></li>
+            -->
             {% if baseis.has_next %}
             <li class="page-item">
                 <a class="page-link" href="{{ url_for('baseis', ba8mida=ba8mida, eidikothta=eidikothta, etos=etos, perioxh=perioxh, page=baseis.next_num) }}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
+                    <span aria-hidden="true">Επόμενη &raquo;</span>
                     <span class="sr-only">Επόμενη</span>
                 </a>
             </li>
@@ -163,7 +178,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-inverse">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+            <p class="m-0 text-center text-white">Copyleft - <a href="http://ale3andro.gr" target="_blank">ale3andro.gr</a> - No rights reserved</p>
         </div>
         <!-- /.container -->
     </footer>
