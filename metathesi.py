@@ -40,11 +40,11 @@ def read_globals_from_db():
         eidikothtes_b.append([row.clean_url, row.code, row.description, row.id ])
 
     years_a = []
-    for row in db.session.query(a_bases.year).distinct().order_by(a_bases.year):
+    for row in db.session.query(a_bases.year).filter(a_bases.year>2012).distinct().order_by(a_bases.year):
         years_a.append([int(row.year), row.year])
 
     years_b = []
-    for row in db.session.query(b_bases.year).distinct().order_by(b_bases.year):
+    for row in db.session.query(b_bases.year).filter(b_bases.year>2012).distinct().order_by(b_bases.year):
         years_b.append([int(row.year), row.year])
 
     all_provinces = []
@@ -137,14 +137,20 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
     perioxes = {}
     eidikothtes = {}
     if ba8mida=='a':
-        selectedBases = db.session.query(a_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+        if (etos!='ola'):
+            selectedBases = db.session.query(a_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+        else:
+            selectedBases = db.session.query(a_bases).filter_by(**kwargs).filter(a_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
         for item in areas_a:
             perioxes[item[3]] = item[1]
         for item in eidikothtes_a:
             eidikothtes[item[3]] = item[2]
 
     elif ba8mida=='b':
-        selectedBases = db.session.query(b_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+        if (etos!='ola'):
+            selectedBases = db.session.query(b_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+        else:
+            selectedBases = db.session.query(b_bases).filter_by(**kwargs).filter(b_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
         for item in areas_b:
             perioxes[item[3]] = item[1]
         for item in eidikothtes_b:

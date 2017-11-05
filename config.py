@@ -1,7 +1,7 @@
 # coding=utf-8
 
 # SQLAlchemy settings
-SQLALCHEMY_DATABASE_URI = 'mysql://root:root@localhost/metathes_moria'
+SQLALCHEMY_DATABASE_URI = 'mysql://ale3andro:sonia@localhost/metathes_moria'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # pagination
