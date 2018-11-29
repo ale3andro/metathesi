@@ -30,12 +30,12 @@ def read_globals_from_db():
     global eidikothtes_a, eidikothtes_b, years_a, years_b, all_provinces, areas_a, areas_b
 
     eidikothtes_a = []
-    for row in db.session.query(a_specialties).order_by(a_specialties.code):
+    for row in db.session.query(a_specialties).filter(a_specialties.id<1000).order_by(a_specialties.code):
         # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
         eidikothtes_a.append([row.clean_url, row.code, row.description, row.id ])
 
     eidikothtes_b = []
-    for row in db.session.query(b_specialties).order_by(b_specialties.code):
+    for row in db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
         # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
         eidikothtes_b.append([row.clean_url, row.code, row.description, row.id ])
 
