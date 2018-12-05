@@ -26,69 +26,79 @@ class b_specialties(db.Model):
 class provinces(db.Model):
     __table__ = db.Model.metadata.tables['provinces']
 
-def read_globals_from_db():
-    global eidikothtes_a, eidikothtes_b, years_a, years_b, all_provinces, areas_a, areas_b
+def get_eidikothtes(ba8mida):
+    eidikothtes = []
+    if (ba8mida=="a"):
+        for row in db.session.query(a_specialties).filter(a_specialties.id<1000).order_by(a_specialties.code):
+            # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+            eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+        return eidikothtes
+    if (ba8mida=="b"):
+        for row in db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
+            # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+            eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+        return eidikothtes
+    return null
 
-    eidikothtes_a = []
-    for row in db.session.query(a_specialties).filter(a_specialties.id<1000).order_by(a_specialties.code):
-        # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
-        eidikothtes_a.append([row.clean_url, row.code, row.description, row.id ])
+def get_years(ba8mida):
+    years = []
+    if (ba8mida=="a"):
+        for row in db.session.query(a_bases.year).filter(a_bases.year>2012).distinct().order_by(a_bases.year):
+            years.append([int(row.year), row.year])
+        return years
+    if (ba8mida=="b"):
+        for row in db.session.query(b_bases.year).filter(b_bases.year>2012).distinct().order_by(b_bases.year):
+            years.append([int(row.year), row.year])
+        return years
+    return null
 
-    eidikothtes_b = []
-    for row in db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
-        # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
-        eidikothtes_b.append([row.clean_url, row.code, row.description, row.id ])
-
-    years_a = []
-    for row in db.session.query(a_bases.year).filter(a_bases.year>2012).distinct().order_by(a_bases.year):
-        years_a.append([int(row.year), row.year])
-
-    years_b = []
-    for row in db.session.query(b_bases.year).filter(b_bases.year>2012).distinct().order_by(b_bases.year):
-        years_b.append([int(row.year), row.year])
-
+def get_provinces():
     all_provinces = []
     for row in db.session.query(provinces).order_by(provinces.description):
         all_provinces.append([row.id, row.description, row.clean_url])
+    return all_provinces
 
-    areas_a = []
-    for item in all_provinces:
-        for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id<1000):
-            if (row.full_name!='null'):
-                areas_a.append([row.clean_url, row.full_name, row.dipe_id, row.id])
-            elif (row.description=='null'):
-                areas_a.append([row.clean_url, item[1], row.dipe_id, row.id])
-            else:
-                areas_a.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
-
-    areas_b = []
-    for item in all_provinces:
-        for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id<1000):
-            if (row.full_name!='null'):
-                areas_b.append([row.clean_url, row.full_name, row.dide_id, row.id])
-            elif (row.description=='null'):
-                areas_b.append([row.clean_url, item[1], row.dide_id, row.id])
-            else:
-                areas_b.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
-
-read_globals_from_db()
+def get_areas(ba8mida):
+    areas = []
+    all_provinces = get_provinces()
+    if (ba8mida=="a"):
+        for item in all_provinces:
+            for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id<1000):
+                if (row.full_name!='null'):
+                    areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
+                elif (row.description=='null'):
+                    areas.append([row.clean_url, item[1], row.dipe_id, row.id])
+                else:
+                    areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
+        return areas
+    if (ba8mida=="b"):
+        for item in all_provinces:
+            for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id<1000):
+                if (row.full_name!='null'):
+                    areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
+                elif (row.description=='null'):
+                    areas.append([row.clean_url, item[1], row.dide_id, row.id])
+                else:
+                    areas.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
+        return areas
+    return null
 
 @app.route('/')
 def index():
-    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", eidikothtes_a),
-                                                b_eidikothtes=create_select_element("eidikothtes_b", eidikothtes_b),
-                                                a_years=create_select_element("years_a", years_a),
-                                                b_years=create_select_element("years_b", years_b),
-                                                a_areas=create_select_element("areas_a", areas_a),
-                                                b_areas=create_select_element("areas_b", areas_b))
+    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", get_eidikothtes("a")),
+                                                b_eidikothtes=create_select_element("eidikothtes_b", get_eidikothtes("b")),
+                                                a_years=create_select_element("years_a", get_years("a")),
+                                                b_years=create_select_element("years_b", get_years("b")),
+                                                a_areas=create_select_element("areas_a", get_areas("a")),
+                                                b_areas=create_select_element("areas_b", get_areas("b")))
 
 @app.route('/protobathmia')
 def show_protobathmia():
-    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_a, provinces=all_provinces, ba8mida='a')
+    return render_template('oles_oi_perioxes_metathesis.html', areas=get_areas("a"), provinces=get_provinces(), ba8mida='a')
 
 @app.route('/deuterobathmia')
 def show_deuterobathmia():
-    return render_template('oles_oi_perioxes_metathesis.html', areas=areas_b, provinces=all_provinces, ba8mida='b')
+    return render_template('oles_oi_perioxes_metathesis.html', areas=get_areas("b"), provinces=get_provinces(), ba8mida='b')
 
 @app.route('/anoixtos_kodikas')
 def show_open_source():
@@ -141,9 +151,9 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
             selectedBases = db.session.query(a_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
         else:
             selectedBases = db.session.query(a_bases).filter_by(**kwargs).filter(a_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
-        for item in areas_a:
+        for item in get_areas("a"):
             perioxes[item[3]] = item[1]
-        for item in eidikothtes_a:
+        for item in get_eidikothtes("a"):
             eidikothtes[item[3]] = item[2]
 
     elif ba8mida=='b':
@@ -151,9 +161,9 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
             selectedBases = db.session.query(b_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
         else:
             selectedBases = db.session.query(b_bases).filter_by(**kwargs).filter(b_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
-        for item in areas_b:
+        for item in get_areas("b"):
             perioxes[item[3]] = item[1]
-        for item in eidikothtes_b:
+        for item in get_eidikothtes("b"):
             eidikothtes[item[3]] = item[2]
 
     #for row in selectedBases:
@@ -196,22 +206,20 @@ def create_select_element(element_name, values, add_all_item=True):
     return retval
 
 def get_specialty_id_from_clean_url(ba8mida, clean_url):
-    global eidikothtes_a, eidikothtes_b
     specialties = []
-    specialties = eidikothtes_a
+    specialties = get_eidikothtes("a")
     if ba8mida=='b':
-        specialties = eidikothtes_b
+        specialties = get_eidikothtes("b")
     for item in specialties:
         if clean_url==item[0]:
             return item[3]
     return -1
 
 def get_area_id_from_clean_url(ba8mida, clean_url):
-    global areas_a, areas_b
     areas = []
-    areas = areas_a
+    areas = get_areas("a")
     if ba8mida=='b':
-        areas = areas_b
+        areas = get_areas("b")
     for item in areas:
         if clean_url==item[0]:
             return item[3]
