@@ -32,12 +32,12 @@ class perifereiakes(db.Model):
 def get_eidikothtes(ba8mida):
     eidikothtes = []
     if (ba8mida=="a"):
-        for row in db.session.query(a_specialties).filter(a_specialties.id<1000).order_by(a_specialties.code):
+        for row in db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code):
             # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
             eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
         return eidikothtes
     if (ba8mida=="b"):
-        for row in db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
+        for row in db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code):
             # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
             eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
         return eidikothtes
@@ -131,7 +131,9 @@ def show_sxetika():
 
 @app.route('/eidikothtes_protobathmias')
 def show_eidikothtes_prwtobathmias():
-    return render_template('one-column.html', page_title=u'Ειδικότητες Εκπαιδευτικών Πρωτοβάθμιας', page_data=get_eidikothtes('a'))
+    from config import RESULTS_PER_PAGE
+    a_eidikothtes=db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code).paginate(1, RESULTS_PER_PAGE, False)
+    return render_template('eidikothtes.html', page_title=u'Ειδικότητες Εκπαιδευτικών Πρωτοβάθμιας', page_data=a_eidikothtes)
 
 @app.route('/eidikothtes_deuterobathmias/', defaults={'page':1})
 @app.route('/eidikothtes_deuterobathmias/<int:page>')
@@ -141,8 +143,7 @@ def show_eidikothtes_deuterobathmias(page):
         page_num=int(page)
     except ValueError:
         return render_template("text_content.html", var="Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός".decode('utf8'))
-    b_eidikothtes=db.session.query(b_specialties).paginate(int(page), RESULTS_PER_PAGE, False)
-    #db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
+    b_eidikothtes=db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code).paginate(int(page), RESULTS_PER_PAGE, False)
     return render_template('eidikothtes.html', page_title=u'Ειδικότητες Εκπαιδευτικών Δευτεροβάθμιας', page_data=b_eidikothtes)
 
 @app.route('/perifereiakes')
