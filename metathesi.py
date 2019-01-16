@@ -26,15 +26,18 @@ class b_specialties(db.Model):
 class provinces(db.Model):
     __table__ = db.Model.metadata.tables['provinces']
 
+class perifereiakes(db.Model):
+    __table__ = db.Model.metadata.tables['regions']
+
 def get_eidikothtes(ba8mida):
     eidikothtes = []
     if (ba8mida=="a"):
-        for row in db.session.query(a_specialties).filter(a_specialties.id<1000).order_by(a_specialties.code):
+        for row in db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code):
             # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
             eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
         return eidikothtes
     if (ba8mida=="b"):
-        for row in db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
+        for row in db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code):
             # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
             eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
         return eidikothtes
@@ -57,6 +60,12 @@ def get_provinces():
     for row in db.session.query(provinces).order_by(provinces.description):
         all_provinces.append([row.id, row.description, row.clean_url])
     return all_provinces
+
+def get_perifereikes():
+    all_perifereiakes = []
+    for row in db.session.query(perifereiakes).order_by(perifereiakes.description):
+        all_perifereiakes.append([row.id, row.description, row.url])
+    return all_perifereiakes
 
 def get_areas(ba8mida):
     areas = []
@@ -119,6 +128,27 @@ def show_disclaimer():
 @app.route('/sxetika')
 def show_sxetika():
     return render_template('sxetika-metathesigr.html')
+
+@app.route('/eidikothtes_protobathmias')
+def show_eidikothtes_prwtobathmias():
+    from config import RESULTS_PER_PAGE
+    a_eidikothtes=db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code).paginate(1, RESULTS_PER_PAGE, False)
+    return render_template('eidikothtes.html', page_title=u'Ειδικότητες Εκπαιδευτικών Πρωτοβάθμιας', page_data=a_eidikothtes)
+
+@app.route('/eidikothtes_deuterobathmias/', defaults={'page':1})
+@app.route('/eidikothtes_deuterobathmias/<int:page>')
+def show_eidikothtes_deuterobathmias(page):
+    from config import RESULTS_PER_PAGE
+    try:
+        page_num=int(page)
+    except ValueError:
+        return render_template("text_content.html", var="Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός".decode('utf8'))
+    b_eidikothtes=db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code).paginate(int(page), RESULTS_PER_PAGE, False)
+    return render_template('eidikothtes.html', page_title=u'Ειδικότητες Εκπαιδευτικών Δευτεροβάθμιας', page_data=b_eidikothtes)
+
+@app.route('/perifereiakes')
+def show_perifereiakes():
+    return render_template('one-column.html', page_title=u"Περιφερειακές Διευθύνσεις Εκπαίδευσης", page_data=get_perifereikes())
 
 @app.route('/baseis/<ba8mida>/<eidikothta>/<etos>/<perioxh>/<page>')
 def baseis(ba8mida, eidikothta, etos, perioxh, page):
