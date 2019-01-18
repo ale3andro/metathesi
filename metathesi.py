@@ -1,4 +1,11 @@
 # coding=utf-8
+
+# Epoch - epochs
+# Συνολικά διαχωρίζονται 3 διαφορετικές περίοδοι μεταθέσεων
+# (0) Μέχρι και το 2012
+# (1) Από το 2013 (που άλλαξαν οι περιοχές μετάθεσης) μέχρι και το 2018
+# (2) Από το 2019 (που ενοποιήθηκαν οι ειδικότητες) μέχρι και σήμερα
+
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
@@ -29,30 +36,71 @@ class provinces(db.Model):
 class perifereiakes(db.Model):
     __table__ = db.Model.metadata.tables['regions']
 
-def get_eidikothtes(ba8mida):
+# function get_eidikothtes
+# Argumnets:
+# ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
+# epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
+def get_eidikothtes(ba8mida, epoch=1):
+    # {a,b}_specialties.id<1000 -- Νέες ομαδοποιημένες ειδικότητες, από το 2019 και μετά
+    # {a,b}_specialties.id>1000 -- Ειδικότητες, ίσχυαν μέχρι και το 2018
     eidikothtes = []
     if (ba8mida=="a"):
-        for row in db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code):
-            # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
-            eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
-        return eidikothtes
+        if (epoch==0 or epoch==1):
+            for row in db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code):
+                # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+                eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+            return eidikothtes
+        else:
+            for row in db.session.query(a_specialties).filter(a_specialties.id<1000).order_by(a_specialties.code):
+                # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+                eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+            return eidikothtes
+
     if (ba8mida=="b"):
-        for row in db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code):
-            # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
-            eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
-        return eidikothtes
+        if (epoch==0 or epoch==1):
+            for row in db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code):
+                # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+                eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+            return eidikothtes
+        else:
+            for row in db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
+                # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+                eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+            return eidikothtes
     return null
 
-def get_years(ba8mida):
+# function get_years
+# Argumnets:
+# ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
+# epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
+def get_years(ba8mida, epoch=1):
     years = []
     if (ba8mida=="a"):
-        for row in db.session.query(a_bases.year).filter(a_bases.year>2012).distinct().order_by(a_bases.year):
-            years.append([int(row.year), row.year])
-        return years
+        if (epoch==0):
+            for row in db.session.query(a_bases.year).filter(a_bases.year<2013).distinct().order_by(a_bases.year):
+                years.append([int(row.year), row.year])
+            return years
+        elif (epoch==1):
+            for row in db.session.query(a_bases.year).filter(a_bases.year>2012).filter(a_bases.year<2019).distinct().order_by(a_bases.year):
+                years.append([int(row.year), row.year])
+            return years
+        else:
+            for row in db.session.query(a_bases.year).filter(a_bases.year>2018).distinct().order_by(a_bases.year):
+                years.append([int(row.year), row.year])
+            return years
     if (ba8mida=="b"):
-        for row in db.session.query(b_bases.year).filter(b_bases.year>2012).distinct().order_by(b_bases.year):
-            years.append([int(row.year), row.year])
-        return years
+        if (epoch==0):
+            for row in db.session.query(b_bases.year).filter(b_bases.year<2013).distinct().order_by(b_bases.year):
+                years.append([int(row.year), row.year])
+            return years
+        elif (epoch==1):
+            for row in db.session.query(b_bases.year).filter(b_bases.year>2012).filter(b_bases.year<2019).distinct().order_by(b_bases.year):
+                years.append([int(row.year), row.year])
+            return years
+        else:
+            for row in db.session.query(b_bases.year).filter(b_bases.year>2018).distinct().order_by(b_bases.year):
+                years.append([int(row.year), row.year])
+            return years
     return null
 
 def get_provinces():
@@ -67,29 +115,57 @@ def get_perifereikes():
         all_perifereiakes.append([row.id, row.description, row.url])
     return all_perifereiakes
 
-def get_areas(ba8mida):
+# function get_areas
+# Argumnets:
+# ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
+# epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
+def get_areas(ba8mida, epoch=1):
+    #{a,b}_areas.id<1000 -- Νέες περιοχές μετάθεσης
+    #{a,b}_areas.id>1000 -- Παλιές περιοχές μετάθεσης, ίσχυσαν μέχρι και το 2012
     areas = []
     all_provinces = get_provinces()
     if (ba8mida=="a"):
-        for item in all_provinces:
-            for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id<1000):
-                if (row.full_name!='null'):
-                    areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
-                elif (row.description=='null'):
-                    areas.append([row.clean_url, item[1], row.dipe_id, row.id])
-                else:
-                    areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
-        return areas
+        if (epoch==0):
+            for item in all_provinces:
+                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>1000):
+                    if (row.full_name!='null'):
+                        areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
+                    elif (row.description=='null'):
+                        areas.append([row.clean_url, item[1], row.dipe_id, row.id])
+                    else:
+                        areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
+            return areas
+        else:
+            for item in all_provinces:
+                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id<1000):
+                    if (row.full_name!='null'):
+                        areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
+                    elif (row.description=='null'):
+                        areas.append([row.clean_url, item[1], row.dipe_id, row.id])
+                    else:
+                        areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
+            return areas
     if (ba8mida=="b"):
-        for item in all_provinces:
-            for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id<1000):
-                if (row.full_name!='null'):
-                    areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
-                elif (row.description=='null'):
-                    areas.append([row.clean_url, item[1], row.dide_id, row.id])
-                else:
-                    areas.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
-        return areas
+        if (epoch==0):
+            for item in all_provinces:
+                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>1000):
+                    if (row.full_name!='null'):
+                        areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
+                    elif (row.description=='null'):
+                        areas.append([row.clean_url, item[1], row.dide_id, row.id])
+                    else:
+                        areas.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
+            return areas
+        else:
+            for item in all_provinces:
+                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id<1000):
+                    if (row.full_name!='null'):
+                        areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
+                    elif (row.description=='null'):
+                        areas.append([row.clean_url, item[1], row.dide_id, row.id])
+                    else:
+                        areas.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
+            return areas
     return null
 
 @app.route('/')

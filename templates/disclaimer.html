@@ -1,71 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "template-jinja.html" %}
 
-<head>
+{% block title %}metathesi.gr - Disclaimer{% endblock %}
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% block link_opensource %}active{% endblock %}
 
-    <title>metathesi.gr - Διάφορα</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static', filename='template_files/2-col-portfolio.css') }}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{{ url_for('static', filename='template_files/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Temporary navbar container fix -->
-    <style>
-    .navbar-toggler {
-        z-index: 1;
-    }
-
-    @media (max-width: 576px) {
-        nav > .container {
-            width: 100%;
-        }
-    }
-    </style>
-
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="container">
-            <a class="navbar-brand" href="http://metathesi.gr">metathesi.gr</a>
-            <div class="collapse navbar-collapse" id="navbarExample">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Αρχική</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/protobathmia">Πρωτοβάθμια</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/deuterobathmia">Δευτεροβάθμια</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/diafora">Διάφορα</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/anoixtos_kodikas">Ανοιχτός κώδικας</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://metathesi.gr/blog" target="_blank">Ιστολόγιο</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Page Content -->
+{% block container %}
     <div class="container">
 
         <!-- Page Heading -->
@@ -76,7 +15,7 @@
                   <div class="card-block">
                       <p class="card-text">
                         Τα δεδομένα του <a href="http://metathesi.gr">metathesi.gr</a> έχουν συγκεντρωθεί από
-                        <a href="http://metathesi.gr/blog/%CE%B4%CE%B5%CE%B4%CE%BF%CE%BC%CE%AD%CE%BD%CE%B1/">διάφορες πηγές</a> στο internet.
+                        <a href="http://metathesi.gr/blog/?page_id=77" target="_blank">διάφορες πηγές</a> στο internet.<br />
                         Όπως είναι λογικό για τα περισσότερα από αυτά δεν είχα τη δυνατότητα διασταύρωσης ενώ δεν μπορώ να αποκλείσω την
                         πιθανότητα να έγιναν και κάποια λάθη κατά τη διάρκεια της επεξεργασίας τους. <br />
 							          Με αυτό το σκεπτικό παρακαλώ να χρησιμοποιούνται τα δεδομένα του <a href="http://metathesi.gr">metathesi.gr</a> ως
@@ -95,20 +34,4 @@
 
     </div>
     <!-- /.container -->
-
-    <!-- Footer -->
-    <footer class="py-5 bg-inverse">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyleft metathesi.gr - 2017</p>
-        </div>
-        <!-- /.container -->
-    </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ url_for('static', filename='template_files/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='template_files/tether.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='template_files/bootstrap.min.js') }}"></script>
-
-</body>
-
-</html>
+{% endblock %}

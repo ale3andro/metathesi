@@ -1,71 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "template-jinja.html" %}
 
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>metathesi.gr - Διάφορα</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{ url_for('static', filename='template_files/2-col-portfolio.css') }}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{{ url_for('static', filename='template_files/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Temporary navbar container fix -->
-    <style>
-    .navbar-toggler {
-        z-index: 1;
-    }
-
-    @media (max-width: 576px) {
-        nav > .container {
-            width: 100%;
-        }
-    }
-    </style>
-
-</head>
-
-<body>
-
-    <!-- Navigation -->
-    <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="container">
-            <a class="navbar-brand" href="http://metathesi.gr">metathesi.gr</a>
-            <div class="collapse navbar-collapse" id="navbarExample">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Αρχική</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/protobathmia">Πρωτοβάθμια</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/deuterobathmia">Δευτεροβάθμια</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/diafora">Διάφορα</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/anoixtos_kodikas">Ανοιχτός κώδικας</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="http://metathesi.gr/blog" target="_blank">Ιστολόγιο</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Page Content -->
+{% block title %}
+    metathesi.gr - Σχετικά με το metathesi
+{% endblock %}
+{% block link_diafora %}active{% endblock %}
+{% block container %}
     <div class="container">
 
         <!-- Page Heading -->
@@ -82,7 +21,7 @@
                         Σκοπός είναι να ενημερώνεται και να εμπλουτίζεται συνεχώς με νέα στοιχεία και να αξιοποιεί τα ήδη υπάρχοντα (προβολή γραφημάτων με διακυμάνσεις
                         βάσεων κλπ). Αυτή τη στιγμή είναι πλήρως λειτουργικό αλλά γίνονται συνεχώς βελτιώσεις/προσθήκες. Αν έχετε κάποια ιδέα που θα θέλατε να δείτε να
                         υλοποιείται στο metathesi.gr, ή έχετε εντοπίσει κάποιο λάθος δεν έχετε παρά να επικοινωνήσετε μαζί μου. <br />
-                        Για να καταγράφω την πορεία αυτού του εγχειρήματος έχω δημιουργήσει αυτό το ιστολόγιο.<br /><br />
+                        Για να καταγράφω την πορεία αυτού του εγχειρήματος έχω δημιουργήσει <a href="http://www.ale3andro.gr/blog/" target="_blank">αυτό το ιστολόγιο</a>.<br /><br />
                         Καλώς ορίσατε λοιπόν!
                         <br />
                         Αλέξανδρος Μοσκοφίδης<br />
@@ -99,20 +38,4 @@
 
     </div>
     <!-- /.container -->
-
-    <!-- Footer -->
-    <footer class="py-5 bg-inverse">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyleft metathesi.gr - 2017</p>
-        </div>
-        <!-- /.container -->
-    </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="{{ url_for('static', filename='template_files/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='template_files/tether.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='template_files/bootstrap.min.js') }}"></script>
-
-</body>
-
-</html>
+{% endblock %}   
