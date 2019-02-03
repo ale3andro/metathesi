@@ -170,12 +170,12 @@ def get_areas(ba8mida, epoch=1):
 
 @app.route('/')
 def index():
-    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", get_eidikothtes("a")),
-                                                b_eidikothtes=create_select_element("eidikothtes_b", get_eidikothtes("b")),
-                                                a_years=create_select_element("years_a", get_years("a")),
-                                                b_years=create_select_element("years_b", get_years("b")),
-                                                a_areas=create_select_element("areas_a", get_areas("a")),
-                                                b_areas=create_select_element("areas_b", get_areas("b")))
+    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", get_eidikothtes("a"), "a_specialties"),
+                                                b_eidikothtes=create_select_element("eidikothtes_b", get_eidikothtes("b"), "b_specialties"),
+                                                a_years=create_select_element("years_a", get_years("a"), "a_years"),
+                                                b_years=create_select_element("years_b", get_years("b"), "b_years"),
+                                                a_areas=create_select_element("areas_a", get_areas("a"), "a_areas"),
+                                                b_areas=create_select_element("areas_b", get_areas("b"), "b_areas"))
 
 @app.route('/protobathmia')
 def show_protobathmia():
@@ -218,7 +218,7 @@ def show_eidikothtes_deuterobathmias(page):
     try:
         page_num=int(page)
     except ValueError:
-        return render_template("text_content.html", var="Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός".decode('utf8'))
+        return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός.")
     b_eidikothtes=db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code).paginate(int(page), RESULTS_PER_PAGE, False)
     return render_template('eidikothtes.html', page_title=u'Ειδικότητες Εκπαιδευτικών Δευτεροβάθμιας', page_data=b_eidikothtes)
 
@@ -232,11 +232,11 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
     try:
         page_num=int(page)
     except ValueError:
-        return render_template("text_content.html", var="Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός".decode('utf8'))
+        return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός.")
     if (ba8mida!='a' and ba8mida!='b'):
-        return render_template('text_content.html', var='Δεν υπάρχει αυτή η βαθμίδα'.decode('utf8'))
+        return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Δεν υπάρχει αυτή η βαθμίδα εκπαίδευσης.")
     if (eidikothta=='ola' and perioxh=='ola' and etos=='ola'):
-        return render_template('text_content.html', var='δεν μπορεί να είναι όλα'.decode('utf8'))
+        return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Πρέπει να επιλέξεις είτε ειδικότητα, είτε έτος είτε περιοχή.")
     retVal = []
     kwargs = {}
     arg_specialty_id = get_specialty_id_from_clean_url(ba8mida, eidikothta)
@@ -300,9 +300,9 @@ def show_perioxh(name):
 
 
 ## HELPERS
-def create_select_element(element_name, values, add_all_item=True):
+def create_select_element(element_name, values, element_id, add_all_item=True):
     add_all_name = 'Όλα'
-    retval = '<select class="custom-select mb-2 mr-sm-2 mb-sm-0" name="' + element_name + '">'
+    retval = '<select class="custom-select mb-2 mr-sm-2 mb-sm-0" name="' + element_name + '" + id="' + element_id + '">'
     if (add_all_item):
         retval += '<option value="ola">%s</option>' % add_all_name.decode('utf8')
 

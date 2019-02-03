@@ -1,2 +1,24 @@
 {% extends "template-jinja.html" %}
+
 {% block link_homepage %}active{% endblock %}
+
+{% block after_footer %}
+    <script type="text/JavaScript">
+        $('#search_b').click(function() {
+            if ( ($('#b_specialties').val()=='ola') &&
+                    ($('#b_years').val()=='ola') &&
+                    ($('#b_areas').val()=='ola') ) {
+                    alert('Πρέπει να επιλέξεις είτε ειδικότητα, είτε έτος είτε περιοχή.');
+                    return false;
+            }     
+        });
+        $('#search_a').click(function() {
+            if ( ($('#a_specialties').val()=='ola') &&
+                    ($('#a_years').val()=='ola') &&
+                    ($('#a_areas').val()=='ola') ) {
+                    alert('Πρέπει να επιλέξεις είτε ειδικότητα, είτε έτος είτε περιοχή.');
+                    return false;
+            }     
+        });
+    </script>
+{% endblock %}
