@@ -4,7 +4,7 @@
 # Συνολικά διαχωρίζονται 3 διαφορετικές περίοδοι μεταθέσεων
 # (0) Μέχρι και το 2012
 # (1) Από το 2013 (που άλλαξαν οι περιοχές μετάθεσης) μέχρι και το 2018
-# (2) Από το 2019 (που ενοποιήθηκαν οι ειδικότητες) μέχρι και σήμερα
+# (2) Από το 2019 (που ενοποιήθηκαν οι ειδικότητες & άλλαξαν ξανά οι περιοχές) μέχρι και σήμερα
 
 from flask import Flask
 from flask import render_template, request, redirect
@@ -15,6 +15,8 @@ app.config.from_object('config')
 
 db = SQLAlchemy(app)
 db.Model.metadata.reflect(db.engine)
+
+default_epoch=2
 
 class a_areas(db.Model):
     __table__ = db.Model.metadata.tables['a_areas']
@@ -40,7 +42,7 @@ class perifereiakes(db.Model):
 # Argumnets:
 # ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
 # epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
-def get_eidikothtes(ba8mida, epoch=1):
+def get_eidikothtes(ba8mida, epoch=default_epoch):
     # {a,b}_specialties.id<1000 -- Νέες ομαδοποιημένες ειδικότητες, από το 2019 και μετά
     # {a,b}_specialties.id>1000 -- Ειδικότητες, ίσχυαν μέχρι και το 2018
     eidikothtes = []
@@ -73,7 +75,7 @@ def get_eidikothtes(ba8mida, epoch=1):
 # Argumnets:
 # ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
 # epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
-def get_years(ba8mida, epoch=1):
+def get_years(ba8mida, epoch=default_epoch):
     years = []
     if (ba8mida=="a"):
         if (epoch==0):
@@ -119,15 +121,26 @@ def get_perifereikes():
 # Argumnets:
 # ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
 # epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
-def get_areas(ba8mida, epoch=1):
-    #{a,b}_areas.id<1000 -- Νέες περιοχές μετάθεσης
-    #{a,b}_areas.id>1000 -- Παλιές περιοχές μετάθεσης, ίσχυσαν μέχρι και το 2012
+def get_areas(ba8mida, epoch=default_epoch):
+    #{a,b}_areas.id<1000 -- Νέες περιοχές μετάθεσης από το 2019 και μετά (epoch=2)
+    #{a,b}_areas.id>1000 && {a,b}_areas.id<2000 -- Περιοχές μετάθεσης που ίσχυσαν από το 2013 μέχρι και το 2018 (epoch=1)
+    #{a,b}_areas.id>2000 -- Παλιές περιοχές μετάθεσης, ίσχυσαν μέχρι και το 2012 (epoch=0)
     areas = []
     all_provinces = get_provinces()
     if (ba8mida=="a"):
         if (epoch==0):
             for item in all_provinces:
-                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>1000):
+                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>2000):
+                    if (row.full_name!='null'):
+                        areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
+                    elif (row.description=='null'):
+                        areas.append([row.clean_url, item[1], row.dipe_id, row.id])
+                    else:
+                        areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
+            return areas
+        elif (epoch==1):
+            for item in all_provinces:
+                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>1000, a_areas.id<2000):
                     if (row.full_name!='null'):
                         areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
                     elif (row.description=='null'):
@@ -148,7 +161,17 @@ def get_areas(ba8mida, epoch=1):
     if (ba8mida=="b"):
         if (epoch==0):
             for item in all_provinces:
-                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>1000):
+                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>2000):
+                    if (row.full_name!='null'):
+                        areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
+                    elif (row.description=='null'):
+                        areas.append([row.clean_url, item[1], row.dide_id, row.id])
+                    else:
+                        areas.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
+            return areas
+        elif (epoch==1):
+            for item in all_provinces:
+                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>1000, b_areas.id<2000):
                     if (row.full_name!='null'):
                         areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
                     elif (row.description=='null'):
@@ -170,8 +193,8 @@ def get_areas(ba8mida, epoch=1):
 
 @app.route('/')
 def index():
-    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", get_eidikothtes("a"), "a_specialties"),
-                                                b_eidikothtes=create_select_element("eidikothtes_b", get_eidikothtes("b"), "b_specialties"),
+    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", get_eidikothtes("a"), "a_specialties", tooltip_array_ordinal=2),
+                                                b_eidikothtes=create_select_element("eidikothtes_b", get_eidikothtes("b"), "b_specialties", tooltip_array_ordinal=2),
                                                 a_years=create_select_element("years_a", get_years("a"), "a_years"),
                                                 b_years=create_select_element("years_b", get_years("b"), "b_years"),
                                                 a_areas=create_select_element("areas_a", get_areas("a"), "a_areas"),
@@ -300,14 +323,16 @@ def show_perioxh(name):
 
 
 ## HELPERS
-def create_select_element(element_name, values, element_id, add_all_item=True):
+def create_select_element(element_name, values, element_id, tooltip_array_ordinal=-1, add_all_item=True):
     add_all_name = 'Όλα'
     retval = '<select class="custom-select mb-2 mr-sm-2 mb-sm-0" name="' + element_name + '" + id="' + element_id + '">'
     if (add_all_item):
-        retval += '<option value="ola">%s</option>' % add_all_name.decode('utf8')
-
+        retval += '<option title="' + u"Όλα" + '" value="ola">%s</option>' % add_all_name.decode('utf8')
     for item in values:
-        retval += '<option value="' + str(item[0]) + '">' + item[1] + '</option>'
+        if (tooltip_array_ordinal!=-1):
+            retval += '<option title="' + item[tooltip_array_ordinal] + '" value="' + str(item[0]) + '">' + item[1] + '</option>'
+        else:
+            retval += '<option value="' + str(item[0]) + '">' + item[1] + '</option>'
     retval += '</select>'
     return retval
 
