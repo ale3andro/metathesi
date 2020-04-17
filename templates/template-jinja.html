@@ -85,6 +85,15 @@
         </div>
 
         <div class="row">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">Περίοδος: {{ epoch }}</li>
+                  <li class="breadcrumb-item active" aria-current="page"><a href="/periodoi">Τι είναι αυτό;</a></li>
+                </ol>
+              </nav>
+        </div>
+
+        <div class="row">
             <div class="col-lg-6 portfolio-item">
                 <div class="card h-100">
                     <img class="card-img-top img-fluid" src="{{ url_for('static', filename='images/protoba8mia.jpg') }}" alt="">
@@ -100,6 +109,7 @@
                             {% if a_years %}
                                 <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon1">Έτος</span> {{ a_years|safe }}<br />
+                                <span class="input-group-addon"><a href="/periodoi">Άλλες χρονιές;</a></span>
                               </div><br />
                             {% endif %}
                             {% if a_areas %}
@@ -128,6 +138,7 @@
                             {% if b_years %}
                             <div class="input-group">
                             <span class="input-group-addon" id="basic-addon1">Έτος</span> {{ b_years|safe }}<br />
+                            <span class="input-group-addon"><a href="/periodoi">Άλλες χρονιές;</a></span>
                             </div><br />
                             {% endif %}
                             {% if b_areas %}
@@ -144,20 +155,29 @@
             <div class="col-lg-12 portfolio-item">
               <div class="card h-100">
                   <div class="card-block">
-                      <h4 class="card-title">Σύνθετες αναζητήσεις<span class="badge badge-pill badge-warning">Σύντομα διαθέσιμες</span></h4>
+                      <h4 class="card-title">Σύνθετες αναζητήσεις</h4>
                       <p class="card-text">
                         <ul class="list-group">
-                          <li class="list-group-item">Περιοχές μετάθεσης και ειδικότητες από 2013 μέχρι και 2018</li>
-                          <li class="list-group-item">Παλιές περιοχές μετάθεσης (μέχρι και το 2012)</li>
-                          <li class="list-group-item">Είμαι <code>ειδικότητα</code> και έχω <code>αριθμός</code> μόρια. Τι να δηλώσω για να πάρω μετάθεση;</li>
-                          <li class="list-group-item">Αναζήτηση σε ευρύτερη περιοχή (Περιφερειακή Διεύθυνση)</li>
+                          <li class="list-group-item"><a href="/2013-2018">Περιοχές μετάθεσης και ειδικότητες από 2013 μέχρι και 2018</a></li>
+                          <li class="list-group-item"><a href="/-2012">Παλιές περιοχές μετάθεσης (μέχρι και το 2012)</a></li>
+                          <li class="list-group-item">Είμαι <code>ειδικότητα</code> και έχω <code>αριθμός</code> μόρια. Τι να δηλώσω για να πάρω μετάθεση;<span class="badge badge-pill badge-warning">Διαθέσιμο σύντομα</span></li>
+                          <li class="list-group-item">Αναζήτηση σε ευρύτερη περιοχή (Περιφερειακή Διεύθυνση)<span class="badge badge-pill badge-warning">Διαθέσιμο σύντομα</span></li>
                         </ul>
                       </p>
                   </div>
               </div>
-          </div>
+            </div>
         </div>
         <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12 portfolio-item jumbotron">
+                <h1>Ενημερώσεις</h1>
+                <p>
+                    <a class="twitter-timeline" data-lang="el" data-height="300" href="https://twitter.com/metathesigr">Tweets by @metathesigr</a>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+                </p>
+            </div>
+        </div>
     </div>
     <!-- /.container -->
     
@@ -188,7 +208,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-inverse">
         <div class="container">
-            <p class="m-0 text-center text-white">No rights reserved - <a href="https://ale3andro.gr" target="_blank">ale3andro.gr</a> 01/2019</p>
+            <p class="m-0 text-center text-white">No rights reserved - <a href="https://ale3andro.gr" target="_blank">ale3andro.gr</a> 04/2020</p>
         </div>
         <!-- /.container -->
     </footer>

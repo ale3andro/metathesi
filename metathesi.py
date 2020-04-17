@@ -41,7 +41,7 @@ class perifereiakes(db.Model):
 # function get_eidikothtes
 # Argumnets:
 # ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
-# epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
+# epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις ή -1 για να επιστραφούν όλες (χρήσιμο για την αντίστροφη αναζήτηση από clean_url σε specialty_id)
 def get_eidikothtes(ba8mida, epoch=default_epoch):
     # {a,b}_specialties.id<1000 -- Νέες ομαδοποιημένες ειδικότητες, από το 2019 και μετά
     # {a,b}_specialties.id>1000 -- Ειδικότητες, ίσχυαν μέχρι και το 2018
@@ -52,8 +52,13 @@ def get_eidikothtes(ba8mida, epoch=default_epoch):
                 # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
                 eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
             return eidikothtes
-        else:
+        elif (epoch==2):
             for row in db.session.query(a_specialties).filter(a_specialties.id<1000).order_by(a_specialties.code):
+                # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+                eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+            return eidikothtes
+        else: 
+            for row in db.session.query(a_specialties).order_by(a_specialties.code):
                 # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
                 eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
             return eidikothtes
@@ -64,8 +69,13 @@ def get_eidikothtes(ba8mida, epoch=default_epoch):
                 # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
                 eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
             return eidikothtes
-        else:
+        elif (epoch==2):
             for row in db.session.query(b_specialties).filter(b_specialties.id<1000).order_by(b_specialties.code):
+                # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
+                eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
+            return eidikothtes
+        else:
+            for row in db.session.query(b_specialties).order_by(b_specialties.code):
                 # clean_url, κωδικός ειδικότητας, περιγραφη ειδικότητας, id πίνακα
                 eidikothtes.append([row.clean_url, row.code, row.description, row.id ])
             return eidikothtes
@@ -119,8 +129,8 @@ def get_perifereikes():
 
 # function get_areas
 # Argumnets:
-# ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτερόβαθμια Εκπαίδευση
-# epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις
+# ba8mida: 'a' ή 'b' για Πρωτοβάθμια η Δευτεροβάθμια Εκπαίδευση
+# epoch: 0, 1 ή 2. Ανάλογα με το ποιά περίοδο θέλεις ή -1 για να επιστραφούν όλες (χρήσιμο για την αντίστροφη αναζήτηση από clean_url σε area_id)
 def get_areas(ba8mida, epoch=default_epoch):
     #{a,b}_areas.id<1000 -- Νέες περιοχές μετάθεσης από το 2019 και μετά (epoch=2)
     #{a,b}_areas.id>1000 && {a,b}_areas.id<2000 -- Περιοχές μετάθεσης που ίσχυσαν από το 2013 μέχρι και το 2018 (epoch=1)
@@ -128,27 +138,18 @@ def get_areas(ba8mida, epoch=default_epoch):
     areas = []
     all_provinces = get_provinces()
     if (ba8mida=="a"):
-        if (epoch==0):
+        if (epoch!=2):
             for item in all_provinces:
-                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>2000):
+                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>1000):
+                    message=u" (έως 2012)" if (int(row.id)>2000) else u" (2013-2018)"
                     if (row.full_name!='null'):
-                        areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
+                        areas.append([row.clean_url, row.full_name + message, row.dipe_id, row.id])
                     elif (row.description=='null'):
-                        areas.append([row.clean_url, item[1], row.dipe_id, row.id])
+                        areas.append([row.clean_url, item[1] + message, row.dipe_id, row.id])
                     else:
-                        areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
+                        areas.append([row.clean_url, item[1] + " " + row.description + message, row.dipe_id, row.id])
             return areas
-        elif (epoch==1):
-            for item in all_provinces:
-                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>1000, a_areas.id<2000):
-                    if (row.full_name!='null'):
-                        areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
-                    elif (row.description=='null'):
-                        areas.append([row.clean_url, item[1], row.dipe_id, row.id])
-                    else:
-                        areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
-            return areas
-        else:
+        elif (epoch==2):
             for item in all_provinces:
                 for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id<1000):
                     if (row.full_name!='null'):
@@ -158,20 +159,31 @@ def get_areas(ba8mida, epoch=default_epoch):
                     else:
                         areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
             return areas
-    if (ba8mida=="b"):
-        if (epoch==0):
+        else:
             for item in all_provinces:
-                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>2000):
+                for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0]):
                     if (row.full_name!='null'):
-                        areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
+                        areas.append([row.clean_url, row.full_name, row.dipe_id, row.id])
                     elif (row.description=='null'):
-                        areas.append([row.clean_url, item[1], row.dide_id, row.id])
+                        areas.append([row.clean_url, item[1], row.dipe_id, row.id])
                     else:
-                        areas.append([row.clean_url, item[1] + " " + row.description, row.dide_id, row.id])
+                        areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
             return areas
-        elif (epoch==1):
+    if (ba8mida=="b"):
+        if (epoch!=2):
             for item in all_provinces:
-                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>1000, b_areas.id<2000):
+                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>1000):
+                    message=u" (έως 2012)" if (int(row.id)>2000) else u" (2013-2018)"
+                    if (row.full_name!='null'):
+                        areas.append([row.clean_url, row.full_name + message, row.dide_id, row.id])
+                    elif (row.description=='null'):
+                        areas.append([row.clean_url, item[1] + message, row.dide_id, row.id])
+                    else:
+                        areas.append([row.clean_url, item[1] + " " + row.description + message, row.dide_id, row.id])
+            return areas
+        elif (epoch==2):
+            for item in all_provinces:
+                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id<1000):
                     if (row.full_name!='null'):
                         areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
                     elif (row.description=='null'):
@@ -181,7 +193,7 @@ def get_areas(ba8mida, epoch=default_epoch):
             return areas
         else:
             for item in all_provinces:
-                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id<1000):
+                for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0]):
                     if (row.full_name!='null'):
                         areas.append([row.clean_url, row.full_name, row.dide_id, row.id])
                     elif (row.description=='null'):
@@ -198,7 +210,28 @@ def index():
                                                 a_years=create_select_element("years_a", get_years("a"), "a_years"),
                                                 b_years=create_select_element("years_b", get_years("b"), "b_years"),
                                                 a_areas=create_select_element("areas_a", get_areas("a"), "a_areas"),
-                                                b_areas=create_select_element("areas_b", get_areas("b"), "b_areas"))
+                                                b_areas=create_select_element("areas_b", get_areas("b"), "b_areas"),
+                                                epoch=u"2019-σήμερα")
+
+@app.route('/2013-2018')                                         
+def index_epoch1():
+    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", get_eidikothtes("a", 1), "a_specialties", tooltip_array_ordinal=2),
+                                                b_eidikothtes=create_select_element("eidikothtes_b", get_eidikothtes("b", 1), "b_specialties", tooltip_array_ordinal=2),
+                                                a_years=create_select_element("years_a", get_years("a", 1), "a_years"),
+                                                b_years=create_select_element("years_b", get_years("b", 1), "b_years"),
+                                                a_areas=create_select_element("areas_a", get_areas("a", 1), "a_areas"),
+                                                b_areas=create_select_element("areas_b", get_areas("b", 1), "b_areas"),
+                                                epoch=u"2013-2018")
+
+@app.route('/-2012')                                         
+def index_epoch2():
+    return render_template('homepage.html', a_eidikothtes=create_select_element("eidikothtes_a", get_eidikothtes("a", 0), "a_specialties", tooltip_array_ordinal=2),
+                                                b_eidikothtes=create_select_element("eidikothtes_b", get_eidikothtes("b", 0), "b_specialties", tooltip_array_ordinal=2),
+                                                a_years=create_select_element("years_a", get_years("a", 0), "a_years"),
+                                                b_years=create_select_element("years_b", get_years("b", 0), "b_years"),
+                                                a_areas=create_select_element("areas_a", get_areas("a", 0), "a_areas"),
+                                                b_areas=create_select_element("areas_b", get_areas("b", 0), "b_areas"),
+                                                epoch=u"έως το 2012")
 
 @app.route('/protobathmia')
 def show_protobathmia():
@@ -223,6 +256,10 @@ def show_adeies():
 @app.route('/disclaimer')
 def show_disclaimer():
     return render_template('disclaimer.html')
+
+@app.route('/periodoi')
+def show_periodoi():
+    return render_template('periodoi.html')
 
 @app.route('/sxetika')
 def show_sxetika():
@@ -256,45 +293,54 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
         page_num=int(page)
     except ValueError:
         return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός.")
+    try:
+        the_year=int(etos)
+    except ValueError:
+        #return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Το έτος θα πρέπει να είναι αριθμός.")
+        the_year='ola'
     if (ba8mida!='a' and ba8mida!='b'):
         return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Δεν υπάρχει αυτή η βαθμίδα εκπαίδευσης.")
     if (eidikothta=='ola' and perioxh=='ola' and etos=='ola'):
         return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Πρέπει να επιλέξεις είτε ειδικότητα, είτε έτος είτε περιοχή.")
     retVal = []
     kwargs = {}
+    epoch = default_epoch
     arg_specialty_id = get_specialty_id_from_clean_url(ba8mida, eidikothta)
     arg_area_id = get_area_id_from_clean_url(ba8mida, perioxh)
     if (eidikothta!='ola'):
         # TODO Check if eid_id == -1
         kwargs['specialty_id'] = arg_specialty_id
+        epoch=get_epoch_from_specialty_id(arg_specialty_id)
     if (perioxh!='ola'):
         # TODO Check if per_id == -1
         kwargs['area_code'] = arg_area_id
+        epoch=get_epoch_from_area_id(arg_area_id)
     if (etos!='ola'):
         kwargs['year'] = etos
+        epoch = get_epoch_from_year(the_year)        
 
     perioxes = {}
     eidikothtes = {}
     if ba8mida=='a':
         if (etos!='ola'):
-            selectedBases = db.session.query(a_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+            selectedBases = db.session.query(a_bases).filter_by(**kwargs).order_by(a_bases.specialty_id.desc()).order_by(a_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
         else:
-            selectedBases = db.session.query(a_bases).filter_by(**kwargs).filter(a_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
-        for item in get_areas("a"):
+            selectedBases = db.session.query(a_bases).filter_by(**kwargs).order_by(a_bases.year.desc()).order_by(a_bases.specialty_id.desc()).order_by(a_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
+        for item in get_areas("a", epoch):
             perioxes[item[3]] = item[1]
-        for item in get_eidikothtes("a"):
-            eidikothtes[item[3]] = item[2]
+        for item in get_eidikothtes("a", epoch):
+            eidikothtes[item[3]] = item[2] + " (" + item[1].strip() + ")"
 
     elif ba8mida=='b':
         if (etos!='ola'):
-            selectedBases = db.session.query(b_bases).filter_by(**kwargs).paginate(int(page), RESULTS_PER_PAGE, False)
+            selectedBases = db.session.query(b_bases).filter_by(**kwargs).order_by(b_bases.specialty_id.desc()).order_by(b_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
         else:
-            selectedBases = db.session.query(b_bases).filter_by(**kwargs).filter(b_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
-        for item in get_areas("b"):
+            #selectedBases = db.session.query(b_bases).filter_by(**kwargs).filter(b_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
+            selectedBases = db.session.query(b_bases).filter_by(**kwargs).order_by(b_bases.year.desc()).order_by(b_bases.specialty_id.desc()).order_by(b_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
+        for item in get_areas("b", epoch):
             perioxes[item[3]] = item[1]
-        for item in get_eidikothtes("b"):
-            eidikothtes[item[3]] = item[2]
-
+        for item in get_eidikothtes("b", epoch):
+            eidikothtes[item[3]] = item[2] + " (" + item[1].strip() + ")"
     #for row in selectedBases:
     #    retVal.append([row.area_code, row.points, row.how_many_in, row.year])
     return render_template('search_results.html', ba8mida=ba8mida,
@@ -338,9 +384,10 @@ def create_select_element(element_name, values, element_id, tooltip_array_ordina
 
 def get_specialty_id_from_clean_url(ba8mida, clean_url):
     specialties = []
-    specialties = get_eidikothtes("a")
-    if ba8mida=='b':
-        specialties = get_eidikothtes("b")
+    if ba8mida=='a':
+        specialties = get_eidikothtes("a", -1)
+    else:
+        specialties = get_eidikothtes("b", -1)
     for item in specialties:
         if clean_url==item[0]:
             return item[3]
@@ -348,10 +395,34 @@ def get_specialty_id_from_clean_url(ba8mida, clean_url):
 
 def get_area_id_from_clean_url(ba8mida, clean_url):
     areas = []
-    areas = get_areas("a")
-    if ba8mida=='b':
-        areas = get_areas("b")
+    if ba8mida=='a':
+        areas = get_areas("a", -1)
+    else:
+        areas = get_areas("b", -1)
     for item in areas:
         if clean_url==item[0]:
             return item[3]
     return -1
+
+def get_epoch_from_area_id(area_id):
+    if (area_id<1000):
+        return 2
+    if (area_id>1000 and area_id<2000):
+        return 1
+    if (area_id>2000):
+        return 0
+
+def get_epoch_from_year(year):
+    if (year>=2019):
+        return 2
+    if (year>=2013 and year<2019):
+        return 1
+    if (year<=2012):
+        return 0
+
+def get_epoch_from_specialty_id(specialty_id):
+    if (specialty_id<1000):
+        return 2
+    else:
+        # Εδώ επιλέγω epoch=1 αν και θα μπορούσε να έχει και epoch=0. Οι ειδικότητες άλλαξαν μια φορά μεταξύ epoch=1 και epoch=2
+        return 1

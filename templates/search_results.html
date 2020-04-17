@@ -42,6 +42,35 @@
                             {% endif %}
                         </h4>
 
+                        <!-- Pagination -->
+                        <!-- http://derrickgilland.com/posts/demystifying-flask-sqlalchemy/ -->
+                        Σελίδα {{ baseis.page }} από
+                        {% if (baseis.total < baseis.per_page) %}
+                            1
+                        {% elif (baseis.total % baseis.per_page)==0 %}
+                            {{ (baseis.total / baseis.per_page)|int}}
+                        {% else %}
+                            {{ (baseis.total / baseis.per_page)|round|int}}
+                        {% endif %}
+                        <ul class="pagination justify-content-center">
+                            {% if baseis.has_prev %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('baseis', ba8mida=ba8mida, eidikothta=eidikothta, etos=etos, perioxh=perioxh, page=baseis.prev_num) }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo; Προηγούμενη</span>
+                                        <span class="sr-only">Προηγούμενη</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if baseis.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('baseis', ba8mida=ba8mida, eidikothta=eidikothta, etos=etos, perioxh=perioxh, page=baseis.next_num) }}" aria-label="Next">
+                                        <span aria-hidden="true">Επόμενη &raquo;</span>
+                                        <span class="sr-only">Επόμενη</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+
                         <p class="card-text">
                           <table class="table table-striped">
                               <thead>
