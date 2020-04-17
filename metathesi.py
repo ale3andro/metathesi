@@ -138,7 +138,7 @@ def get_areas(ba8mida, epoch=default_epoch):
     areas = []
     all_provinces = get_provinces()
     if (ba8mida=="a"):
-        if (epoch!=2):
+        if (epoch==0 or epoch==1):
             for item in all_provinces:
                 for row in db.session.query(a_areas).filter(a_areas.dipe_id==item[0], a_areas.id>1000):
                     message=u" (έως 2012)" if (int(row.id)>2000) else u" (2013-2018)"
@@ -170,7 +170,7 @@ def get_areas(ba8mida, epoch=default_epoch):
                         areas.append([row.clean_url, item[1] + " " + row.description, row.dipe_id, row.id])
             return areas
     if (ba8mida=="b"):
-        if (epoch!=2):
+        if (epoch==0 or epoch==1):
             for item in all_provinces:
                 for row in db.session.query(b_areas).filter(b_areas.dide_id==item[0], b_areas.id>1000):
                     message=u" (έως 2012)" if (int(row.id)>2000) else u" (2013-2018)"

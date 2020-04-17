@@ -42,7 +42,7 @@
                               Περιοχές μετάθεσης: <br />
                               {% for area in areas %}
                                 {% if area[2]==province[0] %}
-                                    {{ area[1] }}<br />
+                                    <a href="/baseis/{{ ba8mida }}/ola/ola/{{ area[0] }}/1">{{ area[1] }}</a><br />
                                 {% endif %}
                               {% endfor %}
                           </p>
