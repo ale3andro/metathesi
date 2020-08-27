@@ -373,7 +373,7 @@ def create_select_element(element_name, values, element_id, tooltip_array_ordina
     add_all_name = 'Όλα'
     retval = '<select class="custom-select mb-2 mr-sm-2 mb-sm-0" name="' + element_name + '" + id="' + element_id + '">'
     if (add_all_item):
-        retval += '<option title="' + u"Όλα" + '" value="ola">%s</option>' % add_all_name.decode('utf8')
+        retval += '<option title="' + u"Όλα" + '" value="ola">%s</option>' % add_all_name
     for item in values:
         if (tooltip_array_ordinal!=-1):
             retval += '<option title="' + item[tooltip_array_ordinal] + '" value="' + str(item[0]) + '">' + item[1] + '</option>'
