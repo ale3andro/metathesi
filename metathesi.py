@@ -6,6 +6,7 @@
 # (1) Από το 2013 (που άλλαξαν οι περιοχές μετάθεσης) μέχρι και το 2018
 # (2) Από το 2019 (που ενοποιήθηκαν οι ειδικότητες & άλλαξαν ξανά οι περιοχές) μέχρι και σήμερα
 
+#https://stackoverflow.com/questions/35045774/importerror-no-module-named-mysqldb
 import pymysql
 pymysql.install_as_MySQLdb()
 
