@@ -6,6 +6,9 @@
 # (1) Από το 2013 (που άλλαξαν οι περιοχές μετάθεσης) μέχρι και το 2018
 # (2) Από το 2019 (που ενοποιήθηκαν οι ειδικότητες & άλλαξαν ξανά οι περιοχές) μέχρι και σήμερα
 
+import pymysql
+pymysql.install_as_MySQLdb()
+
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
