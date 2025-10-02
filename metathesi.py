@@ -17,8 +17,9 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config.from_object('config')
 
-db = SQLAlchemy(app)
-db.Model.metadata.reflect(db.engine)
+with app.app_context():
+    db = SQLAlchemy(app)
+    db.Model.metadata.reflect(db.engine)
 
 default_epoch=2
 
@@ -272,7 +273,7 @@ def show_sxetika():
 @app.route('/eidikothtes_protobathmias')
 def show_eidikothtes_prwtobathmias():
     from config import RESULTS_PER_PAGE
-    a_eidikothtes=db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code).paginate(1, RESULTS_PER_PAGE, False)
+    a_eidikothtes=db.session.query(a_specialties).filter(a_specialties.id>1000).order_by(a_specialties.code).paginate(page=1, per_page=RESULTS_PER_PAGE, error_out=False)
     return render_template('eidikothtes.html', page_title=u'Ειδικότητες Εκπαιδευτικών Πρωτοβάθμιας', page_data=a_eidikothtes)
 
 @app.route('/eidikothtes_deuterobathmias/', defaults={'page':1})
@@ -283,7 +284,7 @@ def show_eidikothtes_deuterobathmias(page):
         page_num=int(page)
     except ValueError:
         return render_template('text_content.html', page_title=u"Σφάλμα αναζήτησης", er_msg=u"Ο αριθμός σελίδας πρέπει να είναι ακέραιος αριθμός.")
-    b_eidikothtes=db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code).paginate(int(page), RESULTS_PER_PAGE, False)
+    b_eidikothtes=db.session.query(b_specialties).filter(b_specialties.id>1000).order_by(b_specialties.code).paginate(page=int(page), per_page=RESULTS_PER_PAGE, error_out=False)
     return render_template('eidikothtes.html', page_title=u'Ειδικότητες Εκπαιδευτικών Δευτεροβάθμιας', page_data=b_eidikothtes)
 
 @app.route('/perifereiakes')
@@ -327,9 +328,9 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
     eidikothtes = {}
     if ba8mida=='a':
         if (etos!='ola'):
-            selectedBases = db.session.query(a_bases).filter_by(**kwargs).order_by(a_bases.specialty_id.desc()).order_by(a_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
+            selectedBases = db.session.query(a_bases).filter_by(**kwargs).order_by(a_bases.specialty_id.desc()).order_by(a_bases.points.desc()).paginate(page=int(page), per_page=RESULTS_PER_PAGE, error_out=False)
         else:
-            selectedBases = db.session.query(a_bases).filter_by(**kwargs).order_by(a_bases.year.desc()).order_by(a_bases.specialty_id.desc()).order_by(a_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
+            selectedBases = db.session.query(a_bases).filter_by(**kwargs).order_by(a_bases.year.desc()).order_by(a_bases.specialty_id.desc()).order_by(a_bases.points.desc()).paginate(page=int(page), per_page=RESULTS_PER_PAGE, error_out=False)
         for item in get_areas("a", epoch):
             perioxes[item[3]] = item[1]
         for item in get_eidikothtes("a", epoch):
@@ -337,10 +338,9 @@ def baseis(ba8mida, eidikothta, etos, perioxh, page):
 
     elif ba8mida=='b':
         if (etos!='ola'):
-            selectedBases = db.session.query(b_bases).filter_by(**kwargs).order_by(b_bases.specialty_id.desc()).order_by(b_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
+            selectedBases = db.session.query(b_bases).filter_by(**kwargs).order_by(b_bases.specialty_id.desc()).order_by(b_bases.points.desc()).paginate(page=int(page), per_page=RESULTS_PER_PAGE, error_out=False)
         else:
-            #selectedBases = db.session.query(b_bases).filter_by(**kwargs).filter(b_bases.year>2012).paginate(int(page), RESULTS_PER_PAGE, False)
-            selectedBases = db.session.query(b_bases).filter_by(**kwargs).order_by(b_bases.year.desc()).order_by(b_bases.specialty_id.desc()).order_by(b_bases.points.desc()).paginate(int(page), RESULTS_PER_PAGE, False)
+            selectedBases = db.session.query(b_bases).filter_by(**kwargs).order_by(b_bases.year.desc()).order_by(b_bases.specialty_id.desc()).order_by(b_bases.points.desc()).paginate(page=int(page), per_page=RESULTS_PER_PAGE, error_out=False)
         for item in get_areas("b", epoch):
             perioxes[item[3]] = item[1]
         for item in get_eidikothtes("b", epoch):
